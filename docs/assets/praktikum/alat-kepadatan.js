@@ -93,26 +93,28 @@
         h += '<h3>Kadar air optimum dan kepadatan kering maksimum</h3>' + U.tabel(['Uraian', 'Simbol', 'Satuan', 'Nilai'], [
           ['Kadar air optimum', 'w<sub>opt</sub>', '%', f(r.wopt, 2)], ['Kepadatan kering maksimum', 'γ<sub>d maks</sub>', 'g/cm³', f(r.gdmaks, 3)]]);
         var a = t[0];
+        // Urutan langkah = "Pengolahan data" Compaction Test hlm 121–122: massa tanah basah dulu, lalu a–d.
         h += '<h3>Langkah hitungan (cawan ' + a.nama + ')</h3>' +
+          U.langkah('Diketahui', (a.tambahAir !== null && a.tambahAir !== undefined ? '<p>Penambahan air = ' + f(a.tambahAir, 0) + ' cc</p>' : '') +
+            U.rumus('\\text{massa tanah basah} = W_t - W_m = ' + U.t(a.Mtotal, 1) + ' - ' + U.t(a.Mc, 1) + ' = ' + U.t(a.basah, 1) + '\\ \\text{gram}') +
+            '<p>Isi cetakan V = ' + f(a.Vc, 2) + ' cm³.</p><p class="ket">W<sub>t</sub> = massa tanah basah + cetakan; W<sub>m</sub> = massa cetakan.</p>') +
           U.langkah('a. Kadar air', U.rumus('W_4 = W_1 - W_2 = ' + U.t(a.W1, 2) + ' - ' + U.t(a.W2, 2) + ' = ' + U.t(a.air, 2) + '\\ \\text{gram} \\qquad (1)') +
             U.rumus('W_s = W_2 - W_3 = ' + U.t(a.W2, 2) + ' - ' + U.t(a.W3, 2) + ' = ' + U.t(a.kering, 2) + '\\ \\text{gram} \\qquad (2)') +
             U.rumus('w = \\dfrac{W_4}{W_s}\\times 100\\% = \\dfrac{' + U.t(a.air, 2) + '}{' + U.t(a.kering, 2) + '}\\times 100\\% = ' + U.t(a.w, 3) + '\\% \\qquad (3)') +
             '<p class="ket">W<sub>4</sub> = massa air; W<sub>s</sub> = massa tanah kering.</p>') +
-          U.langkah('b. Kepadatan basah', U.rumus('\\text{massa tanah basah} = W_t - W_m = ' + U.t(a.Mtotal, 1) + ' - ' + U.t(a.Mc, 1) + ' = ' + U.t(a.basah, 1) + '\\ \\text{gram} \\qquad (4)') +
-            U.rumus('\\gamma = \\dfrac{\\text{massa tanah basah}}{V} = \\dfrac{' + U.t(a.basah, 1) + '}{' + U.t(a.Vc, 2) + '} = ' + U.t(a.gamma, 3) + '\\ \\text{g/cm}^3 \\qquad (5)') +
-            '<p class="ket">W<sub>t</sub> = massa tanah basah + cetakan; W<sub>m</sub> = massa cetakan; V = isi cetakan.</p>') +
-          U.langkah('c. Kepadatan kering', U.rumus('\\gamma_d = \\dfrac{\\gamma\\times 100}{100 + w} = \\dfrac{' + U.t(a.gamma, 4) + '\\times 100}{100 + ' + U.t(a.w, 3) + '} = ' + U.t(a.gammaD, 3) + '\\ \\text{g/cm}^3 \\qquad (6)')) +
-          U.langkah('d. Kepadatan zero air void', U.rumus('ZAV = \\dfrac{G_s\\times\\gamma_w}{1 + \\dfrac{w}{100}\\times G_s} = \\dfrac{' + U.t(+m.param.Gs, 3) + '\\times 1}{1 + \\dfrac{' + U.t(a.w, 3) + '}{100}\\times' + U.t(+m.param.Gs, 3) + '} = ' + U.t(a.zav, 3) + '\\ \\text{g/cm}^3 \\qquad (7)') +
+          U.langkah('b. Kepadatan basah', U.rumus('\\gamma = \\dfrac{\\text{massa tanah basah}}{V} = \\dfrac{' + U.t(a.basah, 1) + '}{' + U.t(a.Vc, 2) + '} = ' + U.t(a.gamma, 3) + '\\ \\text{g/cm}^3 \\qquad (4)') +
+            '<p class="ket">V = isi cetakan.</p>') +
+          U.langkah('c. Kepadatan kering', U.rumus('\\gamma_d = \\dfrac{\\gamma\\times 100}{100 + w} = \\dfrac{' + U.t(a.gamma, 4) + '\\times 100}{100 + ' + U.t(a.w, 3) + '} = ' + U.t(a.gammaD, 3) + '\\ \\text{g/cm}^3 \\qquad (5)')) +
+          U.langkah('d. Kepadatan zero air void', U.rumus('ZAV = \\dfrac{G_s\\times\\gamma_w}{1 + \\dfrac{w}{100}\\times G_s} = \\dfrac{' + U.t(+m.param.Gs, 3) + '\\times 1}{1 + \\dfrac{' + U.t(a.w, 3) + '}{100}\\times' + U.t(+m.param.Gs, 3) + '} = ' + U.t(a.zav, 3) + '\\ \\text{g/cm}^3 \\qquad (6)') +
             '<p class="ket">γ<sub>w</sub> = berat volume air = 1 g/cm³.</p>') +
           U.langkah('e. Kurva dan titik optimum', U.rumus('\\gamma_d(w) = ' + r.kurva.koef.map(function (c, k) { return (k === 0 ? U.t(c, 5) : (c < 0 ? ' - ' : ' + ') + U.t(Math.abs(c), 6) + (k === 1 ? 'w' : 'w^' + k)); }).join('')) +
             '<p>Puncak kurva di dalam rentang data: w<sub>opt</sub> = ' + f(r.wopt, 2) + '% dan γ<sub>d maks</sub> = ' + f(r.gdmaks, 3) + ' g/cm³. ' +
             'Sebagai pembanding, titik data tertinggi adalah cawan ' + r.titikTertinggi.nama + ' (w = ' + f(r.titikTertinggi.w, 2) + '%, γ<sub>d</sub> = ' + f(r.titikTertinggi.gammaD, 3) + ' g/cm³).</p>');
-        h += beda(['Kolom A: form contoh menulis massa tanah basah + cetakan 3.411,1 g, tetapi hitungan laporan memakai 3.431,1 g (3.431,1 − 1.714,9 = 1.716,2 g). Data contoh memakai 3.431,1 g supaya cocok dengan massa tanah basahnya.',
-          'Kolom C: angka tertulis 3.644,8 g dan 1.929,9 g; γ = 2,096 dan γ<sub>d</sub> = 1,833 g/cm³ cocok dengan angka itu.',
-          'Laporan menghitung γ<sub>d</sub> cawan A dari γ yang sudah dibulatkan (1,86 × 100 / 111,231) sehingga tertulis 1,675 atau 1,676. Alat memakai γ tanpa pembulatan: 1,675 g/cm³.',
-          'w<sub>opt</sub> dan γ<sub>d maks</sub> di laporan dibaca dari grafik tangan (sekitar 14%). Alat memakai puncak kurva polinomial yang dicocokkan ke titik data, jadi hasilnya bisa sedikit berbeda dari bacaan grafik.']);
+        h += beda(['Kolom A: form contoh menulis massa tanah basah + cetakan 3.411,1 g, tetapi hitungan laporan (hlm 121) memakai 3.431,1 g (3.431,1 − 1.714,9 = 1.716,2 g). Data contoh memakai 3.431,1 g supaya cocok dengan massa tanah basah 1.716,2 g di form dan laporan.',
+          'Laporan menghitung γ<sub>d</sub> cawan A dari γ yang dibulatkan ke 1,86 (1,86 × 100 / 111,231), form menulis 1,676. Alat memakai γ tanpa pembulatan (1,8636): γ<sub>d</sub> = 1,675 g/cm³, sama dengan angka di hlm 122.',
+          'w<sub>opt</sub> dan γ<sub>d maks</sub> di laporan dibaca dari grafik tangan (garis putus-putus di w ≈ 14%). Alat memakai puncak kurva polinomial yang dicocokkan ke titik data; untuk data contoh, kurva orde 2 memberi w<sub>opt</sub> = 15,62% dan γ<sub>d maks</sub> = 1,828 g/cm³. Bila perlu angka yang sama dengan grafik tangan, baca dari grafik di atas dan tulis cara bacanya di laporan.']);
         h += belajar('Mencari kadar air optimum (w<sub>opt</sub>) yang memberi kepadatan kering terbesar (γ<sub>d maks</sub>) untuk energi pemadatan tertentu. Nilai ini dipakai sebagai acuan derajat kepadatan di lapangan (sand cone) dan pembuatan benda uji CBR.',
-          ['Hitung kadar air tiap cawan: massa air, massa tanah kering, lalu w.', 'Hitung massa tanah basah = (tanah basah + cetakan) − cetakan.',
+          ['Hitung massa tanah basah = (tanah basah + cetakan) − cetakan.', 'Hitung kadar air tiap cawan: massa air, massa tanah kering, lalu w.',
             'Hitung kepadatan basah γ = massa tanah basah / isi cetakan.', 'Hitung kepadatan kering γ<sub>d</sub> = γ × 100 / (100 + w).',
             'Hitung kepadatan zero air void (ZAV) dari G<sub>s</sub> dan w.', 'Gambar γ<sub>d</sub> terhadap w bersama garis ZAV, lalu baca puncak kurva: w<sub>opt</sub> dan γ<sub>d maks</sub>.'],
           'Titik uji seharusnya berada di bawah garis ZAV, karena ZAV adalah kepadatan kering saat rongga udara nol (jenuh penuh). Titik di atas ZAV menandakan ada data yang keliru, misalnya G<sub>s</sub>, isi cetakan, atau kadar air.');
@@ -222,10 +224,10 @@
           U.langkah('8. Berat isi kering tanah', U.rumus('H = \\gamma_d = \\dfrac{W_d}{V_{tg}} = \\dfrac{' + U.t(a.Wd, 3) + '}{' + U.t(a.V, 3) + '} = ' + U.t(a.gammaD, 3) + '\\ \\text{g/cm}^3 \\qquad (9)')) +
           (r.D !== undefined ? U.langkah('9. Derajat kepadatan lapangan', U.rumus('D = \\dfrac{\\gamma_{d\\,lap}}{\\gamma_{d\\,lab}}\\times 100\\% = \\dfrac{' + U.t(r.gammaD, 3) + '}{' + U.t(+m.param.gammaLab, 3) + '}\\times 100\\% = ' + U.t(r.D, 2) + '\\% \\qquad (10)') +
             '<p class="ket">γ<sub>d lap</sub> = rata-rata berat isi kering semua titik uji.</p>') : '');
-        h += beda(['Langkah 4 laporan membagi dengan (1 + 22,302), yaitu memakai angka persen, sehingga W<sub>d</sub> = 73,985 g. Seharusnya (1 + 0,22302): W<sub>d</sub> = 1.409,6 g. Akibatnya laporan mendapat γ<sub>d</sub> = 0,0575 g/cm³ dan D = 1,77%; dengan cara yang benar γ<sub>d</sub> ≈ 1,095 g/cm³ dan D ≈ 59,8%.',
-          'Form laporan menulis berat isi kering rata-rata 0,0324, tidak sama dengan 0,0575 dari satu-satunya titik uji.',
-          'Form laporan menulis W<sub>3</sub> − W<sub>1</sub> = 5.328,9; seharusnya 5.478 − 139,1 = 5.338,9 cm³. γ<sub>sand</sub> = 1,423 g/cm³ tetap sama.',
-          'Laporan membagi F dengan γ<sub>sand</sub> yang sudah dibulatkan (1,423) sehingga V = 1.287,421 cm³; alat memakai γ<sub>sand</sub> tanpa pembulatan: ' + f(1832 / 1.4232145, 1) + ' cm³ untuk data contoh.']);
+        h += beda(['Langkah 4 laporan (hlm 32) membagi dengan (1 + 22,302), yaitu memakai angka persen, sehingga W<sub>d</sub> = 73,985 g. Seharusnya w dipakai sebagai desimal, (1 + 0,22302): W<sub>d</sub> = 1.724 / 1,22302 = 1.409,6 g. Akibatnya laporan mendapat γ<sub>d</sub> = 0,0575 g/cm³ dan D = 1,77%; dengan cara yang benar γ<sub>d</sub> = 1,095 g/cm³ dan D = 59,84% (γ<sub>d lab</sub> 1,830 g/cm³).',
+          'Langkah 9 laporan (hlm 33) memakai γ<sub>d lap</sub> rata-rata 0,0324 dari form, padahal satu-satunya titik uji memberi 0,0575 (dengan angka laporan sendiri). Alat memakai rata-rata γ<sub>d</sub> semua titik yang terisi.',
+          'Form contoh menulis W<sub>3</sub> − W<sub>1</sub> = 5.328,9; seharusnya 5.478 − 139,1 = 5.338,9 cm³. γ<sub>sand</sub> = 7.598,4 / 5.338,9 = 1,423 g/cm³ tetap sama.',
+          'Laporan membagi F dengan γ<sub>sand</sub> yang sudah dibulatkan (1.832 / 1,423 = 1.287,421 cm³); alat memakai γ<sub>sand</sub> tanpa pembulatan (1,42321) sehingga V = 1.287,227 cm³ untuk data contoh.']);
         h += belajar('Mengukur berat isi kering tanah di lapangan dengan mengganti volume lubang galian memakai pasir yang berat isinya sudah diketahui, lalu membandingkannya dengan γ<sub>d maks</sub> hasil pemadatan di laboratorium.',
           ['Kalibrasi alat: berat pasir yang mengisi kerucut (W<sub>4</sub> − W<sub>5</sub>).', 'Kalibrasi pasir uji: γ<sub>sand</sub> = (W<sub>2</sub> − W<sub>1</sub>)/(W<sub>3</sub> − W<sub>1</sub>).',
             'Berat pasir dalam kerucut A = W<sub>6</sub> − W<sub>7</sub>.', 'Berat tanah galian B = W<sub>11</sub> − W<sub>10</sub>.', 'Kadar air C dari kontainer.',

@@ -33,7 +33,7 @@
     ['tanggal', 'Tanggal'], ['dikerjakan', 'Dikerjakan'], ['diperiksa', 'Diperiksa']];
 
   // Laporan individu: data mentah ditambah dua digit terakhir NIM / 100 (aturan asisten lab),
-  // mis. F1G224034 → 0,34. Hanya kolom yang disebut di def.nim yang ditambah.
+  // mis. NIM berakhiran 34 → 0,34. Hanya kolom yang disebut di def.nim yang ditambah.
   var KUNCI_NIM = 'praktikum-nim';
   function tambahanNim(nim) {
     var d = String(nim || '').replace(/\D/g, '');
@@ -251,7 +251,7 @@
     function htmlNim() {
       if (!def.nim) return '';
       return '<div class="kotak-nim tidak-cetak" id="kotak-nim"><div class="nim-isian"><label for="nim-input">NIM untuk laporan individu</label>' +
-        '<input id="nim-input" data-nim="nim" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="mis. F1G224034" value="' + esc(nimData.nim || '') + '"></div>' +
+        '<input id="nim-input" data-nim="nim" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="NIM lengkap" value="' + esc(nimData.nim || '') + '"></div>' +
         '<div class="nim-angka" id="nim-angka" aria-live="polite">' + teksNim() + '</div>' +
         '<label class="nim-pakai"><input type="checkbox" data-nim="aktif"' + (nimData.aktif ? ' checked' : '') + '> Tambahkan ke data</label>' +
         '<p class="kecil nim-ket">Dua digit terakhir NIM dibagi 100 lalu ditambahkan ke <strong>' + def.nim.ket + '</strong>. Kolom lain tidak berubah.' +

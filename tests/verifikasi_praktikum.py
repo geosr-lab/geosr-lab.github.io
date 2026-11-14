@@ -345,6 +345,11 @@ cocok("CBR: pengembangan", 104 * 0.0254 / 116.4 * 100, sw["pengembangan"])
 gd = (9850 - 5480) / 2124 / (1 + 7.5 / 38.6)
 cocok("CBR: γd benda uji", gd, sw["kondisi"][0]["gammaD"])
 cocok("CBR: derajat kepadatan", gd / 1.75 * 100, sw["D"])
+# Cara form lab UNJA: HARGA CBR = P / 13,35 × 100 dan P / 20,02 × 100 (bebanStd), tanpa luas piston.
+fb = js("hitung-cbr.js", "hitung", {"A": 1935, "bebanStd": [13.35, 20.02], "koreksi": "tidak",
+                                    "atas": [{"no": 1, "penetrasi": 2.54, "beban": 4.0}, {"no": 2, "penetrasi": 5.08, "beban": 5.0}]})
+cocok("CBR form: 2,54 mm = P / 13,35 × 100", 4.0 / 13.35 * 100, fb["set"][0]["CBR1"])
+cocok("CBR form: 5,08 mm = P / 20,02 × 100", 5.0 / 20.02 * 100, fb["set"][0]["CBR2"])
 
 # ---------------------------------------------------------------- geser langsung (SNI 3420:2016)
 for D_, d_ in ((6.31, 0.5), (6.0, 1.2)):
@@ -386,6 +391,15 @@ naik = js("hitung-kekuatan.js", "tekanBebas", {"diameter": 3.8, "tinggi": 7.6, "
                                                "bacaan": [{"no": i + 1, "regangan": 100 * i, "beban": 10 * math.sqrt(i)} for i in range(14)]})
 benar("UCS: tanpa puncak sampai 15% → qu pada regangan 15%", naik["caraQu"] == "regangan 15%" and abs(naik["epsQu"] - 15) < 1e-9)
 benar("UCS: konsistensi 119,5 kPa = kaku", r["konsistensi"] == "Kaku")
+# Luas perawal dari form lab (opsional): tegangan berbanding terbalik dengan luas perawal.
+lf = js("hitung-kekuatan.js", "tekanBebas", {"diameter": 3.8, "tinggi": 7.6, "luas": 11.0, "satuanRegangan": 0.01, "satuanBeban": "kN", "kalibrasi": 0.0045,
+                                             "bacaan": [{"no": i + 1, "regangan": a_, "beban": b2} for i, (a_, b2) in enumerate(UCS)]})
+cocok("UCS: luas perawal dari form", qu * A0 / 11.0, lf["quKPa"])
+# Baris nol tanpa beban (seperti form lab) menjadi titik nol; baris tanpa beban lainnya diabaikan.
+kos = js("hitung-kekuatan.js", "tekanBebas", {"diameter": 3.8, "tinggi": 7.6, "satuanRegangan": 0.01, "satuanBeban": "kN", "kalibrasi": 0.0045,
+                                              "bacaan": [{"no": 1, "regangan": 0, "beban": None}] + [{"no": i + 2, "regangan": a_, "beban": b2} for i, (a_, b2) in enumerate(UCS[1:])]
+                                              + [{"no": 99, "regangan": 700, "beban": None}]})
+benar("UCS: baris nol kosong = titik nol, baris kosong lain diabaikan", kos["titik"][0]["P"] == 0 and len(kos["titik"]) == len(UCS) and abs(kos["quKPa"] - qu) < 1e-9)
 
 # ---------------------------------------------------------------- konsolidasi laboratorium (SNI 2812:2011)
 def U_terzaghi(Tv):
@@ -429,6 +443,19 @@ cocok("konsolidasi: Hdr tahap 4 (dua arah)", (H3 + H4) / 4, t4["Hdr"])
 cocok("konsolidasi: cv tahap 4 dari t90", 0.848 * t4["Hdr"] ** 2 / (t4["t90"] * 60), t4["cv"])
 benar("konsolidasi: cv contoh mendekati nilai pembangkit 1,6e-3 cm²/s (±15%)", abs(t4["cv"] - 1.6e-3) / 1.6e-3 < 0.15)
 cocok("konsolidasi: korelasi Cc Terzaghi & Peck", 0.009 * 38, r["CcKorelasi"])
+for i in range(7):
+    cocok(f"konsolidasi: e = e0 − ΔH/Hs tahap {i + 1}", e0 - r["tahap"][i]["dH"] / Hs, r["tahap"][i]["e"])
+benar("konsolidasi: tahap pelepasan tanpa t90 manual tidak punya cv", not r["tahap"][5].get("cv") and not r["tahap"][6].get("cv"))
+r2 = js("hitung-konsolidasi-lab.js", "hitung", {"Gs": 2.68, "H0": 2, "diameter": 6.35, "Ws": 88, "Ww": 118.5, "satuan": 0.01, "arloji0": 100, "arah": "naik",
+                                                "drainase": "dua", "caraCc": "terakhir",
+                                                "tahap": [{"nama": str(i + 1), "p": p_, "akhir": akhir[i], "t90": 2 if i == 6 else None} for i, p_ in enumerate(pk)],
+                                                "bacaan": [{"t": t_, "nilai": [KOL[i][j] if i < 5 else None for i in range(7)]} for j, t_ in enumerate(TW)]})
+t7 = r2["tahap"][6]
+cocok("konsolidasi: cv pelepasan dari t90 manual", 0.848 * t7["Hdr"] ** 2 / 120, t7["cv"])
+cocok("konsolidasi: cv rata-rata hanya tahap pembebanan", r["cvRata"], r2["cvRata"])
+r3 = js("hitung-konsolidasi-lab.js", "hitung", {"Gs": 2.68, "H0": 2, "diameter": 6.35, "Ws": 88, "satuan": 0.01, "arloji0": 0, "arah": "naik", "drainase": "dua",
+                                                "tahap": [{"nama": "1", "beban": 10, "akhir": 50}, {"nama": "2", "beban": 20, "akhir": 80}], "bacaan": []})
+cocok("konsolidasi: tekanan = beban / A bila tekanan kosong", 20 / A, r3["tahap"][1]["p"])
 
 # ---------------------------------------------------------------- sondir (SNI 2827:2008, kolom form lab)
 bs = [(0.0, 6, 8), (0.2, 7, 10), (0.4, 5, 8), (0.6, 40, 45), (0.8, 150, 180)]
@@ -441,6 +468,9 @@ for (z, pk_, jp_), x in zip(bs, r["titik"]):
     cocok(f"sondir {z} m: JHL", jhl, x["JHL"])
     cocok(f"sondir {z} m: HS = HL/10", hl / 10, x["HS"])
     cocok(f"sondir {z} m: FR", hl / 10 / pk_ * 100, x["FR"])
+# Langkah c–d contoh laporan Cone Penetration Test: q̄f = Σ JHL / n, q̄c = Σ PK / n.
+cocok("sondir: q̄c = Σ PK / n", sum(b_[1] for b_ in bs) / len(bs), r["qc"])
+cocok("sondir: q̄f = Σ JHL / n", sum(x["JHL"] for x in r["titik"]) / len(bs), r["qf"])
 benar("sondir: JP < PK ditolak", js("hitung-lapangan.js", "sondir", {"bacaan": [{"kedalaman": 0, "PK": 5, "JP": 4}, {"kedalaman": 0.2, "PK": 5, "JP": 6}]})["galat"])
 
 # ---------------------------------------------------------------- SPT (SNI 4153:2008)
@@ -453,6 +483,7 @@ benar("SPT: N 4 di lempung = sedang", r["uji"][0]["keadaan"] == "Sedang")
 benar("SPT: N 18 di pasir = sedang", r["uji"][1]["keadaan"] == "Sedang")
 benar("SPT: N 65 tanpa 50 pukulan per interval bukan penolakan", not r["uji"][2]["tolak"])
 benar("SPT: 50 pukulan dalam satu interval = penolakan", r["uji"][3]["tolak"])
+cocok("boring log: Thick = sampai − dari", 14, r["lapisan"][1]["tebal"])
 for jenis_, N_, harap in (("pasir", 4, "Sangat lepas"), ("pasir", 10, "Lepas"), ("pasir", 30, "Sedang"), ("pasir", 50, "Padat"), ("pasir", 51, "Sangat padat"),
                           ("lempung", 1, "Sangat lunak"), ("lempung", 3, "Lunak"), ("lempung", 7, "Sedang"), ("lempung", 12, "Kaku"), ("lempung", 30, "Sangat kaku"), ("lempung", 31, "Keras")):
     k_ = json.loads(subprocess.check_output(["node", "-e", "const m=require(process.argv[1]);console.log(JSON.stringify(m.keadaan(process.argv[2],+process.argv[3])))",

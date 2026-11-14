@@ -18,8 +18,9 @@
   'use strict';
 
   // Grafik di layar memakai variabel CSS (ikut mode gelap). Untuk berkas, warna dikunci ke palet terang.
-  var PALET = { '--aksen': '#c8421a', '--teks': '#1f1b16', '--teks-2': '#5c554c', '--garis': '#d9d1c5', '--permukaan': '#ffffff',
-    '--permukaan-2': '#f3efe9', '--latar': '#ffffff', '--sukses': '#1f7a4d', '--pasir': '#ecd9a4', '--lempung': '#b99478' };
+  // Nilai sama dengan token terang di gaya.css (latar dan permukaan dibuat putih untuk berkas).
+  var PALET = { '--aksen': '#1d6a63', '--teks': '#1c2427', '--teks-2': '#515a5b', '--garis': '#d2d6ca', '--permukaan': '#ffffff',
+    '--permukaan-2': '#e8eae1', '--latar': '#ffffff', '--sukses': '#1f7a4d', '--pasir': '#dcbd78', '--lempung': '#9fae9f' };
 
   function svgMandiri(svg) {
     var vb = svg.viewBox.baseVal, s = new XMLSerializer().serializeToString(svg);

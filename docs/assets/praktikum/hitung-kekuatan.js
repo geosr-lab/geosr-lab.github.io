@@ -9,7 +9,7 @@
  *   Garis keruntuhan Mohr–Coulomb τf = c + σn tan φ dengan kuadrat terkecil dari τ puncak tiap benda uji.
  *
  * Kuat tekan bebas (kolom form lab UNJA: regangan, beban, luas, tegangan):
- *   ε = ΔL / L0;  beban P = pembacaan arloji × kalibrasi proving ring;  angka koreksi = 1 / (1 − ε);
+ *   Luas perawal A0 = ¼ π D² (atau luas yang tertulis di form lab);  ε = ΔL / L0;  beban P = pembacaan arloji × kalibrasi proving ring;  angka koreksi = 1 / (1 − ε);
  *   luas terkoreksi A = A0 / (1 − ε);  σ = P / A.
  *   qu = tegangan puncak, atau tegangan pada ε = 15% bila puncak belum tercapai (ASTM D2166).
  *   cu = qu / 2;  sensitivitas St = qu / qu teremas (opsional);  E50 = (qu/2) / ε50.
@@ -64,7 +64,7 @@
     if (reg.b < 0) peringatan.push('Garis keruntuhan menurun (φ negatif). Periksa beban normal dan bacaan arloji tiap benda uji.');
     if (reg.a < -1e-9) peringatan.push('Kohesi hasil regresi negatif. Secara fisik biasanya dilaporkan c = 0 dengan φ dari garis melalui titik asal; periksa data.');
     if (benda.length > 2 && reg.r2 < 0.9) peringatan.push('Titik τ–σ kurang segaris (R² = ' + reg.r2.toFixed(3).replace('.', ',') + ').');
-    return { galat: [], peringatan: peringatan, A0: A0, benda: benda, c: reg.a, tanPhi: reg.b, phi: phi, r2: reg.r2, kPa: KG_CM2_KPA };
+    return { galat: [], peringatan: peringatan, A0: A0, bacaanUrut: bacaan, benda: benda, c: reg.a, tanPhi: reg.b, phi: phi, r2: reg.r2, kPa: KG_CM2_KPA };
   }
 
   function konsistensi(quKPa) {
@@ -79,14 +79,22 @@
     if (!(m.diameter > 0 && m.tinggi > 0)) galat.push('Isi diameter dan tinggi benda uji.');
     if (!(m.satuanRegangan > 0)) galat.push('Isi satuan arloji regangan.');
     if (!(m.kalibrasi > 0)) galat.push('Isi kalibrasi cincin beban.');
-    if (m.bacaan.length < 3) galat.push('Isi minimal tiga bacaan.');
+    var ada = function (v) { return v !== null && v !== undefined && isFinite(v); };
+    // Baris tanpa pembacaan arloji beban: di form lab baris nol (regangan 0) dibiarkan kosong, jadi baris
+    // pertama dipakai sebagai titik nol (beban 0). Baris kosong lain diabaikan.
+    var baca = (m.bacaan || []).filter(function (b) { return ada(b.regangan); }).sort(function (a, b) { return a.regangan - b.regangan; });
+    var dibuang = baca.filter(function (b, i) { return i > 0 && !ada(b.beban); }).length;
+    baca = baca.filter(function (b, i) { return i === 0 || ada(b.beban); });
+    if (baca.length < 3) galat.push('Isi minimal tiga bacaan (pembacaan arloji deformasi dan beban).');
     if (galat.length) return { galat: galat };
-    var A0 = Math.PI * m.diameter * m.diameter / 4, keKPa = m.satuanBeban === 'kN' ? 10000 : KG_CM2_KPA;
-    var baca = m.bacaan.slice().sort(function (a, b) { return a.regangan - b.regangan; });
+    if (dibuang) peringatan.push(dibuang + ' baris tanpa pembacaan arloji beban diabaikan.');
+    // Luas perawal: dari form lab bila diisi, atau ¼ π D².
+    var A0 = m.luas > 0 ? m.luas : Math.PI * m.diameter * m.diameter / 4, keKPa = m.satuanBeban === 'kN' ? 10000 : KG_CM2_KPA;
     var titik = baca.map(function (b) {
       var dL = (b.regangan - baca[0].regangan) * m.satuanRegangan / 10; // cm
-      var eps = dL / m.tinggi, A = A0 / (1 - eps), P = b.beban * m.kalibrasi;
-      return Object.assign({}, b, { dL: dL, eps: eps * 100, koreksi: 1 / (1 - eps), A: A, P: P, sigma: P / A, kPa: P / A * keKPa });
+      var kosong = !ada(b.beban);
+      var eps = dL / m.tinggi, A = A0 / (1 - eps), P = kosong ? 0 : b.beban * m.kalibrasi;
+      return Object.assign({}, b, { kosong: kosong, dL: dL, eps: eps * 100, koreksi: 1 / (1 - eps), A: A, P: P, sigma: P / A, kPa: P / A * keKPa });
     });
     var batas = titik.filter(function (t) { return t.eps <= 15 + 1e-9; });
     var puncak = batas.reduce(function (a, t) { return !a || t.sigma > a.sigma ? t : a; }, null);
@@ -113,7 +121,7 @@
       var p1 = titik[j], p2 = titik[j + 1];
       if (p1.sigma <= qu / 2 && p2.sigma >= qu / 2 && p2.sigma > p1.sigma) { eps50 = p1.eps + (qu / 2 - p1.sigma) * (p2.eps - p1.eps) / (p2.sigma - p1.sigma); break; }
     }
-    var hasil = { galat: [], peringatan: peringatan, A0: A0, V0: A0 * m.tinggi, keKPa: keKPa, titik: titik, puncak: puncak, qu: qu, quKPa: quKPa, cu: qu / 2, cuKPa: quKPa / 2,
+    var hasil = { galat: [], peringatan: peringatan, A0: A0, luasForm: m.luas > 0, V0: A0 * m.tinggi, keKPa: keKPa, titik: titik, puncak: puncak, qu: qu, quKPa: quKPa, cu: qu / 2, cuKPa: quKPa / 2,
       caraQu: caraQu, epsQu: epsQu, konsistensi: konsistensi(quKPa), eps50: eps50 };
     if (eps50 > 0) hasil.E50 = (quKPa / 2) / (eps50 / 100);
     if (m.quRemas > 0) hasil.St = quKPa / m.quRemas; // q_u teremas dalam kPa

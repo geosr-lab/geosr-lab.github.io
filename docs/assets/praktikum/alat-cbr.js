@@ -1,13 +1,14 @@
 /* Definisi alat: CBR laboratorium. Formulir dan tabel hasil mengikuti form CBR lab UNJA (hlm 20):
  * pengembangan (tanggal, jam, pembacaan, perubahan), penetrasi Waktu | Penurunan | Beban penetrasi tiap cetakan,
  * berat isi dan kadar air sebelum/sesudah, HARGA CBR atas/bawah = P/13,35 × 100 dan P/20,02 × 100.
- * Data contoh: laporan praktikum CBR (tiga cetakan 3 × 10, 3 × 30, 3 × 65). */
+ * Data contoh: laporan praktikum CBR (CBR.pdf hlm 4–6 form terisi PK 3 × 10, 3 × 30, 3 × 65; hlm 1–3 pengolahan data).
+ * Langkah hasil mengikuti urutan "Pengolahan data" laporan: per cetakan kadar air, lalu harga CBR 2,54 dan 5,08 mm. */
 (function () {
   'use strict';
 
   var H = window.HitungCBR, f = Umum.f;
   var CETAKAN = 3;
-  var BEBAN_STD = [13.35, 20.02]; // kN pada penetrasi 2,54 dan 5,08 mm, seperti form CBR lab UNJA
+  var BEBAN_STD = H.BEBAN_STD; // kN pada penetrasi 2,54 dan 5,08 mm, seperti form CBR lab UNJA
   var WARNA = [['aksen', 'aksen'], ['biru', 'biru'], ['hijau', 'hijau']];
 
   function waktu() { var a = []; for (var t = 0; t <= 410; t += 10) a.push({ t: t }); return a; }
@@ -22,11 +23,16 @@
       '<p><strong>Alur pengolahan</strong> (urutan seperti contoh laporan):</p><ol>' + alur.map(function (a) { return '<li>' + a + '</li>'; }).join('') + '</ol>' +
       (arti ? '<p><strong>Arti hasil.</strong> ' + arti + '</p>' : '') + '</section>';
   }
+  // Catatan beda dengan contoh laporan: hanya tampil selama data contoh yang dimuat.
+  function bedaContoh(m, isi) {
+    return m.contoh ? '<div class="catatan"><strong>Beda dengan contoh laporan.</strong><ul>' + isi.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul></div>' : '';
+  }
 
-  // Contoh laporan CBR (form terisi, PK 3 × 10, 3 × 30, 3 × 65). Penurunan dan beban per baris waktu 0, 10, 20, … menit.
+  // Contoh laporan CBR (CBR.pdf hlm 4–6, form terisi PK 3 × 10, 3 × 30, 3 × 65). Penurunan dan beban per baris waktu
+  // 0, 10, 20, … menit. Beban penetrasi, W1, dan W2 sudah termasuk +0,34 dari NIM penulis (beban pada 0 mm = 0,34 kN).
   var CONTOH = [
     { nama: '3 × 10', pukulan: 10, ka: [[28.84, 27.64, 11], [43.94, 41.84, 11]],
-      x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.13, 0.44, 1.03, 1.64, 2.22, 2.84, 3.46, 4.03, 4.62, 5.23, 5.79, 6.94, 7.03, 7.59, 8.21, 8.78, 9.4, 9.97, 10.6, 11.2, 11.77, 12.54],
+      x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.13, 0.44, 1.03, 1.64, 2.22, 2.84, 3.46, 4.03, 4.62, 5.23, 5.79, 6.94, 7.05, 7.59, 8.21, 8.78, 9.4, 9.97, 10.6, 11.2, 11.77, 12.54],
       P: [0.34, 0.34, 0.34, 0.37, 0.50, 0.60, 0.74, 1.09, 1.95, 2.73, 3.12, 3.34, 3.49, 3.62, 3.74, 3.68, 3.96, 4.07, 4.17, 4.26, 4.36, 4.46, 4.56, 4.65, 4.74, 4.84, 4.92, 5.02, 5.11, 5.19, 5.28, 5.36, 5.45, 5.53, 5.62, 5.70, 5.78, 5.87] },
     { nama: '3 × 30', pukulan: 30, ka: [[44.24, 41.74, 11.2], [34.64, 33.04, 11]],
       x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.22, 0.45, 0.70, 0.98, 1.24, 1.5, 1.9, 2.5, 3.07, 3.63, 4.05, 4.37, 4.68, 5.02, 5.69, 6.28, 6.95, 7.50, 8.16, 8.82, 9.39, 9.90, 10.49, 10.97, 11.47, 11.94, 12.35, 12.64],
@@ -86,13 +92,14 @@
         { id: 'WtB', label: 'Berat tanah + cetakan, sesudah', simbol: '', satuan: 'gram', opsional: true },
         { id: 'Wm', label: 'Berat cetakan', simbol: '', satuan: 'gram', opsional: true },
         { id: 'V', label: 'Isi cetakan', simbol: '', satuan: 'cm³', opsional: true },
-        { id: 'W1A', label: 'Kadar air sebelum: tanah basah + cawan', simbol: '', satuan: 'gram', opsional: true },
-        { id: 'W2A', label: 'Kadar air sebelum: tanah kering + cawan', simbol: '', satuan: 'gram', opsional: true },
-        { id: 'W3A', label: 'Kadar air sebelum: berat cawan', simbol: '', satuan: 'gram', opsional: true },
-        { id: 'W1B', label: 'Kadar air sesudah: tanah basah + cawan', simbol: '', satuan: 'gram', opsional: true },
-        { id: 'W2B', label: 'Kadar air sesudah: tanah kering + cawan', simbol: '', satuan: 'gram', opsional: true },
-        { id: 'W3B', label: 'Kadar air sesudah: berat cawan', simbol: '', satuan: 'gram', opsional: true }],
-        keterangan: 'Satu kolom per cetakan; nama kolom = nomor cetakan (mis. 3 × 10). Kolom ke-1 memakai tabel penetrasi cetakan 1, dan seterusnya.' }]
+        { id: 'W1A', label: 'Kadar air sebelum: tanah basah + cawan', simbol: 'W<sub>1</sub>', satuan: 'gram', opsional: true },
+        { id: 'W2A', label: 'Kadar air sebelum: tanah kering + cawan', simbol: 'W<sub>2</sub>', satuan: 'gram', opsional: true },
+        { id: 'W3A', label: 'Kadar air sebelum: berat cawan', simbol: 'W<sub>3</sub>', satuan: 'gram', opsional: true },
+        { id: 'W1B', label: 'Kadar air sesudah: tanah basah + cawan', simbol: 'W<sub>1</sub>', satuan: 'gram', opsional: true },
+        { id: 'W2B', label: 'Kadar air sesudah: tanah kering + cawan', simbol: 'W<sub>2</sub>', satuan: 'gram', opsional: true },
+        { id: 'W3B', label: 'Kadar air sesudah: berat cawan', simbol: 'W<sub>3</sub>', satuan: 'gram', opsional: true }],
+        keterangan: 'Satu kolom per cetakan; nama kolom = nomor cetakan (mis. 3 × 10, seperti PK di form). Kolom ke-1 memakai tabel penetrasi cetakan 1, dan seterusnya. ' +
+          'Baris berat isi dan kadar air mengikuti blok "Nomor Cetakan" dan "Kadar Air" (sebelum/sesudah) di form; nomor cawan cukup ditulis di laporan.' }]
       .concat(tabelPenetrasi),
     contoh: { param: { jenis: 'standard', satuanBeban: 'kN', kalibrasi: '', caraStd: 'form', A: 1935, std1: 6.9, std2: 10.3, koreksi: 'tidak', koreksiManual: '', H0: 116.4, satuanArloji: '0.0254', gdmaks: '' },
       tabel: (function () {
@@ -118,8 +125,9 @@
         isiCetakan.push({ nama: c ? c.nama : String(i + 1), pukulan: c ? c.pukulan : null, atas: atas, bawah: bawah,
           kondisi: c ? [{ nama: 'Sebelum', Wt: c.WtA, Wm: c.Wm, V: c.V, W1: c.W1A, W2: c.W2A, W3: c.W3A }, { nama: 'Sesudah', Wt: c.WtB, Wm: c.Wm, V: c.V, W1: c.W1B, W2: c.W2B, W3: c.W3B }] : [] });
       }
-      // Form lab: CBR = P / 13,35 kN × 100 dan P / 20,02 kN × 100, setara tegangan standar = P_std / A.
-      return H.hitungCetakan({ A: A, std1: form ? BEBAN_STD[0] * 1000 / A : p.std1, std2: form ? BEBAN_STD[1] * 1000 / A : p.std2, koreksi: p.koreksi, koreksiManual: p.koreksiManual,
+      // Form lab: CBR = P / 13,35 kN × 100 dan P / 20,02 kN × 100 (setara tegangan standar = P_std / A).
+      return H.hitungCetakan({ A: A, std1: form ? BEBAN_STD[0] * 1000 / A : p.std1, std2: form ? BEBAN_STD[1] * 1000 / A : p.std2, bebanStd: form ? BEBAN_STD : null,
+        koreksi: p.koreksi, koreksiManual: p.koreksiManual,
         gdmaks: p.gdmaks, H0: p.H0, satuanArloji: +p.satuanArloji, cetakan: isiCetakan, swell: m.tabel.swell });
     },
     hasil: function (m, r) {
@@ -144,73 +152,92 @@
       });
       h += '<h3>Harga CBR</h3>' + U.tabel([{ teks: 'Cetakan' }, { teks: 'Permukaan' }, { teks: 'P<sub>2,54</sub> (kN)', angka: true }, form ? 'CBR 2,54 mm = P/13,35 × 100 (%)' : 'CBR 2,54 mm (%)',
         'P<sub>5,08</sub> (kN)', form ? 'CBR 5,08 mm = P/20,02 × 100 (%)' : 'CBR 5,08 mm (%)'], harga, null, { angkaMulai: 2 });
-      // Kadar air dan berat isi sebelum/sesudah per cetakan
+      // Kadar air dan berat isi sebelum/sesudah per cetakan (baris seperti blok "Kadar Air" dan "Nomor Cetakan" di form)
       var kc = r.cetakan.filter(function (c) { return c.kondisi.some(function (k) { return k.w !== undefined || k.gamma !== undefined; }); });
       if (kc.length) {
-        var kepala = ['Uraian', 'Satuan', ''], kol = [];
+        var kepala = ['Uraian', 'Simbol', 'Satuan'], kol = [];
         kc.forEach(function (c) { c.kondisi.forEach(function (k) { kepala.push(c.nama + ' ' + k.nama.toLowerCase()); kol.push(k); }); });
-        var b = function (uraian, sat, ambil, d) { return [uraian, sat, ''].concat(kol.map(function (k) { var v = ambil(k); return v === undefined || v === null ? '–' : f(v, d); })); };
+        var b = function (uraian, simbol, sat, ambil, d) { return [uraian, simbol, sat].concat(kol.map(function (k) { var v = ambil(k); return v === undefined || v === null ? '–' : f(v, d); })); };
         if (kc.some(function (c) { return c.kondisi.some(function (k) { return k.w !== undefined; }); })) {
-          h += '<h3>Kadar air</h3>' + U.tabel(kepala, [b('Tanah basah + cawan', 'gram', function (k) { return k.W1; }, 2), b('Tanah kering + cawan', 'gram', function (k) { return k.W2; }, 2),
-            b('Air', 'gram', function (k) { return k.air; }, 2), b('Berat cawan', 'gram', function (k) { return k.W3; }, 2), b('Tanah kering', 'gram', function (k) { return k.kering; }, 2),
-            b('Kadar air', '%', function (k) { return k.w; }, 3)]);
+          h += '<h3>Kadar air</h3>' + U.tabel(kepala, [b('Tanah basah + cawan', 'W<sub>1</sub>', 'gram', function (k) { return k.W1; }, 2),
+            b('Tanah kering + cawan', 'W<sub>2</sub>', 'gram', function (k) { return k.W2; }, 2), b('Air', 'W<sub>4</sub>', 'gram', function (k) { return k.air; }, 2),
+            b('Berat cawan', 'W<sub>3</sub>', 'gram', function (k) { return k.W3; }, 2), b('Tanah kering', 'W<sub>5</sub>', 'gram', function (k) { return k.kering; }, 2),
+            b('Kadar air', 'w', '%', function (k) { return k.w; }, 3)]);
         }
         if (kc.some(function (c) { return c.kondisi.some(function (k) { return k.gamma !== undefined; }); })) {
-          h += '<h3>Berat isi</h3>' + U.tabel(kepala, [b('Berat tanah + cetakan', 'gram', function (k) { return k.Wt; }, 1), b('Berat cetakan', 'gram', function (k) { return k.Wm; }, 1),
-            b('Berat tanah basah', 'gram', function (k) { return k.basah; }, 1), b('Isi cetakan', 'cm³', function (k) { return k.V; }, 2),
-            b('Berat isi basah', 'g/cm³', function (k) { return k.gamma; }, 3), b('Berat isi kering', 'g/cm³', function (k) { return k.gammaD; }, 3)]);
+          h += '<h3>Berat isi</h3>' + U.tabel(kepala, [b('Berat tanah + cetakan', '', 'gram', function (k) { return k.Wt; }, 1), b('Berat cetakan', '', 'gram', function (k) { return k.Wm; }, 1),
+            b('Berat tanah basah', '', 'gram', function (k) { return k.basah; }, 1), b('Isi cetakan', '', 'cm³', function (k) { return k.V; }, 2),
+            b('Berat isi basah', 'γ', 'g/cm³', function (k) { return k.gamma; }, 3), b('Berat isi kering', 'γ<sub>d</sub>', 'g/cm³', function (k) { return k.gammaD; }, 3)]);
         }
       }
       if (r.swell) {
         h += '<h3>Pengembangan</h3>' + U.tabel([{ teks: 'Tanggal' }, { teks: 'Jam' }, { teks: 'Pembacaan', angka: true }, 'Perubahan (divisi)', 'Perubahan tinggi (mm)', 'Pengembangan (%)'],
           r.swell.map(function (s) { return [s.tanggal || '–', s.jam || '–', f(s.bacaan, 1), f(s.perubahan, 1), f(s.dh, 3), f(s.persen, 2)]; }), null, { angkaMulai: 2 });
       }
-      // Langkah hitungan untuk cetakan pertama (urutan seperti contoh laporan: kadar air, lalu harga CBR)
-      var c0 = C[0], s0 = c0.set[0], k0 = c0.kondisi.filter(function (k) { return k.w !== undefined; })[0];
-      h += '<h3>Langkah hitungan (cetakan ' + c0.nama + ')</h3>';
-      if (k0) {
-        h += U.langkah('1. Kadar air (' + k0.nama.toLowerCase() + ')', U.rumus('W_4 = W_1 - W_2 = ' + U.t(k0.W1, 2) + ' - ' + U.t(k0.W2, 2) + ' = ' + U.t(k0.air, 2) + '\\ \\text{gram} \\qquad (1)') +
-          U.rumus('W_s = W_2 - W_3 = ' + U.t(k0.W2, 2) + ' - ' + U.t(k0.W3, 2) + ' = ' + U.t(k0.kering, 2) + '\\ \\text{gram} \\qquad (2)') +
-          U.rumus('w = \\dfrac{W_4}{W_s}\\times 100\\% = \\dfrac{' + U.t(k0.air, 2) + '}{' + U.t(k0.kering, 2) + '}\\times 100\\% = ' + U.t(k0.w, 3) + '\\% \\qquad (3)') +
-          '<p class="ket">W<sub>1</sub> = tanah basah + cawan, W<sub>2</sub> = tanah kering + cawan, W<sub>3</sub> = berat cawan.</p>');
-      }
+
+      // Langkah hitungan, urutan seperti "Pengolahan data" contoh laporan: untuk tiap cetakan kadar air, lalu harga CBR.
+      h += '<h3>Langkah hitungan</h3>';
       if (p.satuanBeban === 'arloji') h += '<p class="ket">Beban diubah ke kN: bacaan × ' + f(p.kalibrasi, 5) + ' kN/divisi.</p>';
-      if (s0.koreksi.x0 > 0) h += '<p class="ket">Titik nol digeser ' + f(s0.koreksi.x0, 3) + ' mm, jadi beban dibaca pada ' + f(s0.x1, 2) + ' mm dan ' + f(s0.x2, 2) + ' mm.</p>';
       function interp(seg, x, P, no) {
         if (!seg) return '';
         return U.rumus('P = P_1 + (P_2 - P_1)\\dfrac{x - x_1}{x_2 - x_1} = ' + U.t(seg[0].y, 2) + ' + (' + U.t(seg[1].y, 2) + ' - ' + U.t(seg[0].y, 2) + ')\\dfrac{' + U.t(x, 2) + ' - ' + U.t(seg[0].x, 2) + '}{' + U.t(seg[1].x, 2) + ' - ' + U.t(seg[0].x, 2) + '} = ' + U.t(P, 3) + '\\ \\text{kN} \\qquad (' + no + ')');
       }
-      if (s0.P1 !== null) {
-        h += U.langkah('2a. Harga CBR pada 2,54 mm', interp(s0.seg1, s0.x1, s0.P1, 4) +
-          (form ? U.rumus('CBR_{2{,}54} = \\dfrac{\\text{Beban}}{13{,}35}\\times 100\\% = \\dfrac{' + U.t(s0.P1, 3) + '}{13{,}35}\\times 100\\% = ' + U.t(s0.CBR1, 3) + '\\% \\qquad (5)')
-            : U.rumus('CBR_{2{,}54} = \\dfrac{P/A}{\\sigma_{std}}\\times 100\\% = \\dfrac{' + U.t(s0.P1, 3) + '\\times 1000 / ' + U.t(+p.A, 0) + '}{' + U.t(p.std1, 1) + '}\\times 100\\% = ' + U.t(s0.CBR1, 3) + '\\% \\qquad (5)')) +
-          '<p class="ket">Beban pada 2,54 mm diinterpolasi linier dari dua baris penurunan yang mengapitnya. ' + (form ? '13,35 kN = beban standar pada penetrasi 2,54 mm (form lab).' : '') + '</p>');
-      }
-      if (s0.P2 !== null) {
-        h += U.langkah('2b. Harga CBR pada 5,08 mm', interp(s0.seg2, s0.x2, s0.P2, 6) +
-          (form ? U.rumus('CBR_{5{,}08} = \\dfrac{\\text{Beban}}{20{,}02}\\times 100\\% = \\dfrac{' + U.t(s0.P2, 3) + '}{20{,}02}\\times 100\\% = ' + U.t(s0.CBR2, 3) + '\\% \\qquad (7)')
-            : U.rumus('CBR_{5{,}08} = \\dfrac{' + U.t(s0.P2, 3) + '\\times 1000 / ' + U.t(+p.A, 0) + '}{' + U.t(p.std2, 1) + '}\\times 100\\% = ' + U.t(s0.CBR2, 3) + '\\% \\qquad (7)')) +
-          '<p class="ket">Nilai CBR yang dilaporkan biasanya pada 2,54 mm; bila nilai 5,08 mm lebih besar, pengujian diulang, dan bila tetap, nilai 5,08 mm yang dipakai (ASTM D1883).</p>');
-      }
-      var kb = c0.kondisi.filter(function (k) { return k.gammaD !== undefined; })[0];
-      if (kb) {
-        h += U.langkah('3. Berat isi kering (' + kb.nama.toLowerCase() + ')', U.rumus('\\gamma = \\dfrac{W_t - W_m}{V} = ' + U.t(kb.gamma, 3) + '\\ \\text{g/cm}^3,\\qquad \\gamma_d = \\dfrac{\\gamma}{1 + w} = \\dfrac{' + U.t(kb.gamma, 3) + '}{1 + ' + U.t(kb.w / 100, 4) + '} = ' + U.t(kb.gammaD, 3) + '\\ \\text{g/cm}^3 \\qquad (8)') +
-          (c0.D !== undefined ? U.rumus('D = \\dfrac{' + U.t(kb.gammaD, 3) + '}{' + U.t(p.gdmaks, 3) + '}\\times 100\\% = ' + U.t(c0.D, 2) + '\\% \\qquad (9)') : ''));
-      }
+      var no = 0, pers = 0;
+      function judulCetakan(c) { return c.pukulan > 0 ? 'pukulan ' + c.nama : 'cetakan ' + c.nama; }
+      C.forEach(function (c) {
+        var k0 = c.kondisi.filter(function (k) { return k.w !== undefined; })[0];
+        if (k0) {
+          h += U.langkah((++no) + '. Untuk ' + judulCetakan(c) + ': kadar air (' + k0.nama.toLowerCase() + ')',
+            U.rumus('W_4 = W_1 - W_2 = ' + U.t(k0.W1, 2) + ' - ' + U.t(k0.W2, 2) + ' = ' + U.t(k0.air, 2) + '\\ \\text{gram} \\qquad (' + (++pers) + ')') +
+            U.rumus('W_5 = W_2 - W_3 = ' + U.t(k0.W2, 2) + ' - ' + U.t(k0.W3, 2) + ' = ' + U.t(k0.kering, 2) + '\\ \\text{gram} \\qquad (' + (++pers) + ')') +
+            U.rumus('w = \\dfrac{W_4}{W_5}\\times 100\\% = \\dfrac{' + U.t(k0.air, 2) + '}{' + U.t(k0.kering, 2) + '}\\times 100\\% = ' + U.t(k0.w, 3) + '\\% \\qquad (' + (++pers) + ')') +
+            '<p class="ket">W<sub>1</sub> = tanah basah + cawan, W<sub>2</sub> = tanah kering + cawan, W<sub>3</sub> = berat cawan, W<sub>4</sub> = berat air, W<sub>5</sub> = berat tanah kering (simbol seperti contoh laporan).</p>');
+        }
+        c.set.forEach(function (s) {
+          var bawah = c.set.length > 1 ? ' (' + s.nama.toLowerCase() + ')' : '';
+          var isi = '';
+          if (s.koreksi.x0 > 0) isi += '<p class="ket">Titik nol digeser ' + f(s.koreksi.x0, 3) + ' mm, jadi beban dibaca pada ' + f(s.x1, 2) + ' mm dan ' + f(s.x2, 2) + ' mm.</p>';
+          if (s.P1 !== null) {
+            isi += '<p><strong>a. Pada 2,54 mm</strong></p>' + interp(s.seg1, s.x1, s.P1, ++pers) +
+              (form ? U.rumus('CBR_{2{,}54} = \\dfrac{\\text{Beban}}{13{,}35}\\times 100\\% = \\dfrac{' + U.t(s.P1, 3) + '}{13{,}35}\\times 100\\% = ' + U.t(s.CBR1, 3) + '\\% \\qquad (' + (++pers) + ')')
+                : U.rumus('CBR_{2{,}54} = \\dfrac{P/A}{\\sigma_{std}}\\times 100\\% = \\dfrac{' + U.t(s.P1, 3) + '\\times 1000 / ' + U.t(+p.A, 0) + '}{' + U.t(p.std1, 1) + '}\\times 100\\% = ' + U.t(s.CBR1, 3) + '\\% \\qquad (' + (++pers) + ')'));
+          }
+          if (s.P2 !== null) {
+            isi += '<p><strong>b. Pada 5,08 mm</strong></p>' + interp(s.seg2, s.x2, s.P2, ++pers) +
+              (form ? U.rumus('CBR_{5{,}08} = \\dfrac{\\text{Beban}}{20{,}02}\\times 100\\% = \\dfrac{' + U.t(s.P2, 3) + '}{20{,}02}\\times 100\\% = ' + U.t(s.CBR2, 3) + '\\% \\qquad (' + (++pers) + ')')
+                : U.rumus('CBR_{5{,}08} = \\dfrac{' + U.t(s.P2, 3) + '\\times 1000 / ' + U.t(+p.A, 0) + '}{' + U.t(p.std2, 1) + '}\\times 100\\% = ' + U.t(s.CBR2, 3) + '\\% \\qquad (' + (++pers) + ')'));
+          }
+          if (isi) {
+            h += U.langkah((++no) + '. Harga CBR ' + judulCetakan(c) + bawah, isi +
+              '<p class="ket">Beban pada 2,54 mm dan 5,08 mm diinterpolasi linier dari dua baris penurunan yang mengapitnya; harga CBR dihitung dari beban sebelum dibulatkan. ' +
+              (form ? '13,35 kN dan 20,02 kN = beban standar pada penetrasi 2,54 mm dan 5,08 mm (form lab).' : '') + '</p>');
+          }
+        });
+      });
+      C.forEach(function (c) {
+        var kb = c.kondisi.filter(function (k) { return k.gammaD !== undefined; })[0];
+        if (!kb) return;
+        h += U.langkah((++no) + '. Berat isi kering ' + judulCetakan(c) + ' (' + kb.nama.toLowerCase() + ')', U.rumus('\\gamma = \\dfrac{W_t - W_m}{V} = ' + U.t(kb.gamma, 3) + '\\ \\text{g/cm}^3,\\qquad \\gamma_d = \\dfrac{\\gamma}{1 + w} = \\dfrac{' + U.t(kb.gamma, 3) + '}{1 + ' + U.t(kb.w / 100, 4) + '} = ' + U.t(kb.gammaD, 3) + '\\ \\text{g/cm}^3 \\qquad (' + (++pers) + ')') +
+          (c.D !== undefined ? U.rumus('D = \\dfrac{' + U.t(kb.gammaD, 3) + '}{' + U.t(p.gdmaks, 3) + '}\\times 100\\% = ' + U.t(c.D, 2) + '\\% \\qquad (' + (++pers) + ')') : ''));
+      });
       if (r.swell) {
         var sa = r.swell[r.swell.length - 1];
-        h += U.langkah('4. Pengembangan', U.rumus('\\text{Pengembangan} = \\dfrac{(' + U.t(sa.bacaan, 1) + ' - ' + U.t(r.swell[0].bacaan, 1) + ')\\times' + U.t(+p.satuanArloji, 4) + '}{' + U.t(p.H0, 1) + '}\\times 100\\% = ' + U.t(r.pengembangan, 2) + '\\% \\qquad (10)'));
+        h += U.langkah((++no) + '. Pengembangan', U.rumus('\\text{Pengembangan} = \\dfrac{(' + U.t(sa.bacaan, 1) + ' - ' + U.t(r.swell[0].bacaan, 1) + ')\\times' + U.t(+p.satuanArloji, 4) + '}{' + U.t(p.H0, 1) + '}\\times 100\\% = ' + U.t(r.pengembangan, 2) + '\\% \\qquad (' + (++pers) + ')'));
       }
-      h += '<div class="catatan"><strong>Beda dengan contoh laporan.</strong><ul>' +
-        '<li>Cetakan 3 × 10: hitungan laporan menulis air = 2,1 lalu memakai 1,2 (28,84 − 27,64); kadar air 7,212% memakai 1,2. Alat menghitung dari W<sub>1</sub> dan W<sub>2</sub>.</li>' +
-        '<li>Cetakan 3 × 30 sesudah: form menulis tanah kering + cawan 3,04; angka air 1,60 dan kadar air 7,26% cocok dengan 33,04, jadi data contoh memakai 33,04.</li>' +
-        '<li>Halaman hitungan laporan menulis beban 2,54 mm cetakan 3 × 10 = 4,816 kN, sedangkan form menulis 4,815; hasil interpolasi = 4,8154 kN. Selisih harga CBR di desimal ketiga berasal dari pembulatan beban.</li>' +
-        '<li>Blok berat isi dan pengembangan pada form contoh kosong, jadi data contoh juga kosong.</li></ul></div>';
-      h += belajar('Mengukur daya dukung tanah yang dipadatkan dengan membandingkan beban penetrasi piston terhadap beban standar batu pecah: 13,35 kN pada 2,54 mm dan 20,02 kN pada 5,08 mm. Tiga cetakan dengan jumlah tumbukan berbeda (10, 30, 65 per lapis) memperlihatkan pengaruh energi pemadatan.',
-        ['Hitung kadar air sebelum dan sesudah pengujian tiap cetakan.', 'Gambar beban penetrasi terhadap penurunan tiap cetakan.',
-          'Baca beban pada penurunan 2,54 mm dan 5,08 mm dengan interpolasi linier dari kolom penurunan.',
-          'Hitung harga CBR = beban / 13,35 × 100% dan beban / 20,02 × 100%.', 'Bila ada data, hitung berat isi kering dan pengembangan.'],
-        'Makin besar energi pemadatan (jumlah tumbukan), umumnya makin padat benda uji dan makin besar harga CBR-nya. Nilai yang dipakai untuk desain diambil sesuai spesifikasi proyek.');
+      h += bedaContoh(m, [
+        'Langkah 1 (pukulan 3 × 10): hitungan laporan menulis berat air (W<sub>4</sub>) = 2,1, tetapi pembaginya memakai 1,2 (= 28,84 − 27,64, juga tertulis di form). Kadar air 7,212 % sama dengan alat.',
+        'Harga CBR 2,54 mm pukulan 3 × 10: form menulis 33,0406 %, halaman hitungan 33,046 %. Hasil yang benar 4,4116 / 13,35 × 100 = 33,046 %.',
+        'Beban 5,08 mm pukulan 3 × 10: halaman hitungan menulis 4,816 kN, form 4,815 kN; hasil interpolasi 4,8154 kN. CBR 24,053 % di laporan dihitung dari beban sebelum dibulatkan, sama dengan alat.',
+        'Kadar air sesudah pukulan 3 × 30: form menulis tanah kering + cawan 3,04 gram; air 1,60 gram dan kadar air 7,26 % cocok dengan 33,04 gram, jadi data contoh memakai 33,04.',
+        'Kadar air sesudah tidak dihitung di halaman pengolahan data laporan; angkanya diambil dari form (6,809 %, 7,26 %, 5,40 %).',
+        'Blok berat isi (Nomor Cetakan) dan pengembangan pada form contoh kosong, jadi data contoh juga kosong.']);
+      h += belajar('Mengukur daya dukung tanah yang dipadatkan dengan membandingkan beban penetrasi piston terhadap beban standar: 13,35 kN pada penetrasi 2,54 mm dan 20,02 kN pada 5,08 mm (form lab). Contoh laporan memakai tiga cetakan dengan jumlah tumbukan per lapis 10, 30, dan 65 (PK 3 × 10, 3 × 30, 3 × 65).',
+        ['Untuk tiap cetakan, hitung kadar air: berat air W<sub>4</sub> = W<sub>1</sub> − W<sub>2</sub>, tanah kering W<sub>5</sub> = W<sub>2</sub> − W<sub>3</sub>, w = W<sub>4</sub>/W<sub>5</sub> × 100 %.',
+          'Baca beban pada penurunan 2,54 mm dan 5,08 mm dengan interpolasi linier dari kolom penurunan dan beban penetrasi.',
+          'Hitung harga CBR = beban / 13,35 × 100 % (2,54 mm) dan beban / 20,02 × 100 % (5,08 mm).',
+          'Ulangi untuk cetakan berikutnya; gambar beban terhadap penurunan tiap cetakan.',
+          'Bila blok berat isi dan pengembangan diisi, hitung berat isi kering dan pengembangan.'],
+        'CBR yang dilaporkan biasanya nilai pada 2,54 mm. Bila CBR 5,08 mm lebih besar, uji diulang; bila hasilnya tetap, nilai 5,08 mm yang dipakai (ASTM D1883).');
       return h;
     },
     ekspor: function (m, r) {

@@ -9,8 +9,8 @@
  * Pengembangan = (bacaan akhir − bacaan awal) × satuan arloji / tinggi benda uji × 100%.
  * Berat isi: γ = (W cetakan+tanah − W cetakan) / V,  γd = γ / (1 + w).
  * Form CBR lab UNJA: HARGA CBR = P / 13,35 × 100 (2,54 mm) dan P / 20,02 × 100 (5,08 mm), P dalam kN,
- * setara σ / σ_standar dengan σ_standar = 13,35 kN / A dan 20,02 kN / A. Beban pada 2,54 dan 5,08 mm diinterpolasi
- * linier dari kolom penurunan, seperti contoh laporan.
+ * dihitung langsung bila m.bebanStd = [13,35, 20,02] (setara σ / σ_standar dengan σ_standar = 13,35 kN / A dan
+ * 20,02 kN / A). Beban pada 2,54 dan 5,08 mm diinterpolasi linier dari kolom penurunan, seperti contoh laporan.
  * hitungCetakan: beberapa cetakan (mis. 3 × 10, 3 × 30, 3 × 65 tumbukan), masing-masing dengan permukaan atas/bawah
  * dan kadar air serta berat isi sebelum/sesudah.
  */
@@ -59,8 +59,10 @@
     var x1 = 2.54 + kor.x0, x2 = 5.08 + kor.x0;
     var P1 = bebanPada(titik, x1), P2 = bebanPada(titik, x2);
     var hasil = { nama: nama, titik: titik, koreksi: kor, x1: x1, x2: x2, P1: P1, P2: P2, seg1: segmenPada(titik, x1), seg2: segmenPada(titik, x2) };
-    if (P1 !== null) { hasil.s1 = P1 * 1000 / m.A; hasil.CBR1 = hasil.s1 / m.std1 * 100; }
-    if (P2 !== null) { hasil.s2 = P2 * 1000 / m.A; hasil.CBR2 = hasil.s2 / m.std2 * 100; }
+    // Form lab: CBR = P / beban standar × 100 langsung; ASTM D1883: CBR = (P / A) / tegangan standar × 100.
+    var B = m.bebanStd;
+    if (P1 !== null) { hasil.s1 = P1 * 1000 / m.A; hasil.CBR1 = B ? P1 / B[0] * 100 : hasil.s1 / m.std1 * 100; }
+    if (P2 !== null) { hasil.s2 = P2 * 1000 / m.A; hasil.CBR2 = B ? P2 / B[1] * 100 : hasil.s2 / m.std2 * 100; }
     if (hasil.CBR1 !== undefined) {
       hasil.CBR = hasil.CBR2 !== undefined && hasil.CBR2 > hasil.CBR1 ? hasil.CBR2 : hasil.CBR1;
       hasil.dari = hasil.CBR2 !== undefined && hasil.CBR2 > hasil.CBR1 ? 5.08 : 2.54;
@@ -71,7 +73,7 @@
   function hitung(m) {
     var galat = [], peringatan = [];
     if (!(m.A > 0)) galat.push('Isi luas piston.');
-    if (!(m.std1 > 0 && m.std2 > 0)) galat.push('Isi tegangan standar pada 2,54 mm dan 5,08 mm.');
+    if (!m.bebanStd && !(m.std1 > 0 && m.std2 > 0)) galat.push('Isi tegangan standar pada 2,54 mm dan 5,08 mm.');
     var set = [];
     [['Atas', m.atas], ['Bawah', m.bawah]].forEach(function (s) {
       if (!s[1] || !s[1].length) return;
@@ -131,12 +133,12 @@
   function hitungCetakan(m) {
     var galat = [], peringatan = [];
     if (!(m.A > 0)) galat.push('Isi luas piston.');
-    if (!(m.std1 > 0 && m.std2 > 0)) galat.push('Isi beban atau tegangan standar pada 2,54 mm dan 5,08 mm.');
+    if (!m.bebanStd && !(m.std1 > 0 && m.std2 > 0)) galat.push('Isi beban atau tegangan standar pada 2,54 mm dan 5,08 mm.');
     if (galat.length) return { galat: galat };
     var cetakan = (m.cetakan || []).map(function (c) {
       var o = { nama: c.nama, pukulan: c.pukulan, set: [], kondisi: kondisiDari(c.kondisi) };
       if ((c.atas && c.atas.length) || (c.bawah && c.bawah.length)) {
-        var r = hitung({ A: m.A, std1: m.std1, std2: m.std2, koreksi: m.koreksi, koreksiManual: m.koreksiManual, atas: c.atas, bawah: c.bawah });
+        var r = hitung({ A: m.A, std1: m.std1, std2: m.std2, bebanStd: m.bebanStd, koreksi: m.koreksi, koreksiManual: m.koreksiManual, atas: c.atas, bawah: c.bawah });
         if (r.galat.length) r.galat.forEach(function (g) { galat.push('Cetakan ' + c.nama + ': ' + g); });
         else {
           o.set = r.set; o.CBR = r.CBR;
@@ -158,7 +160,10 @@
     return hasil;
   }
 
-  var api = { hitung: hitung, hitungCetakan: hitungCetakan, bebanPada: bebanPada, segmenPada: segmenPada, koreksiNol: koreksiNol, pengembangan: pengembangan };
+  // Beban standar form CBR lab UNJA (kN) pada penetrasi 2,54 mm dan 5,08 mm: HARGA CBR = P / 13,35 × 100 dan P / 20,02 × 100.
+  var BEBAN_STD = [13.35, 20.02];
+
+  var api = { BEBAN_STD: BEBAN_STD, hitung: hitung, hitungCetakan: hitungCetakan, bebanPada: bebanPada, segmenPada: segmenPada, koreksiNol: koreksiNol, pengembangan: pengembangan };
   if (node) module.exports = api;
   else root.HitungCBR = api;
 })(this);
