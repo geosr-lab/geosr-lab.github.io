@@ -68,7 +68,9 @@
       { id: 'LL', label: 'Batas cair, LL', satuan: '%', tampilJika: function (p) { return p.plastisitas !== 'NP'; } },
       { id: 'PL', label: 'Batas plastis, PL', satuan: '%', tampilJika: function (p) { return p.plastisitas !== 'NP'; } }],
     tabel: [],
-    contoh: { param: { P4: 94.2, P10: 81.5, P40: 58.3, P200: 41.7, D10: '', D30: '', D60: 0.21, plastisitas: 'plastis', LL: 36.4, PL: 21.8 }, tabel: {} },
+    // Contoh dari laporan yang sama dengan alat lain: Sieve Analysis.pdf (sampel 500 gram, D dibaca dari grafik),
+    // Liquid Limit Test.pdf (LL tertulis 26,313%) dan Plastic Limit Test.pdf (PL 13,728%). Laporan itu tidak memuat klasifikasi.
+    contoh: { param: { P4: 99.932, P10: 97.104, P40: 73.936, P200: 11.368, D10: 0.081, D30: 0.130, D60: 0.270, plastisitas: 'plastis', LL: 26.313, PL: 13.728 }, tabel: {} },
     kosong: { param: { P4: '', P10: '', P40: '', P200: '', D10: '', D30: '', D60: '', plastisitas: 'plastis', LL: '', PL: '' } },
     hitung: function (m) {
       var p = m.param, NP = p.plastisitas === 'NP';
@@ -133,6 +135,14 @@
         ['D<sub>10</sub> / D<sub>30</sub> / D<sub>60</sub>', '', 'mm', [p.D10, p.D30, p.D60].map(function (d) { return adaNilai(d) ? f(d, 3) : '–'; }).join(' / ')],
         ['Koefisien keseragaman', 'C<sub>u</sub>', '–', u.Cu ? f(u.Cu, 2) : '–'], ['Koefisien kelengkungan', 'C<sub>c</sub>', '–', u.Cc ? f(u.Cc, 2) : '–'],
         ['Batas cair', 'LL', '%', u.NP ? 'NP' : f(p.LL, 2)], ['Batas plastis', 'PL', '%', u.NP ? 'NP' : f(p.PL, 2)], ['Indeks plastisitas', 'IP', '%', u.NP ? 'NP' : f(u.IP, 2)]]);
+      if (m.contoh) {
+        h += '<div class="catatan"><strong>Tentang data contoh.</strong> Angka diambil apa adanya dari contoh laporan analisa saringan (sampel 500 gram) dan Atterberg; laporan itu sendiri tidak memuat klasifikasi. ' +
+          'Alat saringan dan Atterberg memberi angka yang sedikit berbeda (D<sub>10</sub> dari grafik contoh tidak konsisten dengan data, dan LL hasil regresi 25,73%), jadi pakai tombol ambil dari alat lain bila ingin mengikuti hitungan alat.</div>';
+      }
+      h += '<h3>Belajar dari langkah ini</h3><div class="kartu belajar"><p><strong>Tujuan.</strong> Memberi nama dan simbol tanah dari data gradasi (saringan, hidrometer) dan plastisitas (Atterberg), supaya sifat teknisnya bisa diperkirakan dan dibandingkan.</p>' +
+        '<p><strong>Alur pengolahan</strong></p><ol><li>Ambil persen lolos No. 4 dan No. 200 (dan No. 10, No. 40 untuk AASHTO).</li><li>Tentukan butir kasar atau halus dari lolos No. 200, lalu kerikil atau pasir.</li>' +
+        '<li>Untuk butir kasar, nilai gradasi dari C<sub>u</sub> dan C<sub>c</sub>.</li><li>Tentukan jenis butir halus dari LL dan IP terhadap garis A.</li><li>Gabungkan menjadi simbol USCS, lalu cari kelompok dan indeks kelompok AASHTO.</li></ol>' +
+        '<p><strong>Membaca hasil.</strong> Kriteria tiap langkah tertulis di jalur keputusan di atas (SNI 6371:2015 dan AASHTO M 145).</p></div>';
       return h;
     },
     ekspor: function (m, r) {

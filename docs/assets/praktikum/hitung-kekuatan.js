@@ -1,14 +1,16 @@
 /*
  * Kuat geser langsung (SNI 3420:2016) dan kuat tekan bebas (SNI 3638:2012, berdasarkan ASTM D2166).
  *
- * Geser langsung:
- *   Gaya geser = bacaan arloji × kalibrasi cincin;  τ = gaya geser / A;  σn = P / A.
+ * Geser langsung (urutan form lab UNJA dan contoh laporan):
+ *   Luas A = π r² (atau luas yang tertulis di form lab);  σn = gaya normal P / A.
+ *   Gaya geser = dial reading × kalibrasi proving ring (0,540 kg/divisi di form);  τ = gaya geser / A.
  *   Koreksi luas (opsional) untuk benda uji bulat berdiameter D yang bergeser δ:
  *     A_c = (D²/2)(θ − sin θ cos θ), θ = arccos(δ/D);  untuk benda uji persegi bersisi B: A_c = B (B − δ).
  *   Garis keruntuhan Mohr–Coulomb τf = c + σn tan φ dengan kuadrat terkecil dari τ puncak tiap benda uji.
  *
- * Kuat tekan bebas:
- *   ε = ΔL / L0;  A = A0 / (1 − ε);  σ = P / A.
+ * Kuat tekan bebas (kolom form lab UNJA: regangan, beban, luas, tegangan):
+ *   ε = ΔL / L0;  beban P = pembacaan arloji × kalibrasi proving ring;  angka koreksi = 1 / (1 − ε);
+ *   luas terkoreksi A = A0 / (1 − ε);  σ = P / A.
  *   qu = tegangan puncak, atau tegangan pada ε = 15% bila puncak belum tercapai (ASTM D2166).
  *   cu = qu / 2;  sensitivitas St = qu / qu teremas (opsional);  E50 = (qu/2) / ε50.
  *   Konsistensi lempung menurut qu (Das, Principles of Geotechnical Engineering): sangat lunak < 25 kPa,
@@ -29,21 +31,24 @@
 
   function geserLangsung(m) {
     var galat = [], peringatan = [];
-    if (!(m.ukuran > 0)) galat.push('Isi ' + (m.bentuk === 'persegi' ? 'sisi' : 'diameter') + ' benda uji.');
+    if (!(m.ukuran > 0) && !(m.luas > 0)) galat.push('Isi ' + (m.bentuk === 'persegi' ? 'sisi' : 'diameter') + ' benda uji, atau luasnya.');
+    if (m.koreksiLuas === 'ya' && !(m.ukuran > 0)) galat.push('Koreksi luas butuh ' + (m.bentuk === 'persegi' ? 'sisi' : 'diameter') + ' benda uji.');
     if (!(m.kalibrasi > 0)) galat.push('Isi kalibrasi cincin beban.');
     if (m.benda.length < 2) galat.push('Isi beban normal minimal dua benda uji.');
     if (!m.bacaan.length) galat.push('Isi bacaan arloji geser.');
     if (galat.length) return { galat: galat };
-    var A0 = m.bentuk === 'persegi' ? m.ukuran * m.ukuran : Math.PI * m.ukuran * m.ukuran / 4; // cm²
+    // Luas dari form lab (bila diisi) atau dari ukuran benda uji.
+    var A0 = m.luas > 0 ? m.luas : m.bentuk === 'persegi' ? m.ukuran * m.ukuran : Math.PI * m.ukuran * m.ukuran / 4; // cm²
+    var skala = m.luas > 0 && m.ukuran > 0 ? m.luas / (m.bentuk === 'persegi' ? m.ukuran * m.ukuran : Math.PI * m.ukuran * m.ukuran / 4) : 1;
     var bacaan = m.bacaan.slice().sort(function (a, b) { return a.geser - b.geser; });
     var benda = m.benda.map(function (b, j) {
       var kurva = [];
       bacaan.forEach(function (r) {
         var v = r.nilai[j];
         if (v === null || v === undefined) return;
-        var A = m.koreksiLuas === 'ya' ? luasTerkoreksi(m.bentuk, m.ukuran, r.geser / 10) : A0;
+        var A = m.koreksiLuas === 'ya' ? luasTerkoreksi(m.bentuk, m.ukuran, r.geser / 10) * skala : A0;
         var gaya = v * m.kalibrasi;
-        kurva.push({ geser: r.geser, bacaan: v, gaya: gaya, A: A, tau: gaya / A, sigma: b.P / A });
+        kurva.push({ waktu: r.waktu, geser: r.geser, bacaan: v, gaya: gaya, A: A, tau: gaya / A, sigma: b.P / A });
       });
       var puncak = kurva.reduce(function (a, k) { return !a || k.tau > a.tau ? k : a; }, null);
       return { nama: b.nama, P: b.P, sigma0: b.P / A0, kurva: kurva, puncak: puncak };
@@ -81,7 +86,7 @@
     var titik = baca.map(function (b) {
       var dL = (b.regangan - baca[0].regangan) * m.satuanRegangan / 10; // cm
       var eps = dL / m.tinggi, A = A0 / (1 - eps), P = b.beban * m.kalibrasi;
-      return Object.assign({}, b, { dL: dL, eps: eps * 100, A: A, P: P, sigma: P / A, kPa: P / A * keKPa });
+      return Object.assign({}, b, { dL: dL, eps: eps * 100, koreksi: 1 / (1 - eps), A: A, P: P, sigma: P / A, kPa: P / A * keKPa });
     });
     var batas = titik.filter(function (t) { return t.eps <= 15 + 1e-9; });
     var puncak = batas.reduce(function (a, t) { return !a || t.sigma > a.sigma ? t : a; }, null);
@@ -108,7 +113,7 @@
       var p1 = titik[j], p2 = titik[j + 1];
       if (p1.sigma <= qu / 2 && p2.sigma >= qu / 2 && p2.sigma > p1.sigma) { eps50 = p1.eps + (qu / 2 - p1.sigma) * (p2.eps - p1.eps) / (p2.sigma - p1.sigma); break; }
     }
-    var hasil = { galat: [], peringatan: peringatan, A0: A0, keKPa: keKPa, titik: titik, puncak: puncak, qu: qu, quKPa: quKPa, cu: qu / 2, cuKPa: quKPa / 2,
+    var hasil = { galat: [], peringatan: peringatan, A0: A0, V0: A0 * m.tinggi, keKPa: keKPa, titik: titik, puncak: puncak, qu: qu, quKPa: quKPa, cu: qu / 2, cuKPa: quKPa / 2,
       caraQu: caraQu, epsQu: epsQu, konsistensi: konsistensi(quKPa), eps50: eps50 };
     if (eps50 > 0) hasil.E50 = (quKPa / 2) / (eps50 / 100);
     if (m.quRemas > 0) hasil.St = quKPa / m.quRemas; // q_u teremas dalam kPa

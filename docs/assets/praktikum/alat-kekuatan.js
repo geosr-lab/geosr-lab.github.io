@@ -15,6 +15,7 @@
 
     Praktikum.pasang({
       id: 'geser-langsung', judulEkspor: 'Pemeriksaan kuat geser langsung (SNI 3420:2016)',
+      nim: { ket: 'pembacaan arloji gaya geser (dial reading) semua benda uji', tabel: { bacaan: ['*dinamis'] } },
       parameter: [
         { id: 'bentuk', label: 'Bentuk benda uji', pilihan: [['bulat', 'Bulat (cincin)'], ['persegi', 'Persegi']] },
         { id: 'ukuran', label: 'Diameter atau sisi benda uji', satuan: 'cm' },
@@ -99,6 +100,7 @@
       [8, 400, 31.8], [9, 450, 31.6], [10, 500, 31.0], [12, 600, 29.8], [14, 700, 28.5], [16, 800, 27.3]];
     Praktikum.pasang({
       id: 'tekan-bebas', judulEkspor: 'Pemeriksaan kuat tekan bebas (SNI 3638:2012)',
+      nim: { ket: 'pembacaan arloji beban (dial reading)', tabel: { bacaan: ['beban'] } },
       parameter: [
         { id: 'diameter', label: 'Diameter benda uji', satuan: 'cm' },
         { id: 'tinggi', label: 'Tinggi benda uji', satuan: 'cm' },

@@ -9,7 +9,11 @@
  *   W4 = piknometer + air (penuh sampai tanda batas), pada suhu T.
  *   Dikoreksi ke suhu acuan: G = G_T × ρw(T) / ρw(T acuan).
  *
- * Massa jenis air ρw(T): Tanaka dkk. (2001), Metrologia 38(4), 301–309, berlaku 0–40 °C.
+ * Massa jenis air ρw(T), dua pilihan:
+ * - 'tanaka': Tanaka dkk. (2001), Metrologia 38(4), 301–309, berlaku 0–40 °C (bawaan).
+ * - 'lab'   : nilai tabel laboratorium yang tertulis di contoh laporan (Specific Gravity Test.pdf, hlm 57):
+ *             27 °C = 0,9965451 dan 28 °C = 0,9962652 g/cm³, diinterpolasi linier. Hanya 27–28 °C.
+ *             Sumber nilai hanya contoh laporan; tabel asalnya belum dilihat [BELUM TERVERIFIKASI].
  */
 (function (root) {
   'use strict';
@@ -21,6 +25,14 @@
   function massaJenisAir(T) {
     var a1 = -3.983035, a2 = 301.797, a3 = 522528.9, a4 = 69.34881, a5 = 999.974950;
     return a5 * (1 - (T + a1) * (T + a1) * (T + a2) / (a3 * (T + a4))) / 1000;
+  }
+
+  // Nilai tabel lab dari contoh laporan (lihat komentar di atas). null bila T di luar 27–28 °C.
+  var TABEL_RHO_LAB = [[27, 0.9965451], [28, 0.9962652]];
+  function massaJenisAirLab(T) {
+    var a = TABEL_RHO_LAB[0], b = TABEL_RHO_LAB[1];
+    if (!(T >= a[0] - 1e-9 && T <= b[0] + 1e-9)) return null;
+    return a[1] + (T - a[0]) * (b[1] - a[1]) / (b[0] - a[0]);
   }
 
   function kadarAir(m) {
@@ -45,13 +57,16 @@
   function beratSpesifik(m) {
     var galat = [];
     if (!(m.Tacuan >= 0 && m.Tacuan <= 40)) galat.push('Suhu acuan harus antara 0 dan 40 °C.');
-    var rhoAcuan = massaJenisAir(m.Tacuan);
+    var lab = m.sumberRho === 'lab';
+    var rhoAcuan = lab ? massaJenisAirLab(m.Tacuan) : massaJenisAir(m.Tacuan);
+    if (lab && rhoAcuan === null) galat.push('Tabel lab dari contoh laporan hanya memuat 27 dan 28 °C, jadi suhu acuan harus 27–28 °C. Pakai rumus Tanaka untuk suhu acuan lain.');
     var uji = m.uji.map(function (u) {
       var Ws = u.W2 - u.W1, pembagi = (u.W4 - u.W1) - (u.W3 - u.W2);
       if (!(Ws > 0)) galat.push('Piknometer ' + u.nama + ': W2 harus lebih besar dari W1.');
       if (!(pembagi > 0)) galat.push('Piknometer ' + u.nama + ': (W4 − W1) − (W3 − W2) harus positif. Periksa W3 dan W4.');
       if (!(u.T >= 0 && u.T <= 40)) galat.push('Piknometer ' + u.nama + ': suhu harus antara 0 dan 40 °C.');
-      var rhoT = u.rhoT > 0 ? u.rhoT : massaJenisAir(u.T);
+      var rhoT = u.rhoT > 0 ? u.rhoT : lab ? massaJenisAirLab(u.T) : massaJenisAir(u.T);
+      if (rhoT === null) galat.push('Piknometer ' + u.nama + ': tabel lab hanya memuat 27–28 °C. Isi ρw pada T secara manual atau pakai rumus Tanaka.');
       var GT = Ws / pembagi;
       return Object.assign({}, u, { Ws: Ws, pembagi: pembagi, GT: GT, rhoT: rhoT, rhoManual: u.rhoT > 0, G: GT * rhoT / rhoAcuan });
     });
@@ -62,7 +77,7 @@
     if (G < 2.5 || G > 2.9) peringatan.push('Gs di luar rentang umum tanah mineral (sekitar 2,6–2,8). Periksa data, kecuali contoh mengandung bahan organik.');
     var rentang = Math.max.apply(null, nilai) - Math.min.apply(null, nilai);
     if (uji.length > 1 && rentang > 0.05) peringatan.push('Selisih Gs antarpiknometer lebih dari 0,05. Periksa penimbangan dan pengeluaran udara.');
-    return { galat: [], peringatan: peringatan, uji: uji, rhoAcuan: rhoAcuan, G: G, rentang: rentang };
+    return { galat: [], peringatan: peringatan, uji: uji, rhoAcuan: rhoAcuan, sumberRho: lab ? 'lab' : 'tanaka', G: G, rentang: rentang };
   }
 
   // Hubungan fase (berat–volume) dengan γw = 1 g/cm³. Empat cara masukan:
@@ -103,7 +118,7 @@
       volume: { butir: 1 - n, air: n * Math.min(Sr, 1), udara: n * (1 - Math.min(Sr, 1)) } };
   }
 
-  var api = { massaJenisAir: massaJenisAir, kadarAir: kadarAir, beratSpesifik: beratSpesifik, hubunganFase: hubunganFase };
+  var api = { massaJenisAir: massaJenisAir, massaJenisAirLab: massaJenisAirLab, TABEL_RHO_LAB: TABEL_RHO_LAB, kadarAir: kadarAir, beratSpesifik: beratSpesifik, hubunganFase: hubunganFase };
   if (node) module.exports = api;
   else root.HitungSifatFisik = api;
 })(this);

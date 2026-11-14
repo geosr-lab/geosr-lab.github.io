@@ -43,6 +43,7 @@
 
   Praktikum.pasang({
     id: 'konsolidasi-lab', judulEkspor: 'Uji konsolidasi (SNI 2812:2011)',
+    nim: { ket: 'semua pembacaan arloji (bacaan awal, bacaan tiap waktu, dan bacaan akhir 24 jam)', param: ['arloji0'], tabel: { tahap: ['akhir'], bacaan: ['*dinamis'] } },
     parameter: [
       { id: 'Gs', label: 'Berat spesifik, G<sub>s</sub>', dariAlat: { alat: 'berat-spesifik', nama: 'berat spesifik', ambil: function (h) { return h.G; }, d: 3 } },
       { id: 'H0', label: 'Tinggi cincin, H<sub>0</sub>', satuan: 'cm' },

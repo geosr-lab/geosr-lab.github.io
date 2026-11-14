@@ -16,7 +16,7 @@
 (function (root) {
   'use strict';
 
-  var WARNA = { aksen: 'var(--aksen)', teks: 'var(--teks)', redup: 'var(--teks-2)', biru: '#3a7fc1', hijau: 'var(--sukses)', ungu: '#8a5cc7' };
+  var WARNA = { aksen: 'var(--aksen)', teks: 'var(--teks)', redup: 'var(--teks-2)', biru: '#3f7fb8', hijau: 'var(--sukses)', ungu: '#8a5cc7' };
 
   function angka(x, d) {
     return x.toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -96,7 +96,8 @@
     (o.seri || []).forEach(function (sr) {
       var warna = WARNA[sr.warna] || WARNA.aksen;
       if (sr.garis !== false && sr.titik.length > 1) {
-        s += '<polyline points="' + sr.titik.map(function (p) { return fx(p[0]) + ',' + fy(p[1]); }).join(' ') +
+        // Kelas "seri" dan pathLength dipakai gaya.css untuk menggambar garis saat hasil baru muncul.
+        s += '<polyline' + (sr.putus ? '' : ' class="seri" pathLength="1"') + ' points="' + sr.titik.map(function (p) { return fx(p[0]) + ',' + fy(p[1]); }).join(' ') +
           '" style="fill:none;stroke:' + warna + ';stroke-width:' + (sr.tebal || 2.2) + (sr.putus ? ';stroke-dasharray:7 5' : '') + '"/>';
       }
       if (sr.penanda) {

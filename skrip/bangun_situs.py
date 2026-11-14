@@ -63,24 +63,39 @@ def relatif(dari_folder, ke):
 
 # ---------------------------------------------------------------- bagian bersama
 
+# Tanda merek: potongan inti bor dengan empat lapisan tanah (laterit, lempung, pasir, lempung kaku).
+TANDA_MEREK = ('<svg class="merek-tanda" viewBox="0 0 22 26" aria-hidden="true">'
+               '<rect x="0" y="0" width="22" height="26" rx="2" style="fill:none"/>'
+               '<rect x="0" y="0" width="22" height="6" rx="1" style="fill:var(--lapis-3)"/>'
+               '<rect x="0" y="7.5" width="22" height="7" rx="1" style="fill:var(--lapis-2)"/>'
+               '<rect x="0" y="16" width="22" height="4" rx="1" style="fill:var(--lapis-4)"/>'
+               '<rect x="0" y="21.5" width="22" height="4.5" rx="1" style="fill:var(--lapis-5)"/></svg>')
+
+
 def menu(awalan, aktif):
     tanda = ' aria-current="page"'
     butir = "".join(f'<li><a href="{awalan}{url}"{tanda if aktif in kunci else ""}>{nama}</a></li>'
                     for url, nama, kunci in MENU)
-    return (f'<nav class="nav">\n    <div class="wadah">\n      <a class="merek" href="{awalan or "./"}">Defsa<span>.</span></a>\n'
+    return (f'<nav class="nav">\n    <div class="wadah">\n      <a class="merek" href="{awalan or "./"}">{TANDA_MEREK}'
+            f'<span>Defsa<span class="merek-lengkap"> Yurinda</span></span></a>\n'
             f'      <ul>{butir}</ul>\n    </div>\n  </nav>')
 
 
 def skrip_sw(awalan):
-    return f'\n  <script src="{awalan}assets/daftar-sw.js" defer></script>'
+    return (f'\n  <script src="{awalan}assets/daftar-sw.js" defer></script>'
+            f'\n  <script src="{awalan}assets/gerak.js" defer></script>')
 
 
 def footer(awalan, sumber=None):
-    tautan_sumber = f' · <a href="{REPO}/blob/main/{sumber}">Sumber halaman ini</a>' if sumber else ""
-    return ('<footer>\n    <div class="wadah">'
-            f'<a href="{awalan or "./"}">Defsa Yurinda</a> · Teknik Sipil, Universitas Jambi · '
-            f'<a href="{REPO}">Kode dan tulisan di GitHub</a>{tautan_sumber} · '
-            f'Kode <a href="{REPO}/blob/main/LICENSE">MIT</a>, tulisan <a href="{REPO}/blob/main/LICENSE-TULISAN">CC BY 4.0</a></div>\n  </footer>' + skrip_sw(awalan))
+    sel_sumber = (f'<div><dt>Halaman ini</dt><dd><a href="{REPO}/blob/main/{sumber}">Sumber tulisan</a></dd></div>'
+                  if sumber else "")
+    return ('<footer>\n    <div class="wadah kaki-isi">\n'
+            f'      <div class="kaki-merek"><a href="{awalan or "./"}">Defsa Yurinda</a><span>Teknik Sipil, Universitas Jambi</span></div>\n'
+            '      <dl class="kaki-etiket">'
+            f'<div><dt>Kode dan tulisan</dt><dd><a href="{REPO}">GitHub</a></dd></div>{sel_sumber}'
+            f'<div><dt>Lisensi</dt><dd>Kode <a href="{REPO}/blob/main/LICENSE">MIT</a>, tulisan '
+            f'<a href="{REPO}/blob/main/LICENSE-TULISAN">CC BY 4.0</a></dd></div></dl>\n'
+            '    </div>\n  </footer>' + skrip_sw(awalan))
 
 
 def bagian_aktif(folder):
@@ -138,7 +153,8 @@ def kepala(judul, ringkasan, awalan, url, tambahan=""):
   <meta property="og:image" content="{SITUS}assets/pratinjau.png">
   <meta property="og:locale" content="id_ID">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#c8421a">
+  <meta name="theme-color" content="#f1f2ec" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#10181a" media="(prefers-color-scheme: dark)">
   <link rel="stylesheet" href="{awalan}assets/gaya.css">
   <link rel="icon" href="{awalan}assets/ikon.svg" type="image/svg+xml">
   <link rel="manifest" href="{awalan}manifest.webmanifest">{tambahan}
@@ -158,16 +174,27 @@ def halaman_konten(sumber, folder, peta, sebelum=None, sesudah=None):
         atas = ("tentang/", "Tentang") if aktif != "tentang" else ("", "Beranda")
     else:
         atas = (f"{aktif}/", {"cara-memakai-ai": "Cara saya memakai AI", "skill": "Skill Claude"}[aktif])
-    remah = f'<p class="remah"><a href="{awalan}{atas[0]}">← {atas[1]}</a></p>'
+    remah = f'<p class="remah"><a href="{awalan}{atas[0]}">{atas[1]}</a></p>'
     navigasi = ""
     if sebelum or sesudah:
-        kiri = f'<a class="tombol" href="{relatif(folder, sebelum[1])}">← {html.escape(sebelum[0])}</a>' if sebelum else "<span></span>"
-        kanan = f'<a class="tombol" href="{relatif(folder, sesudah[1])}">{html.escape(sesudah[0])} →</a>' if sesudah else "<span></span>"
-        navigasi = f'\n      <div class="berikut">{kiri}{kanan}</div>'
+        navigasi = "\n      " + alur_sebelum_sesudah(
+            sebelum and ("Catatan sebelumnya", sebelum[0], relatif(folder, sebelum[1])),
+            sesudah and ("Catatan berikutnya", sesudah[0], relatif(folder, sesudah[1])))
     return (kepala(judul, ringkasan, awalan, folder) + "\n<body>\n  <!-- NAV:MULAI -->\n  " + menu(awalan, aktif) +
             "\n  <!-- NAV:SELESAI -->\n\n  <main class=\"wadah\">\n    <article class=\"prosa\">\n      " + remah + "\n" +
             isi + navigasi + "\n    </article>\n  </main>\n\n  <!-- FOOTER:MULAI -->\n  " +
             footer(awalan, sumber.relative_to(AKAR).as_posix()) + "\n  <!-- FOOTER:SELESAI -->\n</body>\n</html>\n")
+
+
+def alur_sebelum_sesudah(sebelum, sesudah, lapis_sebelum="", lapis_sesudah=""):
+    """Dua tautan besar ke halaman sebelum dan sesudahnya. Masing-masing (arah, judul, href) atau None."""
+    butir = []
+    for kelas, isi, lapis in (("sebelum", sebelum, lapis_sebelum), ("sesudah", sesudah, lapis_sesudah)):
+        if isi:
+            atr = f' data-lapis="{lapis}"' if lapis else ""
+            butir.append(f'<a class="{kelas}" href="{isi[2]}"{atr}><span class="arah">{isi[0]}</span>'
+                         f'<span class="judul">{html.escape(isi[1])}</span></a>')
+    return f'<nav class="alur-alat" aria-label="Halaman sebelum dan sesudahnya">{"".join(butir)}</nav>'
 
 
 def daftar_catatan(peta):
@@ -183,15 +210,15 @@ def daftar_catatan(peta):
 def halaman_daftar_catatan(catatan):
     folder, awalan = "catatan/", "../"
     butir = "\n".join(
-        f'        <li><a href="{relatif(folder, f)}"><strong>{html.escape(n)}</strong> · {html.escape(j)}</a>'
-        f'<br><span class="kecil redup">{html.escape(r)}</span></li>' for n, j, r, f in reversed(catatan))
+        f'        <li><a href="{relatif(folder, f)}"><span class="nomor">{html.escape(n)}</span><span class="judul">{html.escape(j)}</span>'
+        f'<span class="ringkas">{html.escape(r)}</span></a></li>' for n, j, r, f in reversed(catatan))
     return (kepala("Catatan belajar", "Catatan saya selama belajar Git, GitHub, dan Claude Code untuk kuliah teknik sipil.", awalan, folder) +
             "\n<body>\n  <!-- NAV:MULAI -->\n  " + menu(awalan, "catatan") + "\n  <!-- NAV:SELESAI -->\n\n"
-            "  <main class=\"wadah\">\n    <header class=\"pahlawan\" style=\"padding-bottom:16px\">\n"
-            "      <span class=\"label-atas\">Catatan</span>\n      <h1>Catatan belajar</h1>\n"
+            "  <main class=\"wadah\">\n    <header class=\"pahlawan\">\n"
+            "      <h1>Catatan belajar</h1>\n"
             "      <p class=\"lead\">Catatan saya selama belajar Git, GitHub, dan Claude Code. Setiap catatan berisi konsep, contoh dari pengalaman sendiri, dan latihan.</p>\n"
-            "    </header>\n    <div class=\"kartu\">\n      <ul class=\"daftar-bersih\">\n" + butir +
-            "\n      </ul>\n    </div>\n  </main>\n\n  <!-- FOOTER:MULAI -->\n  " + footer(awalan) +
+            "    </header>\n    <ol class=\"daftar-nomor\">\n" + butir +
+            "\n    </ol>\n  </main>\n\n  <!-- FOOTER:MULAI -->\n  " + footer(awalan) +
             "\n  <!-- FOOTER:SELESAI -->\n</body>\n</html>\n")
 
 
@@ -205,52 +232,143 @@ def data_praktikum():
     return json.loads((KONTEN / "praktikum.json").read_text(encoding="utf-8"))
 
 
-def halaman_alat_praktikum(alat, kelompok, status=""):
+def slug(teks):
+    return re.sub(r"[^a-z0-9]+", "-", teks.lower()).strip("-")
+
+
+def relasi_praktikum(data):
+    """{id alat: [id alat sumber]}: alat yang hasilnya diambil lewat tombol "Ambil"/"Pakai hasil".
+
+    Dibaca dari definisi Praktikum.pasang({...}) di docs/assets/praktikum/alat-*.js (kunci `alat: '<id>'`
+    di objek impor dan dariAlat), supaya peta di halaman selalu sama dengan perilaku alat.
+    """
+    ada = {a["id"] for k in data["kelompok"] for a in k["alat"]}
+    rel = {}
+    for f in sorted((DOCS / "assets/praktikum").glob("alat-*.js"), key=lambda p: p.name):
+        for blok in f.read_text(encoding="utf-8").split("Praktikum.pasang(")[1:]:
+            m = re.search(r"id:\s*'([a-z0-9-]+)'", blok)
+            if m and m.group(1) in ada:
+                sumber = rel.setdefault(m.group(1), [])
+                for x in re.findall(r"alat:\s*'([a-z0-9-]+)'", blok):
+                    if x != m.group(1) and x in ada and x not in sumber:
+                        sumber.append(x)
+    return rel
+
+
+def urutan_praktikum(data):
+    """Daftar (alat, kelompok, nomor lapis 1–6) untuk alat yang tersedia, berurutan seperti di praktikum.json."""
+    return [(a, k, i % 6 + 1) for i, k in enumerate(data["kelompok"]) for a in k["alat"] if a["status"] == "tersedia"]
+
+
+def chip(a, href, lapis):
+    return f'<a class="chip" data-lapis="{lapis}" href="{href}">{html.escape(a["judul"])}</a>'
+
+
+def halaman_alat_praktikum(alat, kelompok, status="", data=None, relasi=None):
     folder = f"praktikum/{alat['id']}/"
     awalan = "../../"
     skrip = "".join(f'\n  <script src="{awalan}assets/praktikum/{s}" defer></script>'
                     for s in dict.fromkeys(["grafik.js", "ekspor.js", "kerangka.js"] + alat["skrip"]))
+    urut = urutan_praktikum(data) if data else []
+    ids = [a["id"] for a, _, _ in urut]
+    i = ids.index(alat["id"]) if alat["id"] in ids else -1
+    info = {a["id"]: (a, l) for a, _, l in urut}
+    lapis = urut[i][2] if i >= 0 else 1
+    etiket = (f'<dl class="etiket"><div><dt>Kelompok</dt><dd>{html.escape(kelompok)}</dd></div>'
+              f'<div><dt>Acuan</dt><dd>{html.escape(alat["standar"])}</dd></div>'
+              + (f'<div><dt>Urutan di lembar lab</dt><dd>{i + 1} dari {len(urut)}</dd></div>' if i >= 0 else "") + '</dl>')
+    relasi = relasi or {}
+    butuh = [info[x] for x in relasi.get(alat["id"], []) if x in info]
+    dipakai = [info[t] for t in ids if alat["id"] in relasi.get(t, [])]
+    baris_relasi = ""
+    if butuh or dipakai:
+        isi = ""
+        if butuh:
+            isi += ('<div><span class="lbl">Bisa mengambil hasil dari</span>'
+                    + "".join(chip(a, f"../{a['id']}/", l) for a, l in butuh) + "</div>")
+        if dipakai:
+            isi += ('<div><span class="lbl">Hasilnya dipakai di</span>'
+                    + "".join(chip(a, f"../{a['id']}/", l) for a, l in dipakai) + "</div>")
+        baris_relasi = f'\n      <div class="relasi tidak-cetak">{isi}</div>'
+    alur = ""
+    if i >= 0:
+        seb = urut[i - 1] if i > 0 else None
+        ses = urut[i + 1] if i + 1 < len(urut) else None
+        alur = "\n    " + alur_sebelum_sesudah(
+            seb and ("Alat sebelumnya", seb[0]["judul"], f"../{seb[0]['id']}/"),
+            ses and ("Alat berikutnya", ses[0]["judul"], f"../{ses[0]['id']}/"),
+            seb[2] if seb else "", ses[2] if ses else "")
     return (kepala(f"{alat['judul']} · Praktikum", alat["deskripsi"], awalan, folder, katex_css(awalan)) +
             "\n<body>\n  <!-- NAV:MULAI -->\n  " + menu(awalan, "praktikum") + "\n  <!-- NAV:SELESAI -->\n\n"
-            "  <main class=\"wadah\">\n    <header class=\"pahlawan\" style=\"padding-bottom:16px\">\n"
-            f"      <p class=\"remah\"><a href=\"{awalan}praktikum/\">← Praktikum Mekanika Tanah</a></p>\n"
-            f"      <span class=\"label-atas\">{html.escape(kelompok)} · {html.escape(alat['standar'])}</span>\n"
-            f"      <h1>{html.escape(alat['judul'])}</h1>\n      <p class=\"lead\">{html.escape(alat['deskripsi'])}</p>\n      {status}\n    </header>\n"
-            f"    <div id=\"alat-praktikum\" data-alat=\"{alat['id']}\"></div>\n  </main>\n\n"
+            f"  <main class=\"wadah\" data-lapis=\"{lapis}\">\n    <header class=\"pahlawan\">\n"
+            f"      <p class=\"remah\"><a href=\"{awalan}praktikum/\">Praktikum Mekanika Tanah</a>"
+            f"<span class=\"pemisah\" aria-hidden=\"true\">/</span><a href=\"{awalan}praktikum/#{slug(kelompok)}\">{html.escape(kelompok)}</a></p>\n"
+            f"      <h1>{html.escape(alat['judul'])}</h1>\n      <p class=\"lead\">{html.escape(alat['deskripsi'])}</p>\n"
+            f"      {etiket}{baris_relasi}\n      {status}\n    </header>\n"
+            f"    <div id=\"alat-praktikum\" data-alat=\"{alat['id']}\"></div>{alur}\n  </main>\n\n"
             "  <!-- FOOTER:MULAI -->\n  " + footer(awalan) + "\n  <!-- FOOTER:SELESAI -->\n"
             f'  <script src="{awalan}assets/katex/katex.min.js" defer></script>\n'
             f'  <script src="{awalan}assets/umum.js" defer></script>{skrip}\n</body>\n</html>\n')
 
 
-def halaman_induk_praktikum(data, status=""):
+PANAH_ARUS = '<svg class="panah" viewBox="0 0 28 12" aria-hidden="true"><path d="M27 6H3m5-5L2 6l6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>'
+
+
+def halaman_induk_praktikum(data, status="", relasi=None):
     folder, awalan = "praktikum/", "../"
-    bagian = []
-    for k in data["kelompok"]:
-        kartu = []
+    relasi = relasi or {}
+    urut = urutan_praktikum(data)
+    nomor = {a["id"]: n + 1 for n, (a, _, _) in enumerate(urut)}
+    info = {a["id"]: (a, l) for a, _, l in urut}
+    bagian, inti = [], []
+    for ki, k in enumerate(data["kelompok"]):
+        lapis = ki % 6 + 1
+        butir = []
         for a in k["alat"]:
-            isi = (f'<span class="lencana">{html.escape(a["standar"])}</span>\n          <h3>{html.escape(a["judul"])}</h3>\n'
-                   f'          <p class="redup">{html.escape(a["deskripsi"])}</p>')
+            isi = (f'<span class="no">{nomor.get(a["id"], "")}</span><span class="judul">{html.escape(a["judul"])}</span>'
+                   f'<span class="acuan">{html.escape(a["standar"])}</span><span class="ringkas">{html.escape(a["deskripsi"])}</span>')
             if a["status"] == "tersedia":
-                kartu.append(f'        <a class="kartu" href="{a["id"]}/">\n          {isi}\n        </a>')
+                butir.append(f'        <li><a href="{a["id"]}/">{isi}</a></li>')
             else:
-                kartu.append(f'        <div class="kartu kartu-menyusul">\n          {isi}\n          <p class="kecil"><strong>Menyusul</strong></p>\n        </div>')
-        bagian.append(f'    <section>\n      <h2>{html.escape(k["judul"])}</h2>\n      <div class="kisi">\n' + "\n".join(kartu) + "\n      </div>\n    </section>")
-    tersedia = sum(a["status"] == "tersedia" for k in data["kelompok"] for a in k["alat"])
+                butir.append(f'        <li><div class="menyusul kartu-menyusul">{isi}</div></li>')
+        jumlah = len(k["alat"])
+        bagian.append(f'    <section class="kelompok-uji" id="{slug(k["judul"])}" data-lapis="{lapis}">\n'
+                      f'      <h2>{html.escape(k["judul"])} <span class="jumlah">{jumlah} alat</span></h2>\n'
+                      '      <ol class="daftar-uji">\n' + "\n".join(butir) + "\n      </ol>\n    </section>")
+        inti.append(f'<a href="#{slug(k["judul"])}" data-lapis="{lapis}" style="--n:{jumlah}"><span class="nama">{html.escape(k["judul"])}</span>'
+                    f'<span class="jumlah">{jumlah} alat</span></a>')
+    arus = []
+    for a, _, l in urut:
+        sumber = [info[x] for x in relasi.get(a["id"], []) if x in info]
+        if sumber:
+            arus.append(f'        <li><a class="ke" href="{a["id"]}/">{html.escape(a["judul"])}</a>{PANAH_ARUS}'
+                        '<span class="dari">' + "".join(chip(s, f'{s["id"]}/', sl) for s, sl in sumber) + "</span></li>")
+    bagian_arus = ""
+    if arus:
+        bagian_arus = ("    <section>\n      <h2>Hasil yang saling dipakai</h2>\n"
+                       "      <p class=\"redup\" style=\"max-width:68ch\">Alat di kiri bisa mengambil hasil alat di kanan lewat tombol <strong>Ambil</strong> atau "
+                       "<strong>Pakai hasil</strong>, selama hasil itu sudah tersimpan di browser yang sama. Kerjakan alat di kanan lebih dulu.</p>\n"
+                       "      <ul class=\"arus\">\n" + "\n".join(arus) + "\n      </ul>\n    </section>\n")
+    tersedia = len(urut)
     semua = sum(len(k["alat"]) for k in data["kelompok"])
     status_alat = (f"Semua {semua} alat sudah tersedia, dari sifat fisik sampai uji lapangan." if tersedia == semua
                    else f"{tersedia} dari {semua} alat sudah tersedia; alat lain menyusul.")
     return (kepala("Praktikum Mekanika Tanah", f"{semua} alat pengolah data praktikum Mekanika Tanah: formulir seperti lembar data laboratorium, langkah hitungan, grafik, dan ekspor ke Word dan Excel.", awalan, folder) +
             "\n<body>\n  <!-- NAV:MULAI -->\n  " + menu(awalan, "praktikum") + "\n  <!-- NAV:SELESAI -->\n\n"
-            "  <main class=\"wadah\">\n    <header class=\"pahlawan\" style=\"padding-bottom:16px\">\n"
-            "      <span class=\"label-atas\">Praktikum</span>\n      <h1>Praktikum Mekanika Tanah</h1>\n"
+            "  <main class=\"wadah\">\n    <header class=\"pahlawan\">\n"
+            f"      <p class=\"remah\"><a href=\"{awalan}alat/\">Semua alat</a></p>\n"
+            "      <h1>Praktikum Mekanika Tanah</h1>\n"
             f"      <p class=\"lead\">Pengolah data praktikum dengan formulir seperti lembar data laboratorium. {status_alat}</p>\n"
-            f"      {status}\n    </header>\n    <div class=\"kisi kisi-2 fitur\">\n"
-            "      <div class=\"kartu\"><h3>Isi seperti form lab</h3><p class=\"redup\">Baris dan simbol mengikuti lembar data. Angka boleh diketik dengan koma, atau blok data di Excel lalu tempel sekaligus.</p></div>\n"
-            "      <div class=\"kartu\"><h3>Langkah dan grafik</h3><p class=\"redup\">Setiap hasil disertai rumus bernomor, substitusi angka, dan grafik yang dibutuhkan laporan.</p></div>\n"
-            "      <div class=\"kartu\"><h3>Saling terhubung</h3><p class=\"redup\">Hasil satu alat bisa diambil alat lain: G<sub>s</sub> ke pemadatan, hidrometer, dan konsolidasi; saringan, hidrometer, dan Atterberg ke klasifikasi; γ<sub>d maks</sub> ke sand cone dan CBR.</p></div>\n"
-            "      <div class=\"kartu\"><h3>Siap untuk laporan</h3><p class=\"redup\">Unduh Word dengan Times New Roman dan tabel tanpa garis vertikal, grafik PNG, salin ke Excel, atau cetak dengan kop identitas contoh.</p></div>\n"
-            "    </div>\n" + "\n".join(bagian) +
-            "\n    <section>\n      <div class=\"catatan\"><strong>Untuk laporan.</strong> Alat ini membantu mengolah dan memeriksa data. Ikuti modul dan arahan asisten laboratorium untuk format laporan resmi, termasuk bila perhitungan harus ditulis tangan.</div>\n    </section>\n  </main>\n\n"
+            f"      {status}\n"
+            "      <nav class=\"inti-bor\" aria-label=\"Kelompok pengujian\">" + "".join(inti) + "</nav>\n"
+            "    </header>\n"
+            "    <div class=\"cara-pakai\">\n"
+            "      <div><h3>Isi seperti form lab</h3><p>Baris dan simbol mengikuti lembar data. Angka boleh diketik dengan koma, atau blok data di Excel lalu tempel sekaligus.</p></div>\n"
+            "      <div><h3>Langkah dan grafik</h3><p>Setiap hasil disertai rumus bernomor, substitusi angka, dan grafik yang dibutuhkan laporan.</p></div>\n"
+            "      <div><h3>NIM untuk data individu</h3><p>Alat yang memakai data individu punya kotak NIM di atas formulir. Dua digit terakhir NIM dibagi 100 lalu ditambahkan ke kolom yang ditentukan, dan langkahnya ikut tampil di hasil.</p></div>\n"
+            "      <div><h3>Siap untuk laporan</h3><p>Unduh Word dengan Times New Roman dan tabel tanpa garis vertikal, grafik PNG, salin ke Excel, atau cetak dengan kop identitas contoh.</p></div>\n"
+            "    </div>\n" + "\n".join(bagian) + "\n" + bagian_arus +
+            "    <section>\n      <div class=\"catatan\"><strong>Untuk laporan.</strong> Alat ini membantu mengolah dan memeriksa data. Ikuti modul dan arahan asisten laboratorium untuk format laporan resmi, termasuk bila perhitungan harus ditulis tangan.</div>\n    </section>\n  </main>\n\n"
             "  <!-- FOOTER:MULAI -->\n  " + footer(awalan) + "\n  <!-- FOOTER:SELESAI -->\n</body>\n</html>\n")
 
 
@@ -260,10 +378,20 @@ def data_alat():
     return json.loads((KONTEN / "alat.json").read_text(encoding="utf-8"))
 
 
-def kartu_beranda(data):
+def kartu_beranda(data, praktikum=None):
+    """Kartu alat di beranda. Praktikum tampil besar dengan kolom inti berisi kelompok pengujiannya."""
     kartu = []
     for a in data["alat"]:
-        kartu.append(f'<a class="kartu" href="{a["halaman"]}">\n          <span class="lencana">{html.escape(a["lencana"])}</span>\n'
+        if a["id"] == "praktikum" and praktikum:
+            baris = "".join(
+                f'<li><a href="{a["halaman"]}#{slug(k["judul"])}" data-lapis="{i % 6 + 1}"><span class="nama">{html.escape(k["judul"])}</span>'
+                f'<span class="jumlah">{len(k["alat"])} alat</span></a></li>' for i, k in enumerate(praktikum["kelompok"]))
+            kartu.append(f'<div class="kartu-praktikum" data-kat="{a["kategori"]}">\n          <span class="lencana">{html.escape(a["lencana"])}</span>\n'
+                         f'          <h3><a href="{a["halaman"]}">{html.escape(a["judul"])}</a></h3>\n          <p>{a["ringkas"]}</p>\n'
+                         f'          <ul class="kolom-inti">{baris}</ul>\n'
+                         f'          <a class="tombol utama" href="{a["halaman"]}" style="align-self:flex-start">Buka alat praktikum</a>\n        </div>')
+            continue
+        kartu.append(f'<a class="kartu" href="{a["halaman"]}" data-kat="{a["kategori"]}">\n          <span class="lencana">{html.escape(a["lencana"])}</span>\n'
                      f'          <h3>{html.escape(a["judul"])}</h3>\n          <p class="redup">{a["ringkas"]}</p>\n        </a>')
     return "\n        ".join(kartu)
 
@@ -274,7 +402,7 @@ def daftar_halaman_alat(data):
         kartu = []
         for a in (x for x in data["alat"] if x["kategori"] == k["id"]):
             rincian = "".join(f"\n            <dt>{html.escape(dt)}</dt><dd>{dd}</dd>" for dt, dd in a["rincian"])
-            kartu.append(f'        <a class="kartu" href="../{a["halaman"]}">\n'
+            kartu.append(f'        <a class="kartu" href="../{a["halaman"]}" data-kat="{a["kategori"]}">\n'
                          f'          <span class="lencana">{html.escape(a.get("lencana_rincian", a["lencana"]))}</span>\n'
                          f'          <h3>{html.escape(a.get("judul_rincian", a["judul"]))}</h3>\n'
                          f'          <dl class="rincian">{rincian}\n          </dl>\n        </a>')
@@ -289,8 +417,8 @@ BULAN = "Januari Februari Maret April Mei Juni Juli Agustus September Oktober No
 
 def lencana_status(a):
     t, b, h = (int(x) for x in a["tanggal_cek"].split("-"))
-    return (f'<p class="status-sumber" data-status="{a["status"]}">Status sumber: <strong>{STATUS[a["status"]]}</strong> · '
-            f'dicek {h} {BULAN[b - 1]} {t} · <a href="{REPO}#alat">arti status</a></p>')
+    return (f'<p class="status-sumber" data-status="{a["status"]}"><span>Status sumber: <strong>{STATUS[a["status"]]}</strong></span>'
+            f'<span class="status-tgl">dicek {h} {BULAN[b - 1]} {t}</span><a href="{REPO}#alat">arti status</a></p>')
 
 
 def tabel_readme(data):
@@ -323,9 +451,10 @@ def seragamkan(berkas, teks):
 
 
 def sisip_catatan_beranda(teks, catatan):
-    butir = "\n".join(f'          <li><a href="{f}"><strong>{html.escape(n)}</strong> · {html.escape(j)}</a></li>'
-                      for n, j, _, f in list(reversed(catatan))[:3])
-    return ganti_penanda(teks, "CATATAN", f'<ul class="daftar-bersih">\n{butir}\n        </ul>')
+    butir = "\n".join(f'          <li><a href="{f}"><span class="nomor">{html.escape(n)}</span><span class="judul">{html.escape(j)}</span>'
+                      f'<span class="ringkas">{html.escape(r)}</span></a></li>'
+                      for n, j, r, f in list(reversed(catatan))[:3])
+    return ganti_penanda(teks, "CATATAN", f'<ol class="daftar-nomor">\n{butir}\n        </ol>')
 
 
 def sitemap(berkas_html):
@@ -375,10 +504,11 @@ def halaman_cari():
 
 # ---------------------------------------------------------------- mode offline
 
-INTI = ["assets/gaya.css", "assets/umum.js", "assets/daftar-sw.js", "assets/ikon.svg", "manifest.webmanifest",
+INTI = ["assets/gaya.css", "assets/umum.js", "assets/daftar-sw.js", "assets/gerak.js", "assets/ikon.svg", "manifest.webmanifest",
         "assets/katex/katex.min.css", "assets/katex/katex.min.js",
         "assets/font/plus-jakarta-sans-latin-400-normal.woff2", "assets/font/plus-jakarta-sans-latin-600-normal.woff2",
-        "assets/font/plus-jakarta-sans-latin-700-normal.woff2", "assets/font/plus-jakarta-sans-latin-800-normal.woff2"]
+        "assets/font/plus-jakarta-sans-latin-700-normal.woff2", "assets/font/plus-jakarta-sans-latin-800-normal.woff2",
+        "assets/font/archivo-latin-wdth-normal.woff2"]
 
 
 def versi_rilis():
@@ -441,11 +571,12 @@ def bangun():
     praktikum = data_praktikum()
     alat = data_alat()
     status_praktikum = lencana_status(next(a for a in alat["alat"] if a["id"] == "praktikum"))
-    keluaran[DOCS / "praktikum/index.html"] = halaman_induk_praktikum(praktikum, status_praktikum)
+    relasi = relasi_praktikum(praktikum)
+    keluaran[DOCS / "praktikum/index.html"] = halaman_induk_praktikum(praktikum, status_praktikum, relasi)
     for k in praktikum["kelompok"]:
         for a in k["alat"]:
             if a["status"] == "tersedia":
-                keluaran[DOCS / f"praktikum/{a['id']}/index.html"] = halaman_alat_praktikum(a, k["judul"], status_praktikum)
+                keluaran[DOCS / f"praktikum/{a['id']}/index.html"] = halaman_alat_praktikum(a, k["judul"], status_praktikum, praktikum, relasi)
 
     dihasilkan = set(keluaran)
     for berkas in sorted(DOCS.rglob("*.html")):
@@ -462,7 +593,7 @@ def bangun():
             keluaran[target] = ganti_penanda(keluaran[target], "STATUS", lencana_status(a), wajib=False)
     keluaran[DOCS / "cari.json"] = indeks_cari(peta, catatan, alat, praktikum)
     keluaran[DOCS / "cari/index.html"] = halaman_cari()
-    keluaran[DOCS / "index.html"] = ganti_penanda(keluaran[DOCS / "index.html"], "ALAT", kartu_beranda(alat))
+    keluaran[DOCS / "index.html"] = ganti_penanda(keluaran[DOCS / "index.html"], "ALAT", kartu_beranda(alat, praktikum))
     keluaran[DOCS / "alat/index.html"] = ganti_penanda(keluaran[DOCS / "alat/index.html"], "DAFTAR-ALAT", daftar_halaman_alat(alat))
     readme = AKAR / "README.md"
     keluaran[readme] = ganti_penanda(readme.read_text(encoding="utf-8"), "ALAT", tabel_readme(alat), baris_baru=True)

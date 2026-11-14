@@ -6,6 +6,8 @@
  * D10, D30, D60: interpolasi linier % lolos terhadap log ukuran butir.
  * Cu = D60 / D10,  Cc = D30² / (D10 · D60)
  * Batas fraksi (SNI 6371:2015 / ASTM D2487): kerikil > 4,75 mm; pasir 4,75–0,075 mm; halus < 0,075 mm.
+ * Seperti form lab UNJA: baris PAN ikut dijumlahkan (jumlah tertahan = berat kering bila tidak ada yang hilang),
+ * dan D10, D30, D60 boleh diisi dari bacaan grafik gradasi; bila diisi, Cu dan Cc memakai bacaan itu.
  */
 (function (root) {
   'use strict';
@@ -49,7 +51,9 @@
   function hitung(m) {
     var galat = [], peringatan = [];
     if (!(m.beratTotal > 0)) galat.push('Berat kering total harus lebih dari 0.');
-    var ayakan = m.ayakan.filter(function (a) { return isFinite(a.tertahan); })
+    // Baris PAN (seperti form lab) menggantikan isian m.pan.
+    var barisPan = m.ayakan.filter(function (a) { return a.nama === 'PAN' && isFinite(a.tertahan); })[0];
+    var ayakan = m.ayakan.filter(function (a) { return a.nama !== 'PAN' && isFinite(a.tertahan); })
       .map(function (a) { return Object.assign({}, a, { mm: ukuran(a.nama) }); })
       .sort(function (a, b) { return b.mm - a.mm; });
     ayakan.forEach(function (a) {
@@ -66,7 +70,8 @@
       a.persenTertahan = kum / m.beratTotal * 100;
       a.lolos = 100 - a.persenTertahan;
     });
-    var pan = m.pan >= 0 ? m.pan : 0;
+    var pan = barisPan ? barisPan.tertahan : m.pan >= 0 ? m.pan : 0;
+    if (!(pan >= 0)) { galat.push('Berat tertahan PAN tidak boleh negatif.'); return { galat: galat }; }
     var jumlah = kum + pan;
     var hilang = (m.beratTotal - jumlah) / m.beratTotal * 100;
     if (Math.abs(hilang) > 1) {
@@ -84,11 +89,24 @@
     if (atas && ayakan[0].tertahan > 0) titik.unshift({ mm: atas.mm, lolos: 100 });
 
     var D10 = diameter(titik, 10), D30 = diameter(titik, 30), D60 = diameter(titik, 60);
-    var hasil = { galat: [], peringatan: peringatan, ayakan: ayakan, titik: titik, pan: pan, jumlah: jumlah, hilang: hilang,
-      D10: D10, D30: D30, D60: D60 };
-    if (D10 && D60) hasil.Cu = D60 / D10;
-    if (D10 && D30 && D60) hasil.Cc = D30 * D30 / (D10 * D60);
-    if (!D10) peringatan.push('D10 tidak dapat ditentukan dari data saringan (% lolos saringan terkecil di atas 10%). Butir halus perlu dianalisis dengan hidrometer.');
+    var hasil = { galat: [], peringatan: peringatan, ayakan: ayakan, titik: titik, pan: pan, adaBarisPan: !!barisPan, jumlah: jumlah, hilang: hilang,
+      panPersen: jumlah / m.beratTotal * 100, D10: D10, D30: D30, D60: D60 };
+    // D10, D30, D60 hasil baca grafik (seperti form lab) bila ketiganya diisi; selain itu hasil interpolasi.
+    var baca = m.D10baca > 0 && m.D30baca > 0 && m.D60baca > 0;
+    hasil.dariBaca = baca;
+    hasil.Dpakai = baca ? { D10: m.D10baca, D30: m.D30baca, D60: m.D60baca } : { D10: D10, D30: D30, D60: D60 };
+    var Dp = hasil.Dpakai;
+    if (Dp.D10 && Dp.D60) hasil.Cu = Dp.D60 / Dp.D10;
+    if (Dp.D10 && Dp.D30 && Dp.D60) hasil.Cc = Dp.D30 * Dp.D30 / (Dp.D10 * Dp.D60);
+    if (!D10 && !baca) peringatan.push('D10 tidak dapat ditentukan dari data saringan (% lolos saringan terkecil di atas 10%). Butir halus perlu dianalisis dengan hidrometer.');
+    if (baca) {
+      [[10, m.D10baca], [30, m.D30baca], [60, m.D60baca]].forEach(function (d) {
+        // Bacaan bertentangan dengan titik saringan: ada saringan lebih kecil dengan lolos > p, atau saringan lebih besar dengan lolos < p.
+        var salah = titik.filter(function (t) { return (t.mm < d[1] && t.lolos > d[0] + 1e-9) || (t.mm > d[1] && t.lolos < d[0] - 1e-9); })[0];
+        if (salah) peringatan.push('D' + d[0] + ' baca grafik = ' + String(d[1]).replace('.', ',') + ' mm tidak cocok dengan data: saringan ' +
+          String(salah.mm).replace('.', ',') + ' mm meloloskan ' + salah.lolos.toFixed(2).replace('.', ',') + '%. Baca ulang grafiknya.');
+      });
+    }
 
     var l475 = lolosPada(titik, 4.75), l0075 = lolosPada(titik, 0.075);
     if (l475 !== null && l0075 !== null) {

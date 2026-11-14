@@ -32,6 +32,14 @@
   var IDENTITAS = [['proyek', 'Proyek'], ['lokasi', 'Lokasi'], ['sampel', 'No. sampel / titik'], ['kedalaman', 'Kedalaman'],
     ['tanggal', 'Tanggal'], ['dikerjakan', 'Dikerjakan'], ['diperiksa', 'Diperiksa']];
 
+  // Laporan individu: data mentah ditambah dua digit terakhir NIM / 100 (aturan asisten lab),
+  // mis. F1G224034 → 0,34. Hanya kolom yang disebut di def.nim yang ditambah.
+  var KUNCI_NIM = 'praktikum-nim';
+  function tambahanNim(nim) {
+    var d = String(nim || '').replace(/\D/g, '');
+    return d.length < 2 ? null : +d.slice(-2) / 100;
+  }
+
   function simpan(kunci, nilai) { try { localStorage.setItem(kunci, JSON.stringify(nilai)); } catch (e) { /* tidak tersedia */ } }
   function baca(kunci) { try { return JSON.parse(localStorage.getItem(kunci)); } catch (e) { return null; } }
   var esc = U0.esc;
@@ -96,6 +104,7 @@
     var akar = document.getElementById('alat-praktikum');
     var KUNCI = 'praktikum-' + def.id;
     var identitas = baca(KUNCI_IDENTITAS) || {};
+    var nimData = baca(KUNCI_NIM) || { nim: '', aktif: true };
     var keadaan = muatAwal();
 
     function salin(o) { return JSON.parse(JSON.stringify(o)); }
@@ -197,7 +206,75 @@
           m.tabel[tb.id].push(o);
         });
       });
+      terapkanNim(m);
       return m;
+    }
+
+    // ---------------- NIM (laporan individu)
+    function nimBerlaku() { return def.nim && nimData.aktif && !keadaan.contoh ? tambahanNim(nimData.nim) : null; }
+    function labelNim(tbId, k) {
+      if (!tbId) { var p = (def.parameter || []).filter(function (x) { return x.id === k; })[0]; return p ? p.label : k; }
+      var tb = tabelDef(tbId);
+      if (tb.jenis === 'baris') return tb.kolomNilai.label + ' (' + tb.namaBaris.toLowerCase() + ' {n})';
+      if (tb.jenis === 'daftar') {
+        if (k === '*dinamis') return (tb.namaPendek || tb.judul) + ' ({n})';
+        var kol = kolomDaftar(tb).filter(function (x) { return x.id === k; })[0];
+        return (kol ? kol.label : k) + ' ({n})';
+      }
+      var b = tb.baris.filter(function (x) { return x.id === k; })[0];
+      return (b ? teks(b.label) + (b.simbol ? ', ' + b.simbol : '') : k) + ' (' + tb.kolom.toLowerCase() + ' {n})';
+    }
+    // Tambahkan t ke kolom yang ditandai; catat beberapa contoh untuk langkah hitungan.
+    function terapkanNim(m) {
+      var t = nimBerlaku();
+      if (t === null || !t) return;
+      var catat = [], sudah = {};
+      function tambah(o, k, label, nama) {
+        if (typeof o[k] !== 'number' || !isFinite(o[k])) return;
+        var a = o[k];
+        o[k] = Math.round((a + t) * 1e9) / 1e9;
+        if (!sudah[label] && catat.length < 10) { sudah[label] = 1; catat.push({ label: label.replace('{n}', nama), a: a, b: o[k] }); }
+      }
+      (def.nim.param || []).forEach(function (id) { tambah(m.param, id, labelNim(null, id), ''); });
+      Object.keys(def.nim.tabel || {}).forEach(function (tbId) {
+        (m.tabel[tbId] || []).forEach(function (o, i) {
+          var nama = String(o.nama || o.no || i + 1);
+          def.nim.tabel[tbId].forEach(function (k) {
+            if (k === '*dinamis' && Array.isArray(o.nilai)) {
+              o.nilai.forEach(function (v, j) { if (v !== null) { var w = { v: v }; tambah(w, 'v', labelNim(tbId, k), nama + ', kolom ' + (j + 1)); o.nilai[j] = w.v; } });
+            } else tambah(o, k, labelNim(tbId, k), nama);
+          });
+        });
+      });
+      m.nim = { nim: nimData.nim, tambahan: t, contoh: catat };
+    }
+    function htmlNim() {
+      if (!def.nim) return '';
+      return '<div class="kotak-nim tidak-cetak" id="kotak-nim"><div class="nim-isian"><label for="nim-input">NIM untuk laporan individu</label>' +
+        '<input id="nim-input" data-nim="nim" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="mis. F1G224034" value="' + esc(nimData.nim || '') + '"></div>' +
+        '<div class="nim-angka" id="nim-angka" aria-live="polite">' + teksNim() + '</div>' +
+        '<label class="nim-pakai"><input type="checkbox" data-nim="aktif"' + (nimData.aktif ? ' checked' : '') + '> Tambahkan ke data</label>' +
+        '<p class="kecil nim-ket">Dua digit terakhir NIM dibagi 100 lalu ditambahkan ke <strong>' + def.nim.ket + '</strong>. Kolom lain tidak berubah.' +
+        (keadaan.contoh ? ' Data contoh sudah memuat tambahan NIM dari laporan contoh, jadi NIM Anda baru dipakai setelah data diganti.' : '') + '</p></div>';
+    }
+    function teksNim() {
+      var t = tambahanNim(nimData.nim);
+      if (t === null) return '<span class="redup">tambahan</span><strong>–</strong>';
+      return '<span class="redup">tambahan</span><strong>+ ' + U0.f(t, 2) + '</strong>';
+    }
+    function htmlHasilNim(m) {
+      if (!m.nim) return '';
+      var n = m.nim, digit = Math.round(n.tambahan * 100);
+      return bantu.langkah('Data individu dari NIM ' + esc(n.nim),
+        U0.rumus('\\text{tambahan} = \\dfrac{' + digit + '}{100} = ' + U0.t(n.tambahan, 2)) +
+        bantu.tabel([{ teks: 'Data' }, { teks: 'Data mentah', angka: true }, { teks: 'Tambahan', angka: true }, { teks: 'Dipakai', angka: true }],
+          n.contoh.map(function (c) { return [c.label, U0.f(c.a, 3), '+ ' + U0.f(n.tambahan, 2), U0.f(c.b, 3)]; }), null, { angkaMulai: 1 }) +
+        '<p class="ket">Contoh satu nilai untuk tiap jenis data. Semua nilai pada kolom yang sama ditambah ' + U0.f(n.tambahan, 2) + ' sebelum dihitung, dan tabel hasil di bawah memakai nilai yang sudah ditambah.</p>');
+    }
+    function identitasCetak() {
+      var isi = IDENTITAS.filter(function (p) { return identitas[p[0]]; }).map(function (p) { return [p[1], identitas[p[0]]]; });
+      if (def.nim && nimData.nim) isi.push(['NIM', nimData.nim]);
+      return isi;
     }
 
     // ---------------- formulir
@@ -206,7 +283,7 @@
       return '<div class="impor tidak-cetak"><span class="kecil redup">Ambil hasil alat lain yang tersimpan di browser ini:</span><div class="baris-tombol" style="margin:8px 0 0">' +
         def.impor.map(function (im, i) {
           var h = bacaHasil(im.alat);
-          if (!h) return '<a class="tombol kecil" href="../' + im.alat + '/" title="Belum ada hasil tersimpan. Buka alatnya dulu.">' + im.nama + ' (belum ada) →</a>';
+          if (!h) return '<a class="tombol kecil" href="../' + im.alat + '/" title="Belum ada hasil tersimpan. Buka alatnya dulu.">' + im.nama + ' (belum ada)</a>';
           return '<button type="button" class="tombol kecil" data-impor="' + i + '">Ambil dari ' + im.nama +
             ' <span class="redup kecil">' + (h.contoh ? 'data contoh' : waktuSingkat(h.waktu)) + '</span></button>';
         }).join('') + '</div></div>';
@@ -295,7 +372,7 @@
 
     function gambarFormulir() {
       var el = document.getElementById('formulir-praktikum');
-      el.innerHTML = htmlIdentitas() + htmlImpor() + htmlParameter() + def.tabel.map(htmlTabel).join('') +
+      el.innerHTML = htmlNim() + htmlIdentitas() + htmlImpor() + htmlParameter() + def.tabel.map(htmlTabel).join('') +
         '<div class="baris-tombol tidak-cetak" style="margin-top:22px">' +
         '<button type="button" class="tombol kecil" data-aksi="contoh">Muat data contoh</button>' +
         '<button type="button" class="tombol kecil" data-aksi="kosong">Kosongkan</button>' +
@@ -329,16 +406,16 @@
         return null;
       }
       (r.peringatan || []).forEach(function (p) { h += '<div class="catatan">' + p + '</div>'; });
-      el.innerHTML = '<h2>Hasil</h2>' + h + def.tampil(m, r, bantu);
+      el.innerHTML = '<h2>Hasil</h2>' + h + htmlHasilNim(m) + def.tampil(m, r, bantu);
       document.getElementById('kop-cetak').innerHTML = kop();
       if (def.hasil) simpanHasil(def.id, def.hasil(m, r), keadaan.contoh);
       return { m: m, r: r };
     }
 
     function kop() {
-      var isi = IDENTITAS.filter(function (p) { return identitas[p[0]]; });
+      var isi = identitasCetak();
       if (!isi.length) return '';
-      return '<table class="kop"><tbody>' + isi.map(function (p) { return '<tr><td>' + p[1] + '</td><td>: ' + esc(identitas[p[0]]) + '</td></tr>'; }).join('') + '</tbody></table>';
+      return '<table class="kop"><tbody>' + isi.map(function (p) { return '<tr><td>' + p[0] + '</td><td>: ' + esc(p[1]) + '</td></tr>'; }).join('') + '</tbody></table>';
     }
 
     function perbarui(gambarUlangFormulir) {
@@ -353,7 +430,9 @@
     function tabelEkspor() {
       var m = masukan(), r = def.hitung(m);
       var baris = [[judulEkspor()]];
-      IDENTITAS.forEach(function (p) { if (identitas[p[0]]) baris.push([p[1], identitas[p[0]]]); });
+      identitasCetak().forEach(function (p) { baris.push(p); });
+      var mm = masukan();
+      if (mm.nim) baris.push(['Tambahan NIM', mm.nim.tambahan, 'ditambahkan ke ' + def.nim.ket.replace(/<[^>]+>/g, '')]);
       baris.push([]);
       if (r.galat && r.galat.length) return baris.concat(r.galat.map(function (g) { return ['Galat', g]; }));
       return baris.concat(def.ekspor(m, r));
@@ -479,7 +558,7 @@
       if (nama === 'word') {
         if (!gambarHasil()) { pesan('Belum ada hasil untuk diekspor. Lengkapi data atau perbaiki galat dulu.'); return; }
         pesan('Menyiapkan berkas Word…');
-        root.Ekspor.word({ judul: esc(judulEkspor()), identitas: IDENTITAS.filter(function (p) { return identitas[p[0]]; }).map(function (p) { return [p[1], esc(identitas[p[0]])]; }),
+        root.Ekspor.word({ judul: esc(judulEkspor()), identitas: identitasCetak().map(function (p) { return [p[0], esc(p[1])]; }),
           blok: blokWord(), nama: def.id + '.docx' })
           .then(function () { pesan('Berkas ' + def.id + '.docx diunduh: Times New Roman 11, tabel tanpa garis vertikal, nomor tabel dan gambar berurutan. Sesuaikan nomornya dengan bab laporan.'); },
             function (e) { pesan('Berkas Word gagal dibuat: ' + e.message); });
@@ -501,6 +580,12 @@
         var tb = keadaan.tabel[t.dataset.tabel], i = +t.dataset.i;
         if (!tb[i]) tb[i] = {};
         tb[i][t.dataset.k] = t.value; delete keadaan.contoh; perbarui(false);
+      }
+      else if (t.dataset.nim) {
+        if (t.dataset.nim === 'nim') nimData.nim = t.value; else nimData.aktif = t.checked;
+        simpan(KUNCI_NIM, nimData);
+        var na = document.getElementById('nim-angka'); if (na) na.innerHTML = teksNim();
+        perbarui(false);
       }
       else if (t.dataset.identitas) { identitas[t.dataset.identitas] = t.value; simpan(KUNCI_IDENTITAS, identitas); document.getElementById('kop-cetak').innerHTML = kop(); }
     });
