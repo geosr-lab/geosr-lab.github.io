@@ -188,6 +188,10 @@ a:hover { color: var(--aksen-tua); text-decoration-thickness: 2px; }
 }
 .nav ul a:hover { color: var(--teks); background: color-mix(in srgb, var(--teks) 5%, transparent); }
 .nav ul a[aria-current="page"] { color: var(--teks); }
+/* Tautan bahasa (Beranda ↔ Home, Pembuat ↔ About): dipisah garis tipis dari menu utama. */
+.nav ul .menu-bahasa { margin-left: 6px; padding-left: 10px; border-left: 1px solid var(--garis); }
+.nav ul .menu-bahasa a { font-size: 14px; }
+@media (max-width: 720px) { .nav ul .menu-bahasa { margin-left: 0; padding-left: 0; border-left: 0; } }
 .nav ul a[aria-current="page"]::after, .nav ul a:hover::after { transform: scaleX(1); }
 .merek-lengkap {
   display: block; margin-top: 1px; font-family: var(--huruf-teks); font-weight: 600; font-stretch: normal;

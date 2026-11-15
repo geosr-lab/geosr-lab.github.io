@@ -44,6 +44,17 @@ MENU = [("praktikum/", "Praktikum", ("praktikum",)),
 # Isi pribadi (profil, catatan belajar, cara memakai AI, skill) dikumpulkan di area pembuat,
 # hanya ditautkan dari kaki halaman. Alamat lama diarahkan ke alamat baru.
 PRIBADI = "pembuat/"
+# Versi bahasa Inggris sederhana (keputusan Defsa: beranda dan profil juga dalam bahasa Inggris).
+# Alatnya sendiri tetap berbahasa Indonesia; menu Inggris menautkan ke halaman yang sama.
+EN = "en/"
+MENU_EN = [("praktikum/", "Lab tools", ("praktikum",)),
+           ("alat/", "Calculators", ("alat", "kalkulator")),
+           ("latihan/", "Practice", ("latihan",)),
+           ("cari/", "Search", ("cari",))]
+PADANAN = {"": EN, PRIBADI: f"{EN}pembuat/"}   # folder Indonesia → folder Inggris
+KELOMPOK_EN = {"Sifat fisik": "Physical properties", "Konsistensi dan gradasi": "Consistency and gradation",
+               "Kepadatan": "Compaction", "Permeabilitas": "Permeability",
+               "Kekuatan dan konsolidasi": "Strength and consolidation", "Uji lapangan": "Field tests"}
 
 
 # ---------------------------------------------------------------- peta sumber → halaman
@@ -99,11 +110,22 @@ TANDA_MEREK = ('<svg class="merek-tanda" viewBox="0 0 22 26" aria-hidden="true">
                '<rect x="0" y="21.5" width="22" height="4.5" rx="1" style="fill:var(--lapis-5)"/></svg>')
 
 
-def menu(awalan, aktif):
+def inggris(folder):
+    return folder is not None and folder.startswith(EN)
+
+
+def menu(awalan, aktif, folder=None):
     tanda = ' aria-current="page"'
+    en = inggris(folder)
     butir = "".join(f'<li><a href="{awalan}{url}"{tanda if aktif in kunci else ""}>{nama}</a></li>'
-                    for url, nama, kunci in MENU)
-    return (f'<nav class="nav">\n    <div class="wadah">\n      <a class="merek" href="{awalan or "./"}" aria-label="{NAMA}, beranda">{TANDA_MEREK}'
+                    for url, nama, kunci in (MENU_EN if en else MENU))
+    if en:
+        asal = next((i for i, e in PADANAN.items() if e == folder), "")
+        butir += f'<li class="menu-bahasa"><a href="{awalan}{asal}" lang="id" hreflang="id">Bahasa Indonesia</a></li>'
+    elif folder in PADANAN:
+        butir += f'<li class="menu-bahasa"><a href="{awalan}{PADANAN[folder]}" lang="en" hreflang="en">English</a></li>'
+    beranda = f"{awalan}{EN}" if en else (awalan or "./")
+    return (f'<nav class="nav">\n    <div class="wadah">\n      <a class="merek" href="{beranda}" aria-label="{NAMA}, {"home" if en else "beranda"}">{TANDA_MEREK}'
             f'<span>{NAMA}<span class="merek-lengkap">{KEPANJANGAN}</span></span></a>\n'
             f'      {TOMBOL_TEMA}\n'
             '      <button class="nav-tombol" type="button" aria-expanded="false" aria-controls="menu-utama">'
@@ -126,7 +148,18 @@ def skrip_sw(awalan):
             f'\n  <script src="{awalan}assets/gerak.js" defer></script>')
 
 
-def footer(awalan, sumber=None):
+def footer(awalan, sumber=None, en=False):
+    if en:
+        sel = (f'<div><dt>This page</dt><dd><a href="{REPO}/blob/main/{sumber}">Source text</a></dd></div>' if sumber else "")
+        return ('<footer>\n    <div class="wadah kaki-isi">\n'
+                f'      <div class="kaki-merek"><a href="{awalan}{EN}">{NAMA}</a><span>{KEPANJANGAN} · made by '
+                f'<a href="{awalan}{EN}pembuat/">{PEMBUAT}</a></span></div>\n'
+                '      <dl class="kaki-etiket">'
+                f'<div><dt>Maker</dt><dd><a href="{awalan}{EN}pembuat/">About</a></dd></div>'
+                f'<div><dt>Code</dt><dd><a href="{REPO}">GitHub</a></dd></div>{sel}'
+                f'<div><dt>License</dt><dd>Code <a href="{REPO}/blob/main/LICENSE">MIT</a>, writing '
+                f'<a href="{REPO}/blob/main/LICENSE-TULISAN">CC BY 4.0</a> · <a href="{awalan}kredit/">Asset credits</a></dd></div></dl>\n'
+                '    </div>\n  </footer>' + skrip_sw(awalan))
     sel_sumber = (f'<div><dt>Halaman ini</dt><dd><a href="{REPO}/blob/main/{sumber}">Sumber tulisan</a></dd></div>'
                   if sumber else "")
     return ('<footer>\n    <div class="wadah kaki-isi">\n'
@@ -179,10 +212,20 @@ def tulis_ulang_tautan(isi_html, sumber, folder, peta):
     return re.sub(r'href="([^"]+)"', ganti, isi_html)
 
 
-def kepala(judul, ringkasan, awalan, url, tambahan=""):
+def tautan_bahasa(url):
+    """<link rel="alternate" hreflang> untuk halaman yang punya padanan bahasa Inggris (dan sebaliknya)."""
+    id_ = url if url in PADANAN else next((i for i, e in PADANAN.items() if e == url), None)
+    if id_ is None:
+        return ""
+    return (f'\n  <link rel="alternate" hreflang="id" href="{SITUS}{id_}">'
+            f'\n  <link rel="alternate" hreflang="en" href="{SITUS}{PADANAN[id_]}">')
+
+
+def kepala(judul, ringkasan, awalan, url, tambahan="", bahasa="id"):
     j, r = html.escape(judul), html.escape(ringkasan)
+    tambahan = tautan_bahasa(url) + tambahan
     return f"""<!doctype html>
-<html lang="id">
+<html lang="{bahasa}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -194,7 +237,7 @@ def kepala(judul, ringkasan, awalan, url, tambahan=""):
   <meta property="og:description" content="{r}">
   <meta property="og:url" content="{SITUS}{url}">
   <meta property="og:image" content="{SITUS}assets/pratinjau.png">
-  <meta property="og:locale" content="id_ID">
+  <meta property="og:locale" content="{"en_US" if bahasa == "en" else "id_ID"}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#f1f2ec" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#10181a" media="(prefers-color-scheme: dark)">
@@ -205,7 +248,7 @@ def kepala(judul, ringkasan, awalan, url, tambahan=""):
 </head>"""
 
 
-def halaman_konten(sumber, folder, peta, sebelum=None, sesudah=None):
+def halaman_konten(sumber, folder, peta, sebelum=None, sesudah=None, en=False):
     teks = sumber.read_text(encoding="utf-8")
     judul, ringkasan = judul_dan_ringkasan(teks)
     isi = markdown.markdown(teks, extensions=["tables", "fenced_code", "sane_lists"], output_format="html")
@@ -213,7 +256,9 @@ def halaman_konten(sumber, folder, peta, sebelum=None, sesudah=None):
     awalan = "../" * kedalaman(folder)
     aktif = bagian_aktif(folder)
     sub = folder[len(PRIBADI):] if folder.startswith(PRIBADI) else folder
-    if folder == PRIBADI:
+    if en:
+        atas = (EN, "Home")
+    elif folder == PRIBADI:
         atas = ("", "Beranda")
     elif sub.startswith("catatan/"):
         atas = (f"{PRIBADI}catatan/", "Semua catatan")
@@ -228,10 +273,10 @@ def halaman_konten(sumber, folder, peta, sebelum=None, sesudah=None):
         navigasi = "\n      " + alur_sebelum_sesudah(
             sebelum and ("Catatan sebelumnya", sebelum[0], relatif(folder, sebelum[1])),
             sesudah and ("Catatan berikutnya", sesudah[0], relatif(folder, sesudah[1])))
-    return (kepala(judul, ringkasan, awalan, folder) + "\n<body>\n  <!-- NAV:MULAI -->\n  " + menu(awalan, aktif) +
+    return (kepala(judul, ringkasan, awalan, folder, bahasa="en" if en else "id") + "\n<body>\n  <!-- NAV:MULAI -->\n  " + menu(awalan, aktif, folder) +
             "\n  <!-- NAV:SELESAI -->\n\n  <main class=\"wadah\">\n    <article class=\"prosa\">\n      " + remah + "\n" +
             isi + navigasi + "\n    </article>\n  </main>\n\n  <!-- FOOTER:MULAI -->\n  " +
-            footer(awalan, sumber.relative_to(AKAR).as_posix()) + "\n  <!-- FOOTER:SELESAI -->\n</body>\n</html>\n")
+            footer(awalan, sumber.relative_to(AKAR).as_posix(), en) + "\n  <!-- FOOTER:SELESAI -->\n</body>\n</html>\n")
 
 
 def alur_sebelum_sesudah(sebelum, sesudah, lapis_sebelum="", lapis_sesudah=""):
@@ -553,7 +598,7 @@ def seragamkan(berkas, teks):
     else:
         folder = rel.rsplit("/", 1)[0] + "/" if "/" in rel else ""
         awalan, aktif = "../" * kedalaman(folder), bagian_aktif(folder)
-    teks = ganti_penanda(teks, "NAV", menu(awalan, aktif))
+    teks = ganti_penanda(teks, "NAV", menu(awalan, aktif, folder if rel != "404.html" else None))
     if "assets/tema.js" not in teks:
         # Halaman tulis tangan: pasang skrip tema tepat setelah lembar gaya.
         teks = re.sub(r'(<link rel="stylesheet" href="([^"]*)assets/gaya\.css">\n)',
@@ -589,6 +634,50 @@ def indeks_cari(peta, catatan, alat, praktikum):
     for x in butir:
         x["h"] = re.sub(r"<[^>]+>", "", x["h"])
     return json.dumps(butir, ensure_ascii=False, indent=0) + "\n"
+
+
+def halaman_beranda_en(praktikum, alat):
+    folder, awalan = EN, "../"
+    semua = sum(len(k["alat"]) for k in praktikum["kelompok"])
+    kelompok = "".join(
+        f'<li><a href="{awalan}praktikum/#{slug(k["judul"])}" data-lapis="{i % 6 + 1}">{ikon_kelompok(i % 6 + 1)}'
+        f'<span class="nama">{html.escape(KELOMPOK_EN.get(k["judul"], k["judul"]))}</span><span class="jumlah">{len(k["alat"])} tools</span></a></li>'
+        for i, k in enumerate(praktikum["kelompok"]))
+    kalkulator = [a for a in alat["alat"] if a["halaman"].startswith("kalkulator/")]
+    kartu = "".join(
+        f'\n        <a class="kartu" href="{awalan}{a["halaman"]}">{sketsa_mini(a["id"])}<h3>{html.escape(a["judul_en"])}</h3>'
+        f'<p class="redup">{a["ringkas_en"]}</p></a>' for a in kalkulator)
+    # Judul tab beranda Inggris disamakan dengan beranda Indonesia: "GeoSR · Geotechnical Soil Report".
+    awal = kepala("Geotechnical Soil Report", "Lab-sheet style tools for Soil Mechanics practicals and geotechnical calculations, "
+                  "with every step, chart, and source shown.", awalan, folder, bahasa="en").replace(
+        f"Geotechnical Soil Report · {NAMA}", f"{NAMA} · {KEPANJANGAN}")
+    return (awal +
+            "\n<body>\n  <!-- NAV:MULAI -->\n  " + menu(awalan, "", folder) + "\n  <!-- NAV:SELESAI -->\n\n"
+            "  <main class=\"wadah\">\n    <header class=\"pahlawan\">\n"
+            f"      <p class=\"asal\">{KEPANJANGAN}</p>\n      <h1>{NAMA}</h1>\n"
+            "      <p class=\"lead\">Lab-sheet style tools for Soil Mechanics practicals and geotechnical calculations, "
+            "with every step, chart, and source shown.</p>\n"
+            "      <p class=\"redup\" style=\"max-width:64ch\">The tools themselves are in Indonesian and follow the Soil Mechanics lab forms "
+            "at Universitas Jambi. Numbers use a decimal comma (12,5 means 12.5).</p>\n"
+            "      <div class=\"baris-tombol\">\n"
+            f"        <a class=\"tombol utama\" href=\"{awalan}praktikum/\">Open the lab tools</a>\n"
+            f"        <a class=\"tombol\" href=\"{awalan}alat/\">Calculators</a>\n      </div>\n    </header>\n\n"
+            f"    <section>\n      <h2>{semua} lab data tools</h2>\n"
+            "      <p class=\"redup\" style=\"max-width:68ch\">From water content to consolidation, CPT, and SPT. Each tool has a form like the lab sheet, "
+            "a worked calculation, charts, and export to Word and Excel.</p>\n"
+            f"      <ul class=\"kolom-inti\">{kelompok}</ul>\n    </section>\n\n"
+            f"    <section>\n      <h2>{len(kalkulator)} calculators</h2>\n      <div class=\"kisi\">{kartu}\n      </div>\n    </section>\n\n"
+            f"    <section>\n      <h2>{jumlah_soal()} types of practice problems</h2>\n"
+            "      <p class=\"redup\" style=\"max-width:68ch\">Problems are generated with random numbers, checked automatically, and come with worked solutions.</p>\n"
+            f"      <a class=\"tombol\" href=\"{awalan}latihan/\">Practice</a>\n    </section>\n\n"
+            "    <section>\n      <ul class=\"ciri\">\n"
+            "        <li><strong>Full steps</strong><span>Given values, formula, substituted numbers, and the result, so you can compare with a hand calculation.</span></li>\n"
+            "        <li><strong>Sourced formulas</strong><span>Every formula names its SNI, ASTM, or textbook source on the tool page.</span></li>\n"
+            "        <li><strong>Report ready</strong><span>Download Word, copy to Excel, save charts as PNG, or print to PDF.</span></li>\n"
+            "        <li><strong>No sign-up</strong><span>Data stays in your own browser and the tools keep working offline.</span></li>\n"
+            "      </ul>\n    </section>\n  </main>\n\n"
+            "  <!-- FOOTER:MULAI -->\n  " + footer(awalan, en=True) + "\n  <!-- FOOTER:SELESAI -->\n"
+            f'  <script src="{awalan}assets/praktikum/sketsa.js" defer></script>\n</body>\n</html>\n')
 
 
 def halaman_kredit():
@@ -719,6 +808,8 @@ def bangun():
     keluaran[DOCS / "cari.json"] = indeks_cari(peta, catatan, alat, praktikum)
     keluaran[DOCS / "cari/index.html"] = halaman_cari()
     keluaran[DOCS / "kredit/index.html"] = halaman_kredit()
+    keluaran[DOCS / f"{EN}index.html"] = halaman_beranda_en(praktikum, alat)
+    keluaran[DOCS / f"{EN}pembuat/index.html"] = halaman_konten(KONTEN / "en/tentang.md", f"{EN}pembuat/", peta, en=True)
     keluaran[DOCS / "index.html"] = ganti_penanda(keluaran[DOCS / "index.html"], "ALAT", kartu_beranda(alat, praktikum))
     keluaran[DOCS / "alat/index.html"] = ganti_penanda(keluaran[DOCS / "alat/index.html"], "DAFTAR-ALAT", daftar_halaman_alat(alat))
     readme = AKAR / "README.md"

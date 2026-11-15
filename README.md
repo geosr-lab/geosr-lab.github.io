@@ -1,5 +1,7 @@
 # GeoSR · Geotechnical Soil Report
 
+**Bahasa Indonesia** · [English](README.en.md)
+
 Pengolah data praktikum Mekanika Tanah, kalkulator geoteknik, dan latihan soal yang menampilkan langkah hitungan dan sumber rumusnya, terbit di **[defsayurinda.github.io](https://defsayurinda.github.io/)**. Dibuat oleh Defsa Yurinda ([profil](https://defsayurinda.github.io/pembuat/)).
 
 [![Verifikasi](https://github.com/defsayurinda/defsayurinda.github.io/actions/workflows/verifikasi.yml/badge.svg)](https://github.com/defsayurinda/defsayurinda.github.io/actions/workflows/verifikasi.yml)
