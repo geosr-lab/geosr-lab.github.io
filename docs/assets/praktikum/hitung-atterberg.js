@@ -3,6 +3,8 @@
  *
  * Batas cair, dua cara:
  * - Banyak titik: kurva aliran w = a + b·log N (kuadrat terkecil), LL = w pada N = 25.
+ *   Pilihan skalaN = 'linier': w = a + b·N, seperti sumbu jumlah pukulan pada grafik form lab UNJA
+ *   (sumbu linier 5–55). SNI 1967:2008 memakai skala log; pilihan linier hanya untuk mencocokkan form.
  * - Satu titik: LL = w_N (N/25)^β, β = 0,121 (ASTM D4318 metode B), untuk N sekitar 20–30.
  * Batas plastis: rata-rata kadar air benang tanah. IP = LL − PL.
  * Bila PL ≥ LL, tanah dilaporkan nonplastis (NP).
@@ -56,8 +58,10 @@
 
     var LL, kurva = null;
     if (m.metodeLL === 'banyak') {
-      kurva = D.regresiLinier(titikLL.map(function (t) { return Math.log10(t.N); }), titikLL.map(function (t) { return t.w; }));
-      LL = kurva.a + kurva.b * Math.log10(25);
+      var linier = m.skalaN === 'linier', sx = function (N) { return linier ? N : Math.log10(N); };
+      kurva = D.regresiLinier(titikLL.map(function (t) { return sx(t.N); }), titikLL.map(function (t) { return t.w; }));
+      kurva.skala = linier ? 'linier' : 'log';
+      LL = kurva.a + kurva.b * sx(25);
       var Nmin = Math.min.apply(null, Nberbeda), Nmaks = Math.max.apply(null, Nberbeda);
       if (Nmin > 25 || Nmaks < 25) peringatan.push('Jumlah ketukan tidak mengapit 25, sehingga LL diperoleh dengan ekstrapolasi. Sebaiknya ada titik di atas dan di bawah 25 ketukan.');
       if (kurva.b >= 0) peringatan.push('Kurva aliran tidak menurun (kadar air naik seiring jumlah ketukan). Periksa data.');

@@ -12,7 +12,8 @@
   <meta property="og:image" content="https://defsayurinda.github.io/assets/pratinjau.png">
   <meta property="og:locale" content="id_ID">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#c8421a">
+  <meta name="theme-color" content="#f1f2ec" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#10181a" media="(prefers-color-scheme: dark)">
   <link rel="stylesheet" href="../assets/gaya.css">
   <link rel="icon" href="../assets/ikon.svg" type="image/svg+xml">
   <link rel="manifest" href="../manifest.webmanifest">
@@ -21,144 +22,89 @@
   <!-- NAV:MULAI -->
   <nav class="nav">
     <div class="wadah">
-      <a class="merek" href="../">Defsa<span>.</span></a>
+      <a class="merek" href="../"><svg class="merek-tanda" viewBox="0 0 22 26" aria-hidden="true"><rect x="0" y="0" width="22" height="26" rx="2" style="fill:none"/><rect x="0" y="0" width="22" height="6" rx="1" style="fill:var(--lapis-3)"/><rect x="0" y="7.5" width="22" height="7" rx="1" style="fill:var(--lapis-2)"/><rect x="0" y="16" width="22" height="4" rx="1" style="fill:var(--lapis-4)"/><rect x="0" y="21.5" width="22" height="4.5" rx="1" style="fill:var(--lapis-5)"/></svg><span>Defsa<span class="merek-lengkap"> Yurinda</span></span></a>
       <ul><li><a href="../alat/" aria-current="page">Alat</a></li><li><a href="../latihan/">Latihan</a></li><li><a href="../catatan/">Catatan</a></li><li><a href="../tentang/">Tentang</a></li><li><a href="../cari/">Cari</a></li></ul>
     </div>
   </nav>
   <!-- NAV:SELESAI -->
 
   <main class="wadah">
-    <header class="pahlawan" style="padding-bottom:16px">
-      <span class="label-atas">Praktikum</span>
+    <header class="pahlawan">
+      <p class="remah"><a href="../alat/">Semua alat</a></p>
       <h1>Praktikum Mekanika Tanah</h1>
       <p class="lead">Pengolah data praktikum dengan formulir seperti lembar data laboratorium. Semua 18 alat sudah tersedia, dari sifat fisik sampai uji lapangan.</p>
-      <p class="status-sumber" data-status="belum">Status sumber: <strong>Belum terverifikasi</strong> · dicek 25 September 2026 · <a href="https://github.com/defsayurinda/defsayurinda.github.io#alat">arti status</a></p>
+      <p class="status-sumber" data-status="belum"><span>Status sumber: <strong>Belum terverifikasi</strong></span><span class="status-tgl">dicek 25 September 2026</span><a href="https://github.com/defsayurinda/defsayurinda.github.io#alat">arti status</a></p>
+      <nav class="inti-bor" aria-label="Kelompok pengujian"><a href="#sifat-fisik" data-lapis="1" style="--n:3"><span class="nama">Sifat fisik</span><span class="jumlah">3 alat</span></a><a href="#konsistensi-dan-gradasi" data-lapis="2" style="--n:5"><span class="nama">Konsistensi dan gradasi</span><span class="jumlah">5 alat</span></a><a href="#kepadatan" data-lapis="3" style="--n:3"><span class="nama">Kepadatan</span><span class="jumlah">3 alat</span></a><a href="#permeabilitas" data-lapis="4" style="--n:2"><span class="nama">Permeabilitas</span><span class="jumlah">2 alat</span></a><a href="#kekuatan-dan-konsolidasi" data-lapis="5" style="--n:3"><span class="nama">Kekuatan dan konsolidasi</span><span class="jumlah">3 alat</span></a><a href="#uji-lapangan" data-lapis="6" style="--n:2"><span class="nama">Uji lapangan</span><span class="jumlah">2 alat</span></a></nav>
     </header>
-    <div class="kisi kisi-2 fitur">
-      <div class="kartu"><h3>Isi seperti form lab</h3><p class="redup">Baris dan simbol mengikuti lembar data. Angka boleh diketik dengan koma, atau blok data di Excel lalu tempel sekaligus.</p></div>
-      <div class="kartu"><h3>Langkah dan grafik</h3><p class="redup">Setiap hasil disertai rumus bernomor, substitusi angka, dan grafik yang dibutuhkan laporan.</p></div>
-      <div class="kartu"><h3>Saling terhubung</h3><p class="redup">Hasil satu alat bisa diambil alat lain: G<sub>s</sub> ke pemadatan, hidrometer, dan konsolidasi; saringan, hidrometer, dan Atterberg ke klasifikasi; γ<sub>d maks</sub> ke sand cone dan CBR.</p></div>
-      <div class="kartu"><h3>Siap untuk laporan</h3><p class="redup">Unduh Word dengan Times New Roman dan tabel tanpa garis vertikal, grafik PNG, salin ke Excel, atau cetak dengan kop identitas contoh.</p></div>
+    <div class="cara-pakai">
+      <div><h3>Isi seperti form lab</h3><p>Baris dan simbol mengikuti lembar data. Angka boleh diketik dengan koma, atau blok data di Excel lalu tempel sekaligus.</p></div>
+      <div><h3>Langkah dan grafik</h3><p>Setiap hasil disertai rumus bernomor, substitusi angka, dan grafik yang dibutuhkan laporan.</p></div>
+      <div><h3>NIM untuk data individu</h3><p>Alat yang memakai data individu punya kotak NIM di atas formulir. Dua digit terakhir NIM dibagi 100 lalu ditambahkan ke kolom yang ditentukan, dan langkahnya ikut tampil di hasil.</p></div>
+      <div><h3>Siap untuk laporan</h3><p>Unduh Word dengan Times New Roman dan tabel tanpa garis vertikal, grafik PNG, salin ke Excel, atau cetak dengan kop identitas contoh.</p></div>
     </div>
-    <section>
-      <h2>Sifat fisik</h2>
-      <div class="kisi">
-        <a class="kartu" href="kadar-air/">
-          <span class="lencana">SNI 1965:2008</span>
-          <h3>Kadar air</h3>
-          <p class="redup">Kadar air tiap cawan dan rata-ratanya dari penimbangan basah dan kering.</p>
-        </a>
-        <a class="kartu" href="berat-spesifik/">
-          <span class="lencana">SNI 1964:2008</span>
-          <h3>Berat spesifik (piknometer)</h3>
-          <p class="redup">Gs tiap piknometer dengan koreksi suhu massa jenis air, dan rata-ratanya.</p>
-        </a>
-        <a class="kartu" href="hubungan-fase/">
-          <span class="lencana">Diagram fase</span>
-          <h3>Hubungan berat–volume</h3>
-          <p class="redup">Angka pori, porositas, derajat kejenuhan, dan berat isi (basah, kering, jenuh, terendam) dengan diagram fase.</p>
-        </a>
-      </div>
+    <section class="kelompok-uji" id="sifat-fisik" data-lapis="1">
+      <h2>Sifat fisik <span class="jumlah">3 alat</span></h2>
+      <ol class="daftar-uji">
+        <li><a href="kadar-air/"><span class="no">1</span><span class="judul">Kadar air</span><span class="acuan">SNI 1965:2008</span><span class="ringkas">Kadar air tiap cawan dan rata-ratanya dari penimbangan basah dan kering.</span></a></li>
+        <li><a href="berat-spesifik/"><span class="no">2</span><span class="judul">Berat spesifik (piknometer)</span><span class="acuan">SNI 1964:2008</span><span class="ringkas">Gs tiap piknometer dengan koreksi suhu massa jenis air, dan rata-ratanya.</span></a></li>
+        <li><a href="hubungan-fase/"><span class="no">3</span><span class="judul">Hubungan berat–volume</span><span class="acuan">Diagram fase</span><span class="ringkas">Angka pori, porositas, derajat kejenuhan, dan berat isi (basah, kering, jenuh, terendam) dengan diagram fase.</span></a></li>
+      </ol>
+    </section>
+    <section class="kelompok-uji" id="konsistensi-dan-gradasi" data-lapis="2">
+      <h2>Konsistensi dan gradasi <span class="jumlah">5 alat</span></h2>
+      <ol class="daftar-uji">
+        <li><a href="atterberg/"><span class="no">4</span><span class="judul">Batas Atterberg</span><span class="acuan">SNI 1967:2008 · SNI 1966:2008</span><span class="ringkas">Batas cair (kurva aliran atau satu titik), batas plastis, indeks plastisitas, dan posisi di bagan plastisitas.</span></a></li>
+        <li><a href="batas-susut/"><span class="no">5</span><span class="judul">Batas susut</span><span class="acuan">SNI 3422:2008</span><span class="ringkas">Batas susut dan rasio susut dari volume tanah basah dan kering, dengan volume langsung atau air raksa.</span></a></li>
+        <li><a href="saringan/"><span class="no">6</span><span class="judul">Analisa saringan</span><span class="acuan">SNI 3423:2008</span><span class="ringkas">Persen lolos tiap saringan, kurva gradasi, D10/D30/D60, Cu, Cc, dan fraksi kerikil/pasir/halus.</span></a></li>
+        <li><a href="hidrometer/"><span class="no">7</span><span class="judul">Analisa hidrometer</span><span class="acuan">SNI 3423:2008</span><span class="ringkas">Hidrometer 152H dengan hukum Stokes, persen lolos, dan kurva gradasi gabungan saringan–hidrometer beserta fraksi lanau dan lempung.</span></a></li>
+        <li><a href="klasifikasi/"><span class="no">8</span><span class="judul">Klasifikasi tanah</span><span class="acuan">SNI 6371:2015 · AASHTO M 145</span><span class="ringkas">Simbol dan nama kelompok USCS serta kelompok dan indeks kelompok AASHTO. Data bisa diambil langsung dari alat saringan, hidrometer, dan Atterberg.</span></a></li>
+      </ol>
+    </section>
+    <section class="kelompok-uji" id="kepadatan" data-lapis="3">
+      <h2>Kepadatan <span class="jumlah">3 alat</span></h2>
+      <ol class="daftar-uji">
+        <li><a href="pemadatan/"><span class="no">9</span><span class="judul">Pemadatan (Proctor)</span><span class="acuan">SNI 1742:2008 · SNI 1743:2008</span><span class="ringkas">Kurva pemadatan orde 2 atau 3, kadar air optimum, kepadatan kering maksimum, dan garis ZAV.</span></a></li>
+        <li><a href="sand-cone/"><span class="no">10</span><span class="judul">Kerucut pasir (sand cone)</span><span class="acuan">SNI 2828:2011</span><span class="ringkas">Kalibrasi pasir, volume lubang, berat isi kering lapangan, dan derajat kepadatan.</span></a></li>
+        <li><a href="cbr/"><span class="no">11</span><span class="judul">CBR laboratorium</span><span class="acuan">SNI 1744:2012</span><span class="ringkas">Kurva beban–penetrasi dua permukaan, koreksi titik nol, CBR 2,54 mm dan 5,08 mm, pengembangan, dan berat isi.</span></a></li>
+      </ol>
+    </section>
+    <section class="kelompok-uji" id="permeabilitas" data-lapis="4">
+      <h2>Permeabilitas <span class="jumlah">2 alat</span></h2>
+      <ol class="daftar-uji">
+        <li><a href="permeabilitas-tetap/"><span class="no">12</span><span class="judul">Permeabilitas tinggi tekan tetap (constant head)</span><span class="acuan">ASTM D2434</span><span class="ringkas">Debit, gradien hidrolik, dan koefisien permeabilitas k tiap percobaan beserta rata-ratanya, mengikuti form constant head.</span></a></li>
+        <li><a href="permeabilitas-turun/"><span class="no">13</span><span class="judul">Permeabilitas tinggi tekan turun (falling head)</span><span class="acuan">ASTM D5084</span><span class="ringkas">Luas buret dan benda uji, koefisien permeabilitas k dari penurunan muka air h1 ke h2, dan rata-rata tiga percobaan.</span></a></li>
+      </ol>
+    </section>
+    <section class="kelompok-uji" id="kekuatan-dan-konsolidasi" data-lapis="5">
+      <h2>Kekuatan dan konsolidasi <span class="jumlah">3 alat</span></h2>
+      <ol class="daftar-uji">
+        <li><a href="geser-langsung/"><span class="no">14</span><span class="judul">Kuat geser langsung</span><span class="acuan">SNI 3420:2016</span><span class="ringkas">Tegangan geser tiap benda uji, koreksi luas opsional, garis keruntuhan Mohr–Coulomb, c dan φ.</span></a></li>
+        <li><a href="tekan-bebas/"><span class="no">15</span><span class="judul">Kuat tekan bebas (UCS)</span><span class="acuan">SNI 3638:2012</span><span class="ringkas">Kurva tegangan–regangan dengan koreksi luas, qu (puncak atau pada regangan 15%), cu, E50, dan sensitivitas.</span></a></li>
+        <li><a href="konsolidasi-lab/"><span class="no">16</span><span class="judul">Konsolidasi laboratorium</span><span class="acuan">SNI 2812:2011</span><span class="ringkas">Kurva e–log p, Cc, Cs, mv, dan cv dengan metode akar waktu Taylor otomatis tiap tahap beban.</span></a></li>
+      </ol>
+    </section>
+    <section class="kelompok-uji" id="uji-lapangan" data-lapis="6">
+      <h2>Uji lapangan <span class="jumlah">2 alat</span></h2>
+      <ol class="daftar-uji">
+        <li><a href="sondir/"><span class="no">17</span><span class="judul">Sondir</span><span class="acuan">SNI 2827:2008</span><span class="ringkas">PK, JP, hambatan lekat, JHL, hambatan setempat, rasio gesekan, dan grafik terhadap kedalaman seperti form lab.</span></a></li>
+        <li><a href="spt/"><span class="no">18</span><span class="judul">SPT dan log bor</span><span class="acuan">SNI 4153:2008</span><span class="ringkas">Nilai N dan N60, kepadatan atau konsistensi menurut N, dan log bor berpola lapisan dengan grafik N terhadap kedalaman.</span></a></li>
+      </ol>
     </section>
     <section>
-      <h2>Konsistensi dan gradasi</h2>
-      <div class="kisi">
-        <a class="kartu" href="atterberg/">
-          <span class="lencana">SNI 1967:2008 · SNI 1966:2008</span>
-          <h3>Batas Atterberg</h3>
-          <p class="redup">Batas cair (kurva aliran atau satu titik), batas plastis, indeks plastisitas, dan posisi di bagan plastisitas.</p>
-        </a>
-        <a class="kartu" href="batas-susut/">
-          <span class="lencana">SNI 3422:2008</span>
-          <h3>Batas susut</h3>
-          <p class="redup">Batas susut dan rasio susut dari volume tanah basah dan kering, dengan volume langsung atau air raksa.</p>
-        </a>
-        <a class="kartu" href="saringan/">
-          <span class="lencana">SNI 3423:2008</span>
-          <h3>Analisa saringan</h3>
-          <p class="redup">Persen lolos tiap saringan, kurva gradasi, D10/D30/D60, Cu, Cc, dan fraksi kerikil/pasir/halus.</p>
-        </a>
-        <a class="kartu" href="hidrometer/">
-          <span class="lencana">SNI 3423:2008</span>
-          <h3>Analisa hidrometer</h3>
-          <p class="redup">Hidrometer 152H dengan hukum Stokes, persen lolos, dan kurva gradasi gabungan saringan–hidrometer beserta fraksi lanau dan lempung.</p>
-        </a>
-        <a class="kartu" href="klasifikasi/">
-          <span class="lencana">SNI 6371:2015 · AASHTO M 145</span>
-          <h3>Klasifikasi tanah</h3>
-          <p class="redup">Simbol dan nama kelompok USCS serta kelompok dan indeks kelompok AASHTO. Data bisa diambil langsung dari alat saringan, hidrometer, dan Atterberg.</p>
-        </a>
-      </div>
-    </section>
-    <section>
-      <h2>Kepadatan</h2>
-      <div class="kisi">
-        <a class="kartu" href="pemadatan/">
-          <span class="lencana">SNI 1742:2008 · SNI 1743:2008</span>
-          <h3>Pemadatan (Proctor)</h3>
-          <p class="redup">Kurva pemadatan orde 2 atau 3, kadar air optimum, kepadatan kering maksimum, dan garis ZAV.</p>
-        </a>
-        <a class="kartu" href="sand-cone/">
-          <span class="lencana">SNI 2828:2011</span>
-          <h3>Kerucut pasir (sand cone)</h3>
-          <p class="redup">Kalibrasi pasir, volume lubang, berat isi kering lapangan, dan derajat kepadatan.</p>
-        </a>
-        <a class="kartu" href="cbr/">
-          <span class="lencana">SNI 1744:2012</span>
-          <h3>CBR laboratorium</h3>
-          <p class="redup">Kurva beban–penetrasi dua permukaan, koreksi titik nol, CBR 2,54 mm dan 5,08 mm, pengembangan, dan berat isi.</p>
-        </a>
-      </div>
-    </section>
-    <section>
-      <h2>Permeabilitas</h2>
-      <div class="kisi">
-        <a class="kartu" href="permeabilitas-tetap/">
-          <span class="lencana">ASTM D2434</span>
-          <h3>Permeabilitas tinggi tekan tetap (constant head)</h3>
-          <p class="redup">Debit, gradien hidrolik, dan koefisien permeabilitas k tiap percobaan beserta rata-ratanya, mengikuti form constant head.</p>
-        </a>
-        <a class="kartu" href="permeabilitas-turun/">
-          <span class="lencana">ASTM D5084</span>
-          <h3>Permeabilitas tinggi tekan turun (falling head)</h3>
-          <p class="redup">Luas buret dan benda uji, koefisien permeabilitas k dari penurunan muka air h1 ke h2, dan rata-rata tiga percobaan.</p>
-        </a>
-      </div>
-    </section>
-    <section>
-      <h2>Kekuatan dan konsolidasi</h2>
-      <div class="kisi">
-        <a class="kartu" href="geser-langsung/">
-          <span class="lencana">SNI 3420:2016</span>
-          <h3>Kuat geser langsung</h3>
-          <p class="redup">Tegangan geser tiap benda uji, koreksi luas opsional, garis keruntuhan Mohr–Coulomb, c dan φ.</p>
-        </a>
-        <a class="kartu" href="tekan-bebas/">
-          <span class="lencana">SNI 3638:2012</span>
-          <h3>Kuat tekan bebas (UCS)</h3>
-          <p class="redup">Kurva tegangan–regangan dengan koreksi luas, qu (puncak atau pada regangan 15%), cu, E50, dan sensitivitas.</p>
-        </a>
-        <a class="kartu" href="konsolidasi-lab/">
-          <span class="lencana">SNI 2812:2011</span>
-          <h3>Konsolidasi laboratorium</h3>
-          <p class="redup">Kurva e–log p, Cc, Cs, mv, dan cv dengan metode akar waktu Taylor otomatis tiap tahap beban.</p>
-        </a>
-      </div>
-    </section>
-    <section>
-      <h2>Uji lapangan</h2>
-      <div class="kisi">
-        <a class="kartu" href="sondir/">
-          <span class="lencana">SNI 2827:2008</span>
-          <h3>Sondir</h3>
-          <p class="redup">PK, JP, hambatan lekat, JHL, hambatan setempat, rasio gesekan, dan grafik terhadap kedalaman seperti form lab.</p>
-        </a>
-        <a class="kartu" href="spt/">
-          <span class="lencana">SNI 4153:2008</span>
-          <h3>SPT dan log bor</h3>
-          <p class="redup">Nilai N dan N60, kepadatan atau konsistensi menurut N, dan log bor berpola lapisan dengan grafik N terhadap kedalaman.</p>
-        </a>
-      </div>
+      <h2>Hasil yang saling dipakai</h2>
+      <p class="redup" style="max-width:68ch">Alat di kiri bisa mengambil hasil alat di kanan lewat tombol <strong>Ambil</strong> atau <strong>Pakai hasil</strong>, selama hasil itu sudah tersimpan di browser yang sama. Kerjakan alat di kanan lebih dulu.</p>
+      <ul class="arus">
+        <li><a class="ke" href="hubungan-fase/">Hubungan berat–volume</a><svg class="panah" viewBox="0 0 28 12" aria-hidden="true"><path d="M27 6H3m5-5L2 6l6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span class="dari"><a class="chip" data-lapis="1" href="berat-spesifik/">Berat spesifik (piknometer)</a><a class="chip" data-lapis="1" href="kadar-air/">Kadar air</a><a class="chip" data-lapis="3" href="pemadatan/">Pemadatan (Proctor)</a></span></li>
+        <li><a class="ke" href="atterberg/">Batas Atterberg</a><svg class="panah" viewBox="0 0 28 12" aria-hidden="true"><path d="M27 6H3m5-5L2 6l6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span class="dari"><a class="chip" data-lapis="1" href="kadar-air/">Kadar air</a></span></li>
+        <li><a class="ke" href="batas-susut/">Batas susut</a><svg class="panah" viewBox="0 0 28 12" aria-hidden="true"><path d="M27 6H3m5-5L2 6l6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span class="dari"><a class="chip" data-lapis="1" href="berat-spesifik/">Berat spesifik (piknometer)</a><a class="chip" data-lapis="2" href="atterberg/">Batas Atterberg</a></span></li>
+        <li><a class="ke" href="hidrometer/">Analisa hidrometer</a><svg class="panah" viewBox="0 0 28 12" aria-hidden="true"><path d="M27 6H3m5-5L2 6l6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span class="dari"><a class="chip" data-lapis="1" href="berat-spesifik/">Berat spesifik (piknometer)</a><a class="chip" data-lapis="2" href="saringan/">Analisa saringan</a></span></li>
+        <li><a class="ke" href="klasifikasi/">Klasifikasi tanah</a><svg class="panah" viewBox="0 0 28 12" aria-hidden="true"><path d="M27 6H3m5-5L2 6l6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span class="dari"><a class="chip" data-lapis="2" href="saringan/">Analisa saringan</a><a class="chip" data-lapis="2" href="hidrometer/">Analisa hidrometer</a><a class="chip" data-lapis="2" href="atterberg/">Batas Atterberg</a></span></li>
+        <li><a class="ke" href="pemadatan/">Pemadatan (Proctor)</a><svg class="panah" viewBox="0 0 28 12" aria-hidden="true"><path d="M27 6H3m5-5L2 6l6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span class="dari"><a class="chip" data-lapis="1" href="berat-spesifik/">Berat spesifik (piknometer)</a></span></li>
+        <li><a class="ke" href="sand-cone/">Kerucut pasir (sand cone)</a><svg class="panah" viewBox="0 0 28 12" aria-hidden="true"><path d="M27 6H3m5-5L2 6l6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span class="dari"><a class="chip" data-lapis="3" href="pemadatan/">Pemadatan (Proctor)</a></span></li>
+        <li><a class="ke" href="cbr/">CBR laboratorium</a><svg class="panah" viewBox="0 0 28 12" aria-hidden="true"><path d="M27 6H3m5-5L2 6l6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span class="dari"><a class="chip" data-lapis="3" href="pemadatan/">Pemadatan (Proctor)</a></span></li>
+        <li><a class="ke" href="tekan-bebas/">Kuat tekan bebas (UCS)</a><svg class="panah" viewBox="0 0 28 12" aria-hidden="true"><path d="M27 6H3m5-5L2 6l6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span class="dari"><a class="chip" data-lapis="1" href="kadar-air/">Kadar air</a></span></li>
+        <li><a class="ke" href="konsolidasi-lab/">Konsolidasi laboratorium</a><svg class="panah" viewBox="0 0 28 12" aria-hidden="true"><path d="M27 6H3m5-5L2 6l6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span class="dari"><a class="chip" data-lapis="1" href="berat-spesifik/">Berat spesifik (piknometer)</a><a class="chip" data-lapis="2" href="atterberg/">Batas Atterberg</a></span></li>
+      </ul>
     </section>
     <section>
       <div class="catatan"><strong>Untuk laporan.</strong> Alat ini membantu mengolah dan memeriksa data. Ikuti modul dan arahan asisten laboratorium untuk format laporan resmi, termasuk bila perhitungan harus ditulis tangan.</div>
@@ -167,9 +113,13 @@
 
   <!-- FOOTER:MULAI -->
   <footer>
-    <div class="wadah"><a href="../">Defsa Yurinda</a> · Teknik Sipil, Universitas Jambi · <a href="https://github.com/defsayurinda/defsayurinda.github.io">Kode dan tulisan di GitHub</a> · Kode <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE">MIT</a>, tulisan <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE-TULISAN">CC BY 4.0</a></div>
+    <div class="wadah kaki-isi">
+      <div class="kaki-merek"><a href="../">Defsa Yurinda</a><span>Teknik Sipil, Universitas Jambi</span></div>
+      <dl class="kaki-etiket"><div><dt>Kode dan tulisan</dt><dd><a href="https://github.com/defsayurinda/defsayurinda.github.io">GitHub</a></dd></div><div><dt>Lisensi</dt><dd>Kode <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE">MIT</a>, tulisan <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE-TULISAN">CC BY 4.0</a></dd></div></dl>
+    </div>
   </footer>
   <script src="../assets/daftar-sw.js" defer></script>
+  <script src="../assets/gerak.js" defer></script>
   <!-- FOOTER:SELESAI -->
 </body>
 </html>

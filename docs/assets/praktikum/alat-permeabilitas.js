@@ -67,6 +67,18 @@
   var CATATAN_SUHU = '<p class="kecil redup">k dilaporkan pada suhu air saat uji. Koreksi viskositas ke 20 °C seperti di ASTM tidak dilakukan; tambahkan secara manual bila diminta asisten. ' +
     'Luas dihitung dengan π penuh (3,14159…), sehingga hasil bisa sedikit berbeda dari hitungan tangan yang memakai π = 3,14.</p>';
 
+  function belajar(tujuan, alur, arti) {
+    return '<h3>Belajar dari pengujian ini</h3><div class="kartu belajar"><p><strong>Tujuan.</strong> ' + tujuan + '</p>' +
+      '<p><strong>Alur pengolahan</strong></p><ol>' + alur.map(function (a) { return '<li>' + a + '</li>'; }).join('') + '</ol>' +
+      (arti ? '<p><strong>Membaca hasil.</strong> ' + arti + '</p>' : '') + '</div>';
+  }
+  var BELAJAR_TETAP = belajar('Mengukur koefisien permeabilitas k tanah berbutir (pasir) dengan tinggi tekan tetap, berdasarkan hukum Darcy.',
+    ['Hitung luas penampang benda uji A = ¼ π D².', 'Hitung debit q = Q / t tiap percobaan.', 'Hitung k = q L / (A h) tiap percobaan.', 'Rata-ratakan k.'],
+    'Makin besar k, makin mudah air mengalir. Selisih k antarpercobaan yang besar biasanya tanda benda uji belum jenuh atau ada kebocoran.');
+  var BELAJAR_TURUN = belajar('Mengukur koefisien permeabilitas k tanah yang lebih rapat (lanau, lempung) dengan tinggi tekan turun.',
+    ['Hitung luas buret a = ¼ π d² dan luas benda uji A = ¼ π D².', 'Untuk tiap percobaan, hitung k = a L / (A t) · ln(h<sub>1</sub>/h<sub>2</sub>).', 'Rata-ratakan k.'],
+    'Uji tinggi tekan turun dipakai bila aliran terlalu kecil untuk ditampung pada uji tinggi tekan tetap.');
+
   if (jenis === 'permeabilitas-tetap') {
     Praktikum.pasang({
       id: 'permeabilitas-tetap', judulEkspor: 'Pemeriksaan permeabilitas, constant head test (ASTM D2434)',
@@ -103,7 +115,9 @@
           U.langkah('c. Koefisien permeabilitas', U.rumus('k = \\dfrac{q\\,L}{A\\,h} \\qquad (2)') +
             U.rumus('k = \\dfrac{' + U.t(u1.q, 3) + '\\times' + U.t(L, 2) + '}{' + U.t(r.A, 3) + '\\times' + U.t(u1.h, 2) + '} = ' + sciT(u1.k) + '\\ \\text{cm/det}') +
             '<p class="ket">k = koefisien permeabilitas (cm/det); L = tinggi benda uji (cm); A = luas penampang benda uji (cm²); h = beda tinggi tekan (cm). Persamaan (2) berasal dari hukum Darcy q = k i A dengan i = h / L.</p>') +
-          rataLangkah(U, r) + langkahBerat(U, m, r) + CATATAN_SUHU;
+          rataLangkah(U, r) + langkahBerat(U, m, r) + CATATAN_SUHU +
+          (m.contoh ? '<div class="catatan"><strong>Cocok dengan contoh laporan.</strong> Data contoh (D 6,4 cm; L 6 cm; h 70 cm; Q 99, 105, 96 ml; t 30 detik) memberi k<sub>1</sub> = ' +
+            sci(u1.k) + ' cm/det, sama dengan hitungan tangan 0,0088 cm/det.</div>' : '') + BELAJAR_TETAP;
       },
       ekspor: function (m, r) {
         var u = r.uji;
@@ -154,7 +168,8 @@
           U.langkah('c. Koefisien permeabilitas', U.rumus('k = \\dfrac{a\\,L}{A\\,t}\\,\\ln\\dfrac{h_1}{h_2} = 2{,}303\\,\\dfrac{a\\,L}{A\\,t}\\,\\log\\dfrac{h_1}{h_2} \\qquad (1)') +
             U.rumus('k = \\dfrac{' + U.t(r.a, 4) + '\\times' + U.t(L, 2) + '}{' + U.t(r.A, 3) + '\\times' + U.t(u1.t, 2) + '}\\times\\ln\\dfrac{' + U.t(u1.h1, 2) + '}{' + U.t(u1.h2, 2) + '} = ' + sciT(u1.k) + '\\ \\text{cm/det}') +
             '<p class="ket">a = luas penampang buret (cm²); A = luas penampang benda uji (cm²); L = tinggi benda uji (cm); t = waktu penurunan muka air dari h<sub>1</sub> ke h<sub>2</sub> (detik); h<sub>1</sub>, h<sub>2</sub> = tinggi muka air awal dan akhir, diukur dari ujung bawah benda uji (cm).</p>') +
-          rataLangkah(U, r) + langkahBerat(U, m, r) + CATATAN_SUHU;
+          rataLangkah(U, r) + langkahBerat(U, m, r) + CATATAN_SUHU +
+          (m.contoh ? '<div class="catatan">Belum ada contoh laporan tinggi tekan turun, jadi angka contoh di sini hanya ilustrasi (ukuran alat sama dengan contoh tinggi tekan tetap).</div>' : '') + BELAJAR_TURUN;
       },
       ekspor: function (m, r) {
         var u = r.uji;

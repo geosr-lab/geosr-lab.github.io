@@ -2,12 +2,13 @@
  * Versi cache mengikuti versi di CITATION.cff. Aset inti disimpan saat pemasangan; halaman dan
  * aset lain disimpan saat pertama dibuka. Halaman: jaringan dulu, cadangan dari cache. Aset: cache dulu.
  */
-const VERSI = "defsa-0.9.1";
+const VERSI = "defsa-0.10.0";
 const INTI = [
   "/",
   "/assets/gaya.css",
   "/assets/umum.js",
   "/assets/daftar-sw.js",
+  "/assets/gerak.js",
   "/assets/ikon.svg",
   "/manifest.webmanifest",
   "/assets/katex/katex.min.css",
@@ -15,7 +16,8 @@ const INTI = [
   "/assets/font/plus-jakarta-sans-latin-400-normal.woff2",
   "/assets/font/plus-jakarta-sans-latin-600-normal.woff2",
   "/assets/font/plus-jakarta-sans-latin-700-normal.woff2",
-  "/assets/font/plus-jakarta-sans-latin-800-normal.woff2"
+  "/assets/font/plus-jakarta-sans-latin-800-normal.woff2",
+  "/assets/font/archivo-latin-wdth-normal.woff2"
 ];
 
 self.addEventListener("install", (e) => {

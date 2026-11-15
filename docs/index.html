@@ -12,7 +12,8 @@
   <meta property="og:image" content="https://defsayurinda.github.io/assets/pratinjau.png">
   <meta property="og:locale" content="id_ID">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#c8421a">
+  <meta name="theme-color" content="#f1f2ec" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#10181a" media="(prefers-color-scheme: dark)">
   <link rel="stylesheet" href="assets/gaya.css">
   <link rel="icon" href="assets/ikon.svg" type="image/svg+xml">
   <link rel="manifest" href="manifest.webmanifest">
@@ -21,94 +22,93 @@
   <!-- NAV:MULAI -->
   <nav class="nav">
     <div class="wadah">
-      <a class="merek" href="./">Defsa<span>.</span></a>
+      <a class="merek" href="./"><svg class="merek-tanda" viewBox="0 0 22 26" aria-hidden="true"><rect x="0" y="0" width="22" height="26" rx="2" style="fill:none"/><rect x="0" y="0" width="22" height="6" rx="1" style="fill:var(--lapis-3)"/><rect x="0" y="7.5" width="22" height="7" rx="1" style="fill:var(--lapis-2)"/><rect x="0" y="16" width="22" height="4" rx="1" style="fill:var(--lapis-4)"/><rect x="0" y="21.5" width="22" height="4.5" rx="1" style="fill:var(--lapis-5)"/></svg><span>Defsa<span class="merek-lengkap"> Yurinda</span></span></a>
       <ul><li><a href="alat/">Alat</a></li><li><a href="latihan/">Latihan</a></li><li><a href="catatan/">Catatan</a></li><li><a href="tentang/">Tentang</a></li><li><a href="cari/">Cari</a></li></ul>
     </div>
   </nav>
   <!-- NAV:SELESAI -->
 
   <main class="wadah">
-    <header class="pahlawan pahlawan-beranda">
+    <header class="pahlawan beranda-pahlawan">
       <div>
-        <span class="label-atas">Teknik Sipil · Universitas Jambi</span>
-        <h1>Defsa Yurinda</h1>
+        <p class="asal"><svg viewBox="0 0 16 20" aria-hidden="true"><rect width="16" height="5" rx="1" style="fill:var(--lapis-3)"/><rect y="6" width="16" height="6" rx="1" style="fill:var(--lapis-2)"/><rect y="13" width="16" height="7" rx="1" style="fill:var(--lapis-4)"/></svg>Teknik Sipil, Universitas Jambi</p>
+        <h1><span class="baris">Defsa</span> <span class="baris">Yurinda</span></h1>
         <p class="lead">Kalkulator geoteknik, pengolah data praktikum Mekanika Tanah, dan latihan soal, lengkap dengan langkah hitungan dan sumber rumusnya. Semuanya berjalan di browser tanpa perlu daftar.</p>
         <div class="baris-tombol">
           <a class="tombol utama" href="alat/">Lihat semua alat</a>
+          <a class="tombol" href="praktikum/">Praktikum Mekanika Tanah</a>
           <a class="tombol" href="latihan/">Latihan soal</a>
         </div>
       </div>
-      <svg viewBox="0 0 240 200" aria-hidden="true" class="ilustrasi">
-        <rect x="0" y="40" width="240" height="44" style="fill:var(--lempung)"/>
-        <rect x="0" y="84" width="240" height="46" style="fill:var(--lempung);opacity:.8"/>
-        <rect x="0" y="130" width="240" height="70" style="fill:var(--pasir)"/>
-        <line x1="0" y1="40" x2="240" y2="40" style="stroke:var(--teks);stroke-width:2"/>
-        <rect x="108" y="10" width="24" height="150" rx="3" style="fill:var(--tiang);stroke:var(--teks)"/>
-        <rect x="0" y="124" width="240" height="58" fill="none" style="stroke:var(--aksen);stroke-dasharray:5 4;stroke-width:1.5"/>
-        <path d="M120 170 l-8 12 h16 z" style="fill:var(--aksen)"/>
-      </svg>
+      <figure class="penampang" id="penampang">
+        <div class="penampang-bingkai"></div>
+        <figcaption>
+          <span>Ilustrasi lapisan tanah di bawah pondasi, bukan data uji.</span>
+          <span class="pilih-keadaan" role="group" aria-label="Keadaan penampang"><button type="button" data-keadaan="0" aria-pressed="true">Sebelum beban</button><button type="button" data-keadaan="1" aria-pressed="false">Sesudah konsolidasi</button></span>
+        </figcaption>
+      </figure>
     </header>
 
     <section>
       <h2>Alat</h2>
-      <div class="kisi kisi-2">
+      <div class="alat-unggulan">
         <!-- ALAT:MULAI -->
-  <a class="kartu" href="kalkulator/tiang-bor.html">
+  <a class="kartu" href="kalkulator/tiang-bor.html" data-kat="fondasi">
           <span class="lencana">Fondasi dalam</span>
           <h3>Daya dukung tiang bor dari N-SPT</h3>
           <p class="redup">Metode Reese &amp; Wright (1977) dengan profil tanah dan langkah hitungan. Meyerhof disembunyikan sementara sampai rumusnya dicek ulang.</p>
         </a>
-        <a class="kartu" href="kalkulator/pondasi-dangkal.html">
+        <a class="kartu" href="kalkulator/pondasi-dangkal.html" data-kat="fondasi">
           <span class="lencana">Fondasi dangkal</span>
           <h3>Kapasitas dukung pondasi dangkal</h3>
           <p class="redup">Persamaan daya dukung umum dengan faktor bentuk, kedalaman, dan koreksi muka air tanah.</p>
         </a>
-        <a class="kartu" href="kalkulator/konsolidasi.html">
+        <a class="kartu" href="kalkulator/konsolidasi.html" data-kat="penurunan">
           <span class="lencana">Konsolidasi</span>
           <h3>Penurunan konsolidasi</h3>
           <p class="redup">Lempung NC dan OC, diagram e–log σ', dan kurva penurunan terhadap waktu.</p>
         </a>
-        <a class="kartu" href="praktikum/">
+        <div class="kartu-praktikum" data-kat="praktikum">
           <span class="lencana">Praktikum</span>
-          <h3>Praktikum Mekanika Tanah</h3>
-          <p class="redup">Delapan belas alat pengolah data praktikum, dari kadar air sampai permeabilitas, konsolidasi, sondir, dan SPT. Formulir seperti lembar data lab, grafik, hasil antaralat yang saling terhubung, dan ekspor ke Word dan Excel.</p>
-        </a>
-        <a class="kartu" href="latihan/">
+          <h3><a href="praktikum/">Praktikum Mekanika Tanah</a></h3>
+          <p>Delapan belas alat pengolah data praktikum, dari kadar air sampai permeabilitas, konsolidasi, sondir, dan SPT. Formulir seperti lembar data lab, grafik, hasil antaralat yang saling terhubung, dan ekspor ke Word dan Excel.</p>
+          <ul class="kolom-inti"><li><a href="praktikum/#sifat-fisik" data-lapis="1"><span class="nama">Sifat fisik</span><span class="jumlah">3 alat</span></a></li><li><a href="praktikum/#konsistensi-dan-gradasi" data-lapis="2"><span class="nama">Konsistensi dan gradasi</span><span class="jumlah">5 alat</span></a></li><li><a href="praktikum/#kepadatan" data-lapis="3"><span class="nama">Kepadatan</span><span class="jumlah">3 alat</span></a></li><li><a href="praktikum/#permeabilitas" data-lapis="4"><span class="nama">Permeabilitas</span><span class="jumlah">2 alat</span></a></li><li><a href="praktikum/#kekuatan-dan-konsolidasi" data-lapis="5"><span class="nama">Kekuatan dan konsolidasi</span><span class="jumlah">3 alat</span></a></li><li><a href="praktikum/#uji-lapangan" data-lapis="6"><span class="nama">Uji lapangan</span><span class="jumlah">2 alat</span></a></li></ul>
+          <a class="tombol utama" href="praktikum/" style="align-self:flex-start">Buka alat praktikum</a>
+        </div>
+        <a class="kartu" href="latihan/" data-kat="latihan">
           <span class="lencana">Latihan</span>
           <h3>Bank soal geoteknik</h3>
           <p class="redup">Sembilan jenis soal dengan angka acak, dicek otomatis, lengkap dengan pembahasan.</p>
         </a>
   <!-- ALAT:SELESAI -->
       </div>
-      <p style="margin-top:14px"><a href="alat/">Semua alat, cara memakai, dan cara mengutip →</a></p>
+      <a class="tautan-lanjut" href="alat/">Semua alat, cara memakai, dan cara mengutip</a>
     </section>
 
     <section>
       <h2>Kenapa hasilnya bisa diperiksa</h2>
-      <div class="kisi">
-        <div class="kartu"><h3>Langkah ditampilkan</h3><p class="redup">Setiap hasil disertai diketahui, rumus, substitusi angka, dan catatan asumsi. Bisa dicocokkan dengan hitungan tangan.</p></div>
-        <div class="kartu"><h3>Rumus bersumber</h3><p class="redup">Setiap rumus menyebut sumbernya. Status sumber tiap alat (asli, sekunder, atau belum terverifikasi) tercantum di README, dan rumus yang ternyata tidak sesuai sumber disembunyikan sampai diperbaiki.</p></div>
-        <div class="kartu"><h3>Diuji otomatis</h3><p class="redup">Setiap perubahan diuji terhadap perhitungan Python terpisah dan uji sifat. Pondasi dangkal dan konsolidasi juga dicocokkan dengan nilai tabel buku teks; contoh soal buku utuh belum ada.</p></div>
+      <div class="bukti">
+        <div><h3><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M5 4v18M5 7h13M5 13h9M5 19h15" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="5" cy="7" r="2.6" fill="currentColor"/><circle cx="5" cy="13" r="2.6" fill="currentColor"/><circle cx="5" cy="19" r="2.6" fill="currentColor"/></svg>Langkah ditampilkan</h3><p>Setiap hasil disertai diketahui, rumus, substitusi angka, dan catatan asumsi. Bisa dicocokkan dengan hitungan tangan.</p></div>
+        <div><h3><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M6 3h10l5 5v15H6z M16 3v5h5 M9.5 13h8 M9.5 17h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Rumus bersumber</h3><p>Setiap rumus menyebut sumbernya. Status sumber tiap alat (asli, sekunder, atau belum terverifikasi) tercantum di README, dan rumus yang ternyata tidak sesuai sumber disembunyikan sampai diperbaiki.</p></div>
+        <div><h3><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M3 21h20M6 21V11M11 21V6M16 21v-8M21 21V9" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M4 9l6-5 5 6 7-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2 2.2"/></svg>Diuji otomatis</h3><p>Setiap perubahan diuji terhadap perhitungan Python terpisah dan uji sifat. Pondasi dangkal dan konsolidasi juga dicocokkan dengan nilai tabel buku teks; contoh soal buku utuh belum ada.</p></div>
       </div>
     </section>
 
     <section>
       <h2>Catatan terbaru</h2>
-      <div class="kartu">
         <!-- CATATAN:MULAI -->
-  <ul class="daftar-bersih">
-          <li><a href="catatan/03-membangun-situs-dan-kalkulator/"><strong>03</strong> · Membangun situs dan kalkulator bersama Claude Code</a></li>
-          <li><a href="catatan/02-git-dan-pull-request-pertama/"><strong>02</strong> · Git dan Pull Request pertama</a></li>
-          <li><a href="catatan/01-mengenal-claude-dan-claude-code/"><strong>01</strong> · Mengenal Claude dan Claude Code</a></li>
-        </ul>
+  <ol class="daftar-nomor">
+          <li><a href="catatan/03-membangun-situs-dan-kalkulator/"><span class="nomor">03</span><span class="judul">Membangun situs dan kalkulator bersama Claude Code</span><span class="ringkas">Catatan ini merangkum cara situs defsayurinda.github.io dibuat: tiga kalkulator geoteknik dan satu bank soal, dikerjakan Claude Code dalam empat tahap, masing-masing lewat Pull…</span></a></li>
+          <li><a href="catatan/02-git-dan-pull-request-pertama/"><span class="nomor">02</span><span class="judul">Git dan Pull Request pertama</span><span class="ringkas">Buat PR tanpa Claude, langsung dari web GitHub:</span></a></li>
+          <li><a href="catatan/01-mengenal-claude-dan-claude-code/"><span class="nomor">01</span><span class="judul">Mengenal Claude dan Claude Code</span><span class="ringkas">Claude adalah asisten AI buatan Anthropic. Saya memakainya lewat claude.ai, di browser atau aplikasi ponsel. Di sana Claude bisa diajak diskusi, membaca file yang dilampirkan…</span></a></li>
+        </ol>
   <!-- CATATAN:SELESAI -->
-      </div>
-      <p style="margin-top:14px"><a href="catatan/">Semua catatan →</a></p>
+      <a class="tautan-lanjut" href="catatan/">Semua catatan</a>
     </section>
 
     <section>
       <h2>Tentang</h2>
-      <p class="redup" style="max-width:720px">Situs ini dibuat oleh Defsa Yurinda, mahasiswa Teknik Sipil Universitas Jambi, bersama Claude Code. Isinya bebas dipakai dan disalin dengan mencantumkan sumber (CC BY 4.0).</p>
+      <p class="redup" style="max-width:68ch">Situs ini dibuat oleh Defsa Yurinda, mahasiswa Teknik Sipil Universitas Jambi, bersama Claude Code. Isinya bebas dipakai dan disalin dengan mencantumkan sumber (CC BY 4.0).</p>
       <div class="baris-tombol">
         <a class="tombol" href="tentang/">Tentang saya</a>
         <a class="tombol" href="cara-memakai-ai/">Cara saya memakai AI</a>
@@ -118,9 +118,13 @@
 
   <!-- FOOTER:MULAI -->
   <footer>
-    <div class="wadah"><a href="./">Defsa Yurinda</a> · Teknik Sipil, Universitas Jambi · <a href="https://github.com/defsayurinda/defsayurinda.github.io">Kode dan tulisan di GitHub</a> · Kode <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE">MIT</a>, tulisan <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE-TULISAN">CC BY 4.0</a></div>
+    <div class="wadah kaki-isi">
+      <div class="kaki-merek"><a href="./">Defsa Yurinda</a><span>Teknik Sipil, Universitas Jambi</span></div>
+      <dl class="kaki-etiket"><div><dt>Kode dan tulisan</dt><dd><a href="https://github.com/defsayurinda/defsayurinda.github.io">GitHub</a></dd></div><div><dt>Lisensi</dt><dd>Kode <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE">MIT</a>, tulisan <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE-TULISAN">CC BY 4.0</a></dd></div></dl>
+    </div>
   </footer>
   <script src="assets/daftar-sw.js" defer></script>
+  <script src="assets/gerak.js" defer></script>
   <!-- FOOTER:SELESAI -->
 </body>
 </html>
