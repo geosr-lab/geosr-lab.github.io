@@ -37,16 +37,65 @@
     }
   })();
 
-  // ------------------------------------------------------------ cahaya kursor di kartu dasbor
-  // Sorot lembut mengikuti kursor di atas .petak (CSS memakai --mx dan --my). Hanya penunjuk tetikus.
-  document.addEventListener('pointermove', function (e) {
-    if (e.pointerType !== 'mouse' || !e.target.closest) return;
-    var p = e.target.closest('.petak');
-    if (!p) return;
-    var r = p.getBoundingClientRect();
-    p.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-    p.style.setProperty('--my', (e.clientY - r.top) + 'px');
-  }, { passive: true });
+  // ------------------------------------------------------------ filter cahaya timbul untuk sketsa
+  // Satu sumber cahaya di kiri atas (azimut 225°). #geosr-timbul: tepi bentuk yang menghadap cahaya lebih
+  // terang, tepi seberangnya lebih gelap, sedikit kilap, dan bayangan jatuh ke kanan bawah. #geosr-garis:
+  // bayangan tipis di bawah garis. Kelas "ada-timbul" di <html> baru dipasang setelah filter tersedia.
+  (function () {
+    if (!document.body || document.getElementById('geosr-filter')) return;
+    var ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('id', 'geosr-filter'); svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false');
+    svg.setAttribute('style', 'position:absolute;width:0;height:0;overflow:hidden');
+    svg.innerHTML =
+      '<filter id="geosr-timbul" x="-15%" y="-15%" width="140%" height="145%" color-interpolation-filters="sRGB">' +
+        '<feGaussianBlur in="SourceAlpha" stdDeviation="1.8" result="b"/>' +
+        '<feDiffuseLighting in="b" surfaceScale="3" diffuseConstant="1" lighting-color="#fff" result="d"><feDistantLight azimuth="225" elevation="50"/></feDiffuseLighting>' +
+        '<feComposite in="d" in2="SourceGraphic" operator="arithmetic" k1="0.55" k2="0" k3="0.6" k4="0" result="lit"/>' +
+        '<feSpecularLighting in="b" surfaceScale="3" specularConstant=".55" specularExponent="28" lighting-color="#fff" result="s"><feDistantLight azimuth="225" elevation="40"/></feSpecularLighting>' +
+        '<feComposite in="s" in2="SourceAlpha" operator="in" result="s2"/>' +
+        '<feComposite in="lit" in2="s2" operator="arithmetic" k1="0" k2="1" k3="0.55" k4="0" result="kilap"/>' +
+        '<feComposite in="kilap" in2="SourceAlpha" operator="in" result="isi"/>' +
+        '<feOffset in="SourceAlpha" dx="1.2" dy="2" result="o"/><feGaussianBlur in="o" stdDeviation="1.6" result="ob"/>' +
+        '<feComponentTransfer in="ob" result="bayang"><feFuncA type="linear" slope=".28"/></feComponentTransfer>' +
+        '<feMerge><feMergeNode in="bayang"/><feMergeNode in="isi"/></feMerge>' +
+      '</filter>' +
+      '<filter id="geosr-garis" x="-10%" y="-10%" width="125%" height="130%">' +
+        '<feOffset in="SourceAlpha" dx=".7" dy="1.1" result="o"/><feGaussianBlur in="o" stdDeviation=".7" result="ob"/>' +
+        '<feComponentTransfer in="ob" result="bayang"><feFuncA type="linear" slope=".3"/></feComponentTransfer>' +
+        '<feMerge><feMergeNode in="bayang"/><feMergeNode in="SourceGraphic"/></feMerge>' +
+      '</filter>';
+    document.body.insertBefore(svg, document.body.firstChild);
+    document.documentElement.classList.add('ada-timbul');
+  })();
+
+  // ------------------------------------------------------------ cahaya kursor dan kartu miring 3D
+  // Sorot lembut mengikuti kursor (CSS memakai --mx dan --my) di kartu dan petak dasbor. Kartu kecil juga
+  // sedikit miring ke arah kursor (perspektif 700 px, paling banyak 5°). Hanya tetikus; tanpa miring bila
+  // pengguna memilih gerak dikurangi.
+  (function () {
+    var SOROT = '.petak, .kartu, .kartu-praktikum, .daftar-uji a, .daftar-lanjutkan a, .alur-tahap, .sketsa-bingkai';
+    var MIRING = 'a.kartu, .daftar-uji a, .daftar-lanjutkan a, .kartu-praktikum, .alur-alat a';
+    var diam = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var miring = null;
+    function lepas() { if (miring) { miring.style.transform = ''; miring = null; } }
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType !== 'mouse' || !e.target.closest) return;
+      var p = e.target.closest(SOROT);
+      if (p) {
+        var r = p.getBoundingClientRect();
+        p.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        p.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      }
+      var m = diam ? null : e.target.closest(MIRING);
+      if (m !== miring) lepas();
+      if (!m) return;
+      miring = m;
+      var k = m.getBoundingClientRect(), u = (e.clientX - k.left) / k.width - 0.5, v = (e.clientY - k.top) / k.height - 0.5;
+      m.style.transform = 'perspective(700px) rotateX(' + (-v * 5).toFixed(2) + 'deg) rotateY(' + (u * 5).toFixed(2) + 'deg) translateY(-2px)';
+    }, { passive: true });
+    document.addEventListener('pointerleave', lepas);
+    window.addEventListener('blur', lepas);
+  })();
 
   // ------------------------------------------------------------ riwayat untuk "Lanjutkan" di beranda
   // Hanya disimpan di localStorage browser pengguna: alamat, judul, jenis, waktu. Maksimal 6, terbaru di depan.

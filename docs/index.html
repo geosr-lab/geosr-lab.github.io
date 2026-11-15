@@ -56,13 +56,15 @@
         </nav>
       </div>
       <!-- PENAMPANG:MULAI -->
-  <figure class="penampang-mini" data-penampang="mini">
-        <div class="jelajah-panggung mini-panggung">
-          <canvas class="pn-kanvas" aria-hidden="true"></canvas>
-          <div class="jelajah-alat"><button type="button" class="tombol kecil" data-aksi="gerak" aria-pressed="true">Gerak otomatis</button></div>
+  <figure class="blok3d" data-blok3d>
+        <div class="jelajah-panggung blok-panggung">
+          <canvas class="b3-kanvas" aria-hidden="true"></canvas>
+          <div class="jelajah-alat"><button type="button" class="tombol kecil" data-aksi="urai" aria-pressed="false">Urai lapisan</button><button type="button" class="tombol kecil" data-aksi="putar" aria-pressed="true">Putar otomatis</button></div>
           <div class="jelajah-kartu pn-kartu" aria-live="polite" hidden></div>
         </div>
-        <figcaption><span>Penampang GeoSR: 26 alat sebagai butir di sepuluh lapisan tanah. Seret untuk menggeser, klik butir untuk membukanya, klik permukaan tanah untuk uji bor.</span> <a href="penampang/">Buka penampang penuh</a></figcaption>
+        <div class="b3-lapis" role="group" aria-label="Pilih lapisan"></div>
+        <div class="b3-info" aria-live="polite"></div>
+        <figcaption>Blok tanah GeoSR: 26 alat di sepuluh lapisan. Seret untuk memutar, klik lempeng untuk menarik lapisannya. <a href="penampang/">Buka penampang penuh</a></figcaption>
         <div class="pn-data" hidden>
         <div class="lapis-daftar" data-warna="lapis-1" data-jenis="Praktikum"><p><span class="no">01</span>Sifat fisik</p><ul><li><a href="praktikum/kadar-air/" data-acuan="SNI 1965:2008" data-ket="Kadar air tiap cawan dan rata-ratanya dari penimbangan basah dan kering.">Kadar air</a><span class="acuan">SNI 1965:2008</span></li><li><a href="praktikum/berat-spesifik/" data-acuan="SNI 1964:2008" data-ket="Gs tiap piknometer dengan koreksi suhu massa jenis air, dan rata-ratanya.">Berat spesifik (piknometer)</a><span class="acuan">SNI 1964:2008</span></li><li><a href="praktikum/hubungan-fase/" data-acuan="Diagram fase" data-ket="Angka pori, porositas, derajat kejenuhan, dan berat isi (basah, kering, jenuh, terendam) dengan diagram fase.">Hubungan berat–volume</a><span class="acuan">Diagram fase</span></li></ul></div>
         <div class="lapis-daftar" data-warna="lapis-2" data-jenis="Praktikum"><p><span class="no">02</span>Konsistensi dan gradasi</p><ul><li><a href="praktikum/atterberg/" data-acuan="SNI 1967:2008 · SNI 1966:2008" data-ket="Batas cair (kurva aliran atau satu titik), batas plastis, indeks plastisitas, dan posisi di bagan plastisitas.">Batas Atterberg</a><span class="acuan">SNI 1967:2008 · SNI 1966:2008</span></li><li><a href="praktikum/batas-susut/" data-acuan="SNI 3422:2008" data-ket="Batas susut dan rasio susut dari volume tanah basah dan kering, dengan volume langsung atau air raksa.">Batas susut</a><span class="acuan">SNI 3422:2008</span></li><li><a href="praktikum/saringan/" data-acuan="SNI 3423:2008" data-ket="Persen lolos tiap saringan, kurva gradasi, D10/D30/D60, Cu, Cc, dan fraksi kerikil/pasir/halus.">Analisa saringan</a><span class="acuan">SNI 3423:2008</span></li><li><a href="praktikum/hidrometer/" data-acuan="SNI 3423:2008" data-ket="Hidrometer 152H dengan hukum Stokes, persen lolos, dan kurva gradasi gabungan saringan–hidrometer beserta fraksi lanau dan lempung.">Analisa hidrometer</a><span class="acuan">SNI 3423:2008</span></li><li><a href="praktikum/klasifikasi/" data-acuan="SNI 6371:2015 · AASHTO M 145" data-ket="Simbol dan nama kelompok USCS serta kelompok dan indeks kelompok AASHTO.">Klasifikasi tanah</a><span class="acuan">SNI 6371:2015 · AASHTO M 145</span></li></ul></div>
@@ -173,6 +175,6 @@
   <script src="assets/praktikum/hitung-dasar.js" defer></script>
   <script src="assets/praktikum/hitung-atterberg.js" defer></script>
   <script src="assets/alur-atterberg.js" defer></script>
-  <script src="assets/penampang.js" defer></script>
+  <script src="assets/blok3d.js" defer></script>
 </body>
 </html>

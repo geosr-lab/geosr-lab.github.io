@@ -74,6 +74,17 @@ Keputusan Defsa, 15 November 2026: tampilan datar terasa seperti buatan AI, jadi
 - Tema gelap adalah malam: bulan dan bintang, butir berpendar tipis dengan warna lapisannya.
 - Antarmuka di atas kanvas memakai kaca buram (`--kaca`, `backdrop-filter`). Kartu dasbor (`.petak`) memakai `--cahaya-atas` (garis terang 1 px di tepi atas), `--bayang-dalam`, dan sorot lembut yang mengikuti kursor (`--mx`, `--my`, diisi `gerak.js`).
 - Warna turunan dihitung dari token (campuran dengan putih atau hitam), bukan warna baru tanpa pasangan gelap.
+- Berlaku di seluruh situs (token `--kilap`, `--kilap-tipis`, `--cekung`): tombol seperti tuts timbul (tebal 3 px, turun saat ditekan); isian sedikit cekung; kartu dan panel bercahaya dari atas dengan sorot kursor; pita kelompok dan kotak warna seperti silinder inti bor (terang kiri, gelap kanan); hero tiap halaman disinari dari kiri atas.
+- Sketsa alat: isian bentuk memakai filter SVG `#geosr-timbul` (cahaya difus dan kilap dari azimut 225°, bayangan jatuh), garis memakai `#geosr-garis`. Filter disisipkan `gerak.js`, lalu kelas `ada-timbul` dipasang di `<html>`; tanpa skrip sketsa tetap datar dan utuh.
+- Grafik hanya di layar: bidang plot disinari, garis data dan titik berbayang. Ekspor PNG dan Word memakai gaya inline, jadi tidak berubah.
+
+## 3D
+
+Keputusan Defsa, 15 November 2026: beberapa elemen dibuat 3D, bukan hanya 2D, asal bermakna dan bisa dipakai.
+- Blok tanah 3D di dasbor beranda (`blok3d.js`): sepuluh lapisan sebagai lempeng di atas lantai kertas milimeter, proyeksi perspektif buatan sendiri di kanvas 2D (tanpa pustaka). Seret untuk memutar, klik lempeng atau nomor lapisan untuk menariknya keluar seperti laci dan melihat alatnya, "Urai lapisan" merenggangkan semua lempeng. Panel di bawahnya berisi tautan alat (bisa dipakai papan ketik). Kotak cari beranda menyorot pin yang cocok; alat yang terakhir dibuka bercincin laterit.
+- Kartu kecil (kartu alat, katalog praktikum, "Lanjutkan") miring paling banyak 5° ke arah kursor dengan perspektif 700 px. Petak dasbor yang besar tidak dimiringkan.
+- Cahaya 3D mengikuti aturan "Cahaya dan kedalaman": cahaya tetap di kiri atas pembaca, sisi atas terang dan hangat, sisi samping gelap dan dingin.
+- Semua gerak 3D mati saat `prefers-reduced-motion` dan berhenti saat tab tersembunyi atau di luar layar.
 
 ## Teks
 
@@ -87,7 +98,7 @@ Keputusan Defsa, 15 November 2026: tampilan datar terasa seperti buatan AI, jadi
 Ciri template dan tulisan AI yang tidak dipakai:
 - Label kecil berhuruf kapital berspasi di atas judul (eyebrow), titik tengah sebagai hiasan di antara label, panah "→" di teks tautan.
 - Latar krem dengan aksen oranye bata; kartu bundar seragam dengan bayangan sama; gradasi atau cahaya (glow) yang tidak memodelkan cahaya atau materi (lihat "Cahaya dan kedalaman"); pil status acak.
-- Animasi muncul di setiap bagian; latar video atau 3D.
+- Animasi muncul di setiap bagian; latar video; 3D sebagai hiasan yang tidak bisa dipakai (lihat "3D").
 - Pembuka kosong, kata penekanan tanpa angka (sangat, krusial, signifikan), daftar tiga hal yang dipaksakan, nada iklan.
 - Gambar atau video buatan AI. Aset luar hanya berlisensi jelas (CC0, CC BY, MIT, OFL, dsb.), disimpan lokal, dicatat di `docs/assets/kredit.json`.
 - Memuat aset dari CDN.

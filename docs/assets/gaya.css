@@ -1725,3 +1725,135 @@ dialog.palet::backdrop { background: color-mix(in srgb, var(--teks) 30%, transpa
 .petak:hover { --sorot-kursor: 9%; }
 @property --sorot-kursor { syntax: "<percentage>"; inherits: true; initial-value: 0%; }
 @media (prefers-reduced-motion: reduce) { .petak { transition: none; } }
+
+/* ---------------------------------------------------------------- Cahaya di seluruh situs (Nov 2026)
+ * Satu sumber cahaya di kiri atas untuk semua elemen: tombol seperti tuts timbul, isian cekung, kartu
+ * bercahaya dari atas, pita dan kotak warna seperti silinder inti bor, sketsa dan ikon timbul. */
+:root { --kilap: rgba(255, 255, 255, .55); --kilap-tipis: rgba(255, 255, 255, .35); --cekung: rgba(28, 36, 39, .08); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="terang"]) { --kilap: rgba(255, 255, 255, .07); --kilap-tipis: rgba(255, 255, 255, .04); --cekung: rgba(0, 0, 0, .35); }
+}
+:root[data-tema="gelap"] { --kilap: rgba(255, 255, 255, .07); --kilap-tipis: rgba(255, 255, 255, .04); --cekung: rgba(0, 0, 0, .35); }
+
+/* Tombol: tuts timbul dengan tebal 3 px, turun saat ditekan */
+.tombol {
+  background-image: linear-gradient(180deg, var(--kilap), transparent 60%);
+  box-shadow: inset 0 1px 0 var(--cahaya-atas), 0 2px 0 color-mix(in srgb, var(--teks) 20%, transparent), 0 6px 14px -10px rgba(0, 0, 0, .45);
+}
+.tombol:hover, .tombol.kecil:hover {
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 var(--cahaya-atas), 0 3px 0 color-mix(in srgb, var(--teks) 45%, transparent), 0 12px 20px -12px rgba(0, 0, 0, .5);
+}
+.tombol:active, .tombol.kecil:active { transform: translateY(2px); box-shadow: inset 0 2px 4px var(--cekung); }
+.tombol.utama {
+  background-image: linear-gradient(180deg, color-mix(in srgb, #fff 24%, var(--aksen)), var(--aksen) 55%, var(--aksen-tua));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 3px 0 var(--tombol-utama-bayang), 0 10px 20px -12px color-mix(in srgb, var(--aksen) 80%, transparent);
+}
+.tombol.utama:hover {
+  background-image: linear-gradient(180deg, color-mix(in srgb, #fff 30%, var(--aksen)), var(--aksen) 50%, var(--aksen-tua));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), 0 4px 0 var(--tombol-utama-bayang), 0 14px 26px -12px color-mix(in srgb, var(--aksen) 85%, transparent);
+}
+.tombol.utama:active { box-shadow: inset 0 2px 6px rgba(0, 0, 0, .35); }
+
+/* Isian: sedikit cekung (bayangan di tepi atas) */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea {
+  background-image: linear-gradient(180deg, var(--cekung), transparent 9px);
+  box-shadow: inset 0 1px 2px var(--cekung);
+}
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus, select:focus, textarea:focus {
+  box-shadow: inset 0 1px 2px var(--cekung), 0 0 0 4px color-mix(in srgb, var(--aksen) 18%, transparent);
+}
+input[type="range"] { accent-color: var(--aksen); }
+
+/* Kartu dan panel: cahaya dari atas, bayangan lembut, sorot mengikuti kursor (gerak.js mengisi --mx/--my) */
+.kartu, .kartu-praktikum, .grafik-kalk, .alur-tahap, .daftar-lanjutkan a, .daftar-uji a, .coba-isi, .menu-ekspor-isi {
+  background-image:
+    radial-gradient(360px circle at var(--mx, 50%) var(--my, -40%), color-mix(in srgb, var(--aksen) var(--sorot-kursor, 0%), transparent), transparent 65%),
+    linear-gradient(180deg, var(--kilap-tipis), transparent 140px);
+  box-shadow: inset 0 1px 0 var(--cahaya-atas), var(--bayang-dalam);
+  transition: transform .25s var(--mulus), box-shadow .25s ease, border-color .2s ease, --sorot-kursor .3s ease;
+}
+.kartu:hover, .kartu-praktikum:hover, .daftar-lanjutkan a:hover, .daftar-uji a:hover, .alur-tahap:hover { --sorot-kursor: 9%; }
+a.kartu:hover, .daftar-uji a:hover, .daftar-lanjutkan a:hover {
+  box-shadow: inset 0 1px 0 var(--cahaya-atas), 0 2px 4px rgba(0, 0, 0, .06), 0 26px 44px -26px rgba(0, 0, 0, .55);
+}
+
+/* Pita kelompok dan kotak warna: silinder inti bor (terang di kiri, gelap di kanan) */
+a.kartu::before, .kolom-inti a::before, .inti-bor a::before, .daftar-uji a::before {
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, .32), transparent 45%, rgba(0, 0, 0, .22));
+}
+.chip::before, .jelajah-lapis .warna {
+  background-image: linear-gradient(135deg, rgba(255, 255, 255, .4), transparent 55%, rgba(0, 0, 0, .18));
+}
+.chip { box-shadow: inset 0 1px 0 var(--cahaya-atas), 0 1px 2px var(--cekung); }
+
+/* Hero tiap halaman: cahaya hangat dari kiri atas */
+.pahlawan:not(.beranda-pahlawan)::after {
+  content: ""; position: absolute; z-index: -1; inset: 0 auto 0 50%; width: 100vw; transform: translateX(-50%); pointer-events: none;
+  background: radial-gradient(55% 90% at 10% 0%, color-mix(in srgb, var(--laterit) 7%, transparent), transparent 70%);
+}
+
+/* Tab: garis aktif bercahaya, nomor tab timbul */
+.tab-garis { background-image: linear-gradient(90deg, rgba(255, 255, 255, .35), transparent 60%); box-shadow: 0 -2px 8px -2px color-mix(in srgb, var(--lapis, var(--aksen)) 70%, transparent); }
+[aria-selected="true"] > .tab-no { background-image: linear-gradient(160deg, rgba(255, 255, 255, .25), transparent 60%); box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .35); }
+
+/* Sketsa alat: kertas disinari dari kiri atas; isian bentuk timbul lewat filter #geosr-timbul (gerak.js) */
+.sketsa-bingkai {
+  background:
+    radial-gradient(90% 80% at 12% 0%, var(--kilap), transparent 60%),
+    linear-gradient(var(--kisi-halus) 1px, transparent 1px) 0 0 / 12px 12px,
+    linear-gradient(90deg, var(--kisi-halus) 1px, transparent 1px) 0 0 / 12px 12px,
+    var(--permukaan);
+  box-shadow: inset 0 1px 0 var(--cahaya-atas), inset 0 -18px 30px -24px var(--cekung), var(--bayang-dalam);
+}
+.ada-timbul .sk .t, .ada-timbul .sk .t2, .ada-timbul .sk .td, .ada-timbul .sk .w, .ada-timbul .sk .ps,
+.ada-timbul .sk .bt, .ada-timbul .sk .m, .ada-timbul .sk .kf { filter: url(#geosr-timbul); }
+.ada-timbul .sk .g:not(.tipis) { filter: url(#geosr-garis); }
+.ikon-uji, .ikon-ringkas svg, .merek-tanda { filter: drop-shadow(0 1px 1px var(--cekung)) drop-shadow(0 2px 3px var(--cekung)); }
+
+/* Grafik di layar (ekspor PNG dan Word tidak terpengaruh: ekspor.js hanya memakai gaya inline) */
+@media screen {
+  .grafik, .grafik-broms { background: radial-gradient(120% 90% at 0% 0%, var(--kilap-tipis), transparent 60%); border-radius: 6px; }
+  .grafik polyline.seri, .grafik-broms polyline { filter: drop-shadow(0 2px 1.5px rgba(0, 0, 0, .2)); }
+  .grafik circle, .grafik-broms circle { filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, .3)); }
+}
+@media (prefers-reduced-motion: reduce) { .kartu, .kartu-praktikum, .daftar-uji a, .daftar-lanjutkan a { transition: none; } }
+@media print {
+  .tombol, .kartu, .kartu-praktikum, .grafik-kalk, .daftar-uji a, .sketsa-bingkai { box-shadow: none !important; background-image: none !important; }
+  .ada-timbul .sk * { filter: none !important; }
+}
+
+/* ---------------------------------------------------------------- Blok tanah 3D di dasbor beranda (blok3d.js) */
+.blok3d { margin: 0; min-width: 0; }
+.blok-panggung {
+  height: clamp(360px, 50vh, 480px);
+  background:
+    radial-gradient(70% 60% at 18% 8%, color-mix(in srgb, var(--laterit) 12%, transparent), transparent 70%),
+    radial-gradient(80% 70% at 80% 100%, color-mix(in srgb, var(--aksen) 10%, transparent), transparent 70%),
+    linear-gradient(180deg, var(--permukaan), var(--latar));
+}
+.b3-kanvas { display: block; width: 100%; height: 100%; touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; }
+.b3-kanvas.diseret { cursor: grabbing; }
+.b3-lapis { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.b3-no {
+  min-width: 38px; height: 34px; padding: 0 6px; border: 1px solid color-mix(in srgb, var(--lapis) 70%, var(--teks)); border-radius: 6px; cursor: pointer;
+  font: 700 13px/1 var(--huruf-judul); font-variant-numeric: tabular-nums; color: var(--teks);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--lapis) 42%, var(--permukaan)), color-mix(in srgb, var(--lapis) 70%, var(--permukaan)));
+  box-shadow: inset 0 1px 0 var(--kilap), 0 3px 0 color-mix(in srgb, var(--lapis) 60%, #000), 0 6px 12px -8px rgba(0, 0, 0, .5);
+  transition: transform .12s ease, box-shadow .15s ease;
+}
+.b3-no:hover { transform: translateY(-1px); }
+.b3-no[aria-pressed="true"] {
+  transform: translateY(2px); color: #fff; background: linear-gradient(180deg, color-mix(in srgb, var(--lapis) 85%, #fff), var(--lapis));
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, .3), 0 1px 0 color-mix(in srgb, var(--lapis) 60%, #000); text-shadow: 0 1px 1px rgba(0, 0, 0, .45);
+}
+.b3-info { margin-top: 12px; padding: 12px 14px; border: 1px solid var(--garis); border-left: 5px solid var(--lapis, var(--aksen)); border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--kilap-tipis), transparent 80px), var(--permukaan); box-shadow: inset 0 1px 0 var(--cahaya-atas), var(--bayang-dalam); min-height: 92px; }
+.b3-info .b3-judul { margin: 0; font: 700 16px/1.3 var(--huruf-judul); font-stretch: 106%; }
+.b3-info .b3-ket { margin: 2px 0 8px; font-size: 13.5px; color: var(--teks-2); }
+.b3-info .chip-daftar { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.b3-info .chip.cocok { border-color: var(--aksen); box-shadow: 0 0 0 2px color-mix(in srgb, var(--aksen) 30%, transparent); }
+.blok3d figcaption { margin-top: 10px; font-size: 13.5px; color: var(--teks-2); }
+.blok3d figcaption a { font-weight: 700; white-space: nowrap; }
+@media (max-width: 820px) { .blok-panggung { height: 340px; } }
+@media (max-width: 560px) { .b3-no { flex: 1 1 0; min-width: 0; padding: 0; height: 30px; font-size: 12px; } .b3-lapis { gap: 4px; flex-wrap: nowrap; } }
