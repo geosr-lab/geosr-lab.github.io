@@ -561,22 +561,62 @@ def data_alat():
     return json.loads((KONTEN / "alat.json").read_text(encoding="utf-8"))
 
 
+IKON_BELAJAR = {
+    # Kamus: buku terbuka dengan simbol; Cari: kaca pembesar. Garis 24 × 24, ikut warna teks.
+    "notasi/": '<path d="M3 5.5c3-1 6-1 9 1 3-2 6-2 9-1v13c-3-1-6-1-9 1-3-2-6-2-9-1z"/><path d="M12 6.5v13"/><path d="M5.5 10h4M5.5 13h3M15 9.5l3 4M18 9.5l-3 4"/>',
+    "cari/": '<circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5.5 5.5"/>',
+}
+
+
+# Alat praktikum yang ditautkan langsung dari petak Praktikum di beranda (urutan lembar lab).
+SERING_DIPAKAI = ["kadar-air", "atterberg", "saringan", "pemadatan", "cbr", "sondir"]
+
+
+def baris_ringkas(href, id_sketsa, judul, ket):
+    gambar = sketsa_mini(id_sketsa) if id_sketsa else ""
+    if not gambar:
+        gambar = f'<span class="ikon-ringkas" aria-hidden="true"><svg viewBox="0 0 24 24">{IKON_BELAJAR.get(href, "")}</svg></span>'
+    return f'<li><a href="{href}">{gambar}<span class="judul">{html.escape(judul)}</span><span class="ket">{ket}</span></a></li>'
+
+
 def kartu_beranda(data, praktikum=None):
-    """Kartu alat di beranda. Praktikum tampil besar dengan kolom inti berisi kelompok pengujiannya."""
-    kartu = []
-    for a in data["alat"]:
-        if a["id"] == "praktikum" and praktikum:
-            baris = "".join(
-                f'<li><a href="{a["halaman"]}#{slug(k["judul"])}" data-lapis="{i % 6 + 1}">{ikon_kelompok(i % 6 + 1)}<span class="nama">{html.escape(k["judul"])}</span>'
-                f'<span class="jumlah">{len(k["alat"])} alat</span></a></li>' for i, k in enumerate(praktikum["kelompok"]))
-            kartu.append(f'<div class="kartu-praktikum" data-kat="{a["kategori"]}">\n          <span class="lencana">{html.escape(a["lencana"])}</span>\n'
-                         f'          <h3><a href="{a["halaman"]}">{html.escape(a["judul"])}</a></h3>\n          <p>{a["ringkas"]}</p>\n'
-                         f'          <ul class="kolom-inti">{baris}</ul>\n'
-                         f'          <a class="tombol utama" href="{a["halaman"]}" style="align-self:flex-start">Buka alat praktikum</a>\n        </div>')
-            continue
-        kartu.append(f'<a class="kartu" href="{a["halaman"]}" data-kat="{a["kategori"]}">\n          {sketsa_mini(a["id"])}<span class="lencana">{html.escape(a["lencana"])}</span>\n'
-                     f'          <h3>{html.escape(a["judul"])}</h3>\n          <p class="redup">{a["ringkas"]}</p>\n        </a>')
-    return "\n        ".join(kartu)
+    """Kisi dasbor beranda: petak Praktikum, petak Kalkulator per topik, petak Belajar dengan angka ringkas."""
+    praktik = next(a for a in data["alat"] if a["id"] == "praktikum")
+    latihan = next(a for a in data["alat"] if a["id"] == "latihan")
+    kalkulator = [a for a in data["alat"] if a["halaman"].startswith("kalkulator/")]
+    petak = []
+    if praktikum:
+        baris = "".join(
+            f'<li><a href="{praktik["halaman"]}#{slug(k["judul"])}" data-lapis="{i % 6 + 1}">{ikon_kelompok(i % 6 + 1)}<span class="nama">{html.escape(k["judul"])}</span>'
+            f'<span class="jumlah">{len(k["alat"])} alat</span></a></li>' for i, k in enumerate(praktikum["kelompok"]))
+        nama = {a["id"]: a["judul"] for k in praktikum["kelompok"] for a in k["alat"]}
+        sering = "".join(f'<li><a class="chip" href="{praktik["halaman"]}{i}/">{html.escape(nama[i])}</a></li>'
+                         for i in SERING_DIPAKAI if i in nama)
+        petak.append(f'<div class="petak petak-praktikum">\n          <span class="lencana">Praktikum</span>\n'
+                     f'          <h3><a href="{praktik["halaman"]}">{html.escape(praktik["judul"])}</a></h3>\n'
+                     f'          <p>Formulir seperti lembar data lab, hasil antaralat yang saling terhubung, grafik, dan ekspor ke Word dan Excel.</p>\n'
+                     f'          <ul class="kolom-inti">{baris}</ul>\n'
+                     f'          <h4>Langsung ke alat</h4>\n          <ul class="chip-daftar">{sering}</ul>\n'
+                     f'          <a class="tombol utama" href="{praktik["halaman"]}">Buka semua alat praktikum</a>\n        </div>')
+    grup = ""
+    for k in data["kategori"]:
+        isi = [a for a in kalkulator if a["kategori"] == k["id"]]
+        if isi:
+            grup += (f'\n          <h4>{html.escape(k["judul"])}</h4>\n          <ul class="daftar-ringkas">'
+                     + "".join(baris_ringkas(a["halaman"], a["id"], a["judul"], a["ringkas"]) for a in isi) + "</ul>")
+    petak.append(f'<div class="petak petak-kalkulator">\n          <span class="lencana">Kalkulator</span>\n'
+                 f'          <h3><a href="alat/">Kalkulator geoteknik</a></h3>{grup}\n        </div>')
+    jumlah_notasi = sum(len(k["butir"]) for k in data_notasi()["kelompok"])
+    jumlah_praktikum = sum(len(k["alat"]) for k in praktikum["kelompok"]) if praktikum else 0
+    belajar = (baris_ringkas(latihan["halaman"], "latihan", latihan["judul"], latihan["ringkas"])
+               + baris_ringkas("notasi/", "", "Kamus notasi", f"Arti dan satuan {jumlah_notasi} simbol, ditambah konversi satuan.")
+               + baris_ringkas("cari/", "", "Cari di seluruh situs", "Alat, kalkulator, notasi, dan catatan."))
+    rekap = "".join(f'<div><dt>{j}</dt><dd>{n}</dd></div>' for n, j in (
+        (jumlah_praktikum, "alat praktikum"), (len(kalkulator), "kalkulator"), (jumlah_soal(), "jenis soal"), (jumlah_notasi, "notasi")))
+    petak.append(f'<div class="petak petak-belajar">\n          <span class="lencana">Belajar</span>\n'
+                 f'          <h3>Latihan dan rujukan</h3>\n          <ul class="daftar-ringkas">{belajar}</ul>\n'
+                 f'          <dl class="rekap-mini">{rekap}</dl>\n        </div>')
+    return "\n        ".join(petak)
 
 
 def daftar_halaman_alat(data):

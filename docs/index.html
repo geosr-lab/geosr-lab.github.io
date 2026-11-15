@@ -40,10 +40,19 @@
         <p class="asal"><svg viewBox="0 0 16 20" aria-hidden="true"><rect width="16" height="5" rx="1" style="fill:var(--lapis-3)"/><rect y="6" width="16" height="6" rx="1" style="fill:var(--lapis-2)"/><rect y="13" width="16" height="7" rx="1" style="fill:var(--lapis-4)"/></svg>Geotechnical Soil Report</p>
         <h1><span class="baris">GeoSR</span></h1>
         <p class="lead">Olah data praktikum Mekanika Tanah dan hitung soal geoteknik lewat formulir seperti lembar lab, lengkap dengan langkah, grafik, dan ekspor ke laporan.</p>
-        <div class="baris-tombol">
+        <form class="cari-beranda" role="search" action="cari/" autocomplete="off">
+          <label for="cariBeranda" class="sr-only">Cari alat, kalkulator, atau notasi</label>
+          <svg class="ikon-cari" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5.5 5.5"/></svg>
+          <input id="cariBeranda" name="q" type="search" placeholder="Cari: kadar air, CBR, Broms, OCR…" aria-controls="hasilBeranda" aria-autocomplete="list">
+          <kbd class="pintasan" aria-hidden="true">/</kbd>
+          <ul id="hasilBeranda" class="hasil-beranda" role="listbox" aria-label="Hasil pencarian" hidden></ul>
+        </form>
+        <nav class="aksi-cepat" aria-label="Aksi cepat">
           <a class="tombol utama" href="praktikum/">Mulai praktikum</a>
-          <a class="tombol" href="alat/">Buka kalkulator</a>
-        </div>
+          <a class="tombol" href="alat/">Kalkulator</a>
+          <a class="tombol" href="latihan/">Latihan soal</a>
+          <a class="tombol" href="notasi/">Kamus notasi</a>
+        </nav>
       </div>
       <figure class="penampang" id="penampang">
         <div class="penampang-bingkai"></div>
@@ -55,64 +64,65 @@
       </figure>
     </header>
 
-    <section>
-      <h2>Yang bisa dikerjakan</h2>
-      <div class="alat-unggulan">
+    <section class="lanjutkan" id="lanjutkan" hidden aria-labelledby="judul-lanjutkan">
+      <div class="kepala-bagian"><h2 id="judul-lanjutkan">Lanjutkan</h2><button type="button" class="tombol kecil" id="hapusRiwayat">Hapus riwayat</button></div>
+      <ul class="daftar-lanjutkan" id="daftarLanjutkan"></ul>
+    </section>
+
+    <section aria-labelledby="judul-mulai">
+      <h2 id="judul-mulai">Mulai dari sini</h2>
+      <div class="dasbor">
         <!-- ALAT:MULAI -->
-  <a class="kartu" href="kalkulator/tiang-bor.html" data-kat="fondasi">
-          <figure class="sketsa sketsa-mini" data-sketsa="tiang-bor" aria-hidden="true"></figure><span class="lencana">Fondasi dalam</span>
-          <h3>Daya dukung tiang bor dari N-SPT</h3>
-          <p class="redup">Metode Reese &amp; Wright (1977) dengan profil tanah dan langkah hitungan per lapisan.</p>
-        </a>
-        <a class="kartu" href="kalkulator/broms-lateral.html" data-kat="fondasi">
-          <figure class="sketsa sketsa-mini" data-sketsa="broms-lateral" aria-hidden="true"></figure><span class="lencana">Fondasi dalam</span>
-          <h3>Kapasitas lateral tiang metode Broms</h3>
-          <p class="redup">Metode Broms (1964): moda tiang pendek, menengah, atau panjang, grafik P<sub>ult</sub> terhadap panjang tiang.</p>
-        </a>
-        <a class="kartu" href="kalkulator/pondasi-dangkal.html" data-kat="fondasi">
-          <figure class="sketsa sketsa-mini" data-sketsa="pondasi-dangkal" aria-hidden="true"></figure><span class="lencana">Fondasi dangkal</span>
-          <h3>Kapasitas dukung pondasi dangkal</h3>
-          <p class="redup">Persamaan daya dukung umum dengan faktor bentuk, kedalaman, dan koreksi muka air tanah.</p>
-        </a>
-        <a class="kartu" href="kalkulator/konsolidasi.html" data-kat="penurunan">
-          <figure class="sketsa sketsa-mini" data-sketsa="konsolidasi" aria-hidden="true"></figure><span class="lencana">Konsolidasi</span>
-          <h3>Penurunan konsolidasi</h3>
-          <p class="redup">Lempung NC dan OC, diagram e–log σ', dan kurva penurunan terhadap waktu.</p>
-        </a>
-        <div class="kartu-praktikum" data-kat="praktikum">
+  <div class="petak petak-praktikum">
           <span class="lencana">Praktikum</span>
           <h3><a href="praktikum/">Praktikum Mekanika Tanah</a></h3>
-          <p>Delapan belas alat pengolah data praktikum, dari kadar air sampai permeabilitas, konsolidasi, sondir, dan SPT. Formulir seperti lembar data lab, grafik, hasil antaralat yang saling terhubung, dan ekspor ke Word dan Excel.</p>
+          <p>Formulir seperti lembar data lab, hasil antaralat yang saling terhubung, grafik, dan ekspor ke Word dan Excel.</p>
           <ul class="kolom-inti"><li><a href="praktikum/#sifat-fisik" data-lapis="1"><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3h4M10.6 3v5.4a6.2 6.2 0 1 0 2.8 0V3"/><path d="M6.4 15.2h11.2"/></svg><span class="nama">Sifat fisik</span><span class="jumlah">3 alat</span></a></li><li><a href="praktikum/#konsistensi-dan-gradasi" data-lapis="2"><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h16v3.6H4zM4.8 8.1h14.4v3.6H4.8zM5.6 11.7h12.8v3.6H5.6z"/><path d="M7 15.3l1 4.2h8l1-4.2"/></svg><span class="nama">Konsistensi dan gradasi</span><span class="jumlah">5 alat</span></a></li><li><a href="praktikum/#kepadatan" data-lapis="3"><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5v6M9.4 8.5h5.2v2.6H9.4z"/><path d="M6.5 13.5h11v7h-11zM6.5 16.2h11"/></svg><span class="nama">Kepadatan</span><span class="jumlah">3 alat</span></a></li><li><a href="praktikum/#permeabilitas" data-lapis="4"><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 2.5v6M14.5 2.5v6M6.5 8.5h11v9h-11z"/><path d="M8 12.4c1.3 1 2.7 1 4 0s2.7-1 4 0"/><path d="M12 19.5v2"/></svg><span class="nama">Permeabilitas</span><span class="jumlah">2 alat</span></a></li><li><a href="praktikum/#kekuatan-dan-konsolidasi" data-lapis="5"><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 8h7v8h-7z"/><path d="M12 2.5v3.5M10 4.3l2 1.9 2-1.9M12 21.5V18M10 19.7l2-1.9 2 1.9"/></svg><span class="nama">Kekuatan dan konsolidasi</span><span class="jumlah">3 alat</span></a></li><li><a href="praktikum/#uji-lapangan" data-lapis="6"><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8.5h7M14 8.5h7M3 13.5h7M14 13.5h7M3 18.5h18"/><path d="M12 2.5v11.5M10.4 14l1.6 3.8 1.6-3.8z"/></svg><span class="nama">Uji lapangan</span><span class="jumlah">2 alat</span></a></li></ul>
-          <a class="tombol utama" href="praktikum/" style="align-self:flex-start">Buka alat praktikum</a>
+          <h4>Langsung ke alat</h4>
+          <ul class="chip-daftar"><li><a class="chip" href="praktikum/kadar-air/">Kadar air</a></li><li><a class="chip" href="praktikum/atterberg/">Batas Atterberg</a></li><li><a class="chip" href="praktikum/saringan/">Analisa saringan</a></li><li><a class="chip" href="praktikum/pemadatan/">Pemadatan (Proctor)</a></li><li><a class="chip" href="praktikum/cbr/">CBR laboratorium</a></li><li><a class="chip" href="praktikum/sondir/">Sondir</a></li></ul>
+          <a class="tombol utama" href="praktikum/">Buka semua alat praktikum</a>
         </div>
-        <a class="kartu" href="latihan/" data-kat="latihan">
-          <figure class="sketsa sketsa-mini" data-sketsa="latihan" aria-hidden="true"></figure><span class="lencana">Latihan</span>
-          <h3>Bank soal geoteknik</h3>
-          <p class="redup">Sembilan jenis soal dengan angka acak, dicek otomatis, lengkap dengan pembahasan.</p>
-        </a>
-        <a class="kartu" href="kalkulator/korelasi-spt.html" data-kat="penyelidikan">
-          <figure class="sketsa sketsa-mini" data-sketsa="korelasi-spt" aria-hidden="true"></figure><span class="lencana">Penyelidikan tanah</span>
-          <h3>Korelasi parameter tanah dari N-SPT</h3>
-          <p class="redup">Koreksi N<sub>60</sub> dan (N<sub>1</sub>)<sub>60</sub>, lalu D<sub>r</sub>, φ, E, c<sub>u</sub>, dan v<sub>s</sub> dari korelasi empiris.</p>
-        </a>
-        <a class="kartu" href="kalkulator/korelasi-cpt.html" data-kat="penyelidikan">
-          <figure class="sketsa sketsa-mini" data-sketsa="korelasi-cpt" aria-hidden="true"></figure><span class="lencana">Penyelidikan tanah</span>
-          <h3>Korelasi parameter tanah dari sondir (CPT)</h3>
-          <p class="redup">Dari q<sub>c</sub> dan f<sub>s</sub>: D<sub>r</sub> dan φ pasir; c<sub>u</sub>, S<sub>t</sub>, OCR, CR, v<sub>s</sub> lempung.</p>
-        </a>
+        <div class="petak petak-kalkulator">
+          <span class="lencana">Kalkulator</span>
+          <h3><a href="alat/">Kalkulator geoteknik</a></h3>
+          <h4>Fondasi</h4>
+          <ul class="daftar-ringkas"><li><a href="kalkulator/tiang-bor.html"><figure class="sketsa sketsa-mini" data-sketsa="tiang-bor" aria-hidden="true"></figure><span class="judul">Daya dukung tiang bor dari N-SPT</span><span class="ket">Metode Reese &amp; Wright (1977) dengan profil tanah dan langkah hitungan per lapisan.</span></a></li><li><a href="kalkulator/broms-lateral.html"><figure class="sketsa sketsa-mini" data-sketsa="broms-lateral" aria-hidden="true"></figure><span class="judul">Kapasitas lateral tiang metode Broms</span><span class="ket">Metode Broms (1964): moda tiang pendek, menengah, atau panjang, grafik P<sub>ult</sub> terhadap panjang tiang.</span></a></li><li><a href="kalkulator/pondasi-dangkal.html"><figure class="sketsa sketsa-mini" data-sketsa="pondasi-dangkal" aria-hidden="true"></figure><span class="judul">Kapasitas dukung pondasi dangkal</span><span class="ket">Persamaan daya dukung umum dengan faktor bentuk, kedalaman, dan koreksi muka air tanah.</span></a></li></ul>
+          <h4>Penurunan</h4>
+          <ul class="daftar-ringkas"><li><a href="kalkulator/konsolidasi.html"><figure class="sketsa sketsa-mini" data-sketsa="konsolidasi" aria-hidden="true"></figure><span class="judul">Penurunan konsolidasi</span><span class="ket">Lempung NC dan OC, diagram e–log σ', dan kurva penurunan terhadap waktu.</span></a></li></ul>
+          <h4>Penyelidikan tanah</h4>
+          <ul class="daftar-ringkas"><li><a href="kalkulator/korelasi-spt.html"><figure class="sketsa sketsa-mini" data-sketsa="korelasi-spt" aria-hidden="true"></figure><span class="judul">Korelasi parameter tanah dari N-SPT</span><span class="ket">Koreksi N<sub>60</sub> dan (N<sub>1</sub>)<sub>60</sub>, lalu D<sub>r</sub>, φ, E, c<sub>u</sub>, dan v<sub>s</sub> dari korelasi empiris.</span></a></li><li><a href="kalkulator/korelasi-cpt.html"><figure class="sketsa sketsa-mini" data-sketsa="korelasi-cpt" aria-hidden="true"></figure><span class="judul">Korelasi parameter tanah dari sondir (CPT)</span><span class="ket">Dari q<sub>c</sub> dan f<sub>s</sub>: D<sub>r</sub> dan φ pasir; c<sub>u</sub>, S<sub>t</sub>, OCR, CR, v<sub>s</sub> lempung.</span></a></li></ul>
+        </div>
+        <div class="petak petak-belajar">
+          <span class="lencana">Belajar</span>
+          <h3>Latihan dan rujukan</h3>
+          <ul class="daftar-ringkas"><li><a href="latihan/"><figure class="sketsa sketsa-mini" data-sketsa="latihan" aria-hidden="true"></figure><span class="judul">Bank soal geoteknik</span><span class="ket">Sembilan jenis soal dengan angka acak, dicek otomatis, lengkap dengan pembahasan.</span></a></li><li><a href="notasi/"><span class="ikon-ringkas" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 5.5c3-1 6-1 9 1 3-2 6-2 9-1v13c-3-1-6-1-9 1-3-2-6-2-9-1z"/><path d="M12 6.5v13"/><path d="M5.5 10h4M5.5 13h3M15 9.5l3 4M18 9.5l-3 4"/></svg></span><span class="judul">Kamus notasi</span><span class="ket">Arti dan satuan 96 simbol, ditambah konversi satuan.</span></a></li><li><a href="cari/"><span class="ikon-ringkas" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5.5 5.5"/></svg></span><span class="judul">Cari di seluruh situs</span><span class="ket">Alat, kalkulator, notasi, dan catatan.</span></a></li></ul>
+          <dl class="rekap-mini"><div><dt>alat praktikum</dt><dd>18</dd></div><div><dt>kalkulator</dt><dd>6</dd></div><div><dt>jenis soal</dt><dd>9</dd></div><div><dt>notasi</dt><dd>96</dd></div></dl>
+        </div>
   <!-- ALAT:SELESAI -->
       </div>
       <a class="tautan-lanjut" href="alat/">Semua kalkulator, cara memakai, dan cara mengutip</a>
     </section>
 
-    <section>
-      <ul class="ciri">
-        <li><strong>Langkah lengkap</strong><span>Diketahui, rumus, substitusi angka, dan hasil, bisa dicocokkan dengan hitungan tangan.</span></li>
-        <li><strong>Rumus bersumber</strong><span>Setiap rumus menyebut SNI, ASTM, atau buku acuannya di halaman alat.</span></li>
-        <li><strong>Siap laporan</strong><span>Unduh Word, salin ke Excel, simpan grafik PNG, atau cetak ke PDF.</span></li>
-        <li><strong>Tanpa daftar</strong><span>Data tersimpan di browser Anda sendiri dan tetap bisa dipakai tanpa internet.</span></li>
-      </ul>
+    <section class="alur" aria-labelledby="judul-alur">
+      <h2 id="judul-alur">Dari lembar lab ke laporan</h2>
+      <ol class="alur-langkah">
+        <li>
+          <svg class="alur-ikon" viewBox="0 0 48 48" aria-hidden="true"><rect x="9" y="6" width="30" height="36" rx="3"/><path d="M18 6v4h12V6"/><path class="alur-isi" d="M14 18h20M14 24h20M14 30h20M14 36h12M24 15v24"/></svg>
+          <strong>Isi data lab</strong><span>Formulir seperti lembar data. Tempel dari Excel atau muat data contoh.</span>
+        </li>
+        <li>
+          <svg class="alur-ikon" viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="9" width="34" height="30" rx="3"/><path d="M14 17h9l-5 7 5 7h-9"/><path class="alur-isi" d="M28 21h7M28 27h7"/></svg>
+          <strong>Hitung langkah demi langkah</strong><span>Rumus, sumber, substitusi angka, dan hasil yang bisa dicocokkan dengan hitungan tangan.</span>
+        </li>
+        <li>
+          <svg class="alur-ikon" viewBox="0 0 48 48" aria-hidden="true"><path d="M9 7v32h32"/><path class="alur-kurva" pathLength="1" d="M12 34c6-1 8-14 14-15s7 9 13-8"/><circle class="alur-isi" cx="26" cy="19" r="2.2"/></svg>
+          <strong>Grafik otomatis</strong><span>Kurva gradasi, pemadatan, konsolidasi, dan lainnya; simpan sebagai PNG.</span>
+        </li>
+        <li>
+          <svg class="alur-ikon" viewBox="0 0 48 48" aria-hidden="true"><path d="M12 5h17l9 9v29H12z"/><path d="M29 5v9h9"/><path class="alur-isi" d="M17 22h15M17 28h15M17 34h9"/></svg>
+          <strong>Siap laporan</strong><span>Unduh Word, salin ke Excel, atau cetak ke PDF. Data tetap di browser Anda.</span>
+        </li>
+      </ol>
     </section>
   </main>
 
@@ -127,5 +137,6 @@
   <script src="assets/gerak.js" defer></script>
   <!-- FOOTER:SELESAI -->
   <script src="assets/praktikum/sketsa.js" defer></script>
+  <script src="assets/beranda.js" defer></script>
 </body>
 </html>
