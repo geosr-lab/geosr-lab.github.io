@@ -5,6 +5,7 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 ## [Belum dirilis]
 
 ### Ditambahkan
+- Latihan soal dari alat praktikum: topik "Sifat fisik" (kadar air dua cawan, angka pori/derajat kejenuhan/porositas dari berat isi, berat isi kering contoh cincin) dan "Batas Atterberg" (batas cair satu titik, batas plastis dan indeks plastisitas beserta letak di bagan plastisitas). Kunci dihitung `praktikum/hitung-sifat-fisik.js` dan `hitung-atterberg.js`, dicocokkan dengan hitungan Python di `tests/verifikasi_latihan.py`; bank soal menjadi 17 jenis. Versi cache 0.26.0.
 - Daftar lompat di halaman kalkulator ("Ringkasan · Langkah · Hasil · Grafik · Catatan · Sumber"), dibangun dari hasil yang sedang tampil, menempel di bawah menu pada layar ≥ 900 px dan menandai bagian yang sedang dibaca. Tautan tidak mengubah alamat, jadi masukan yang tersimpan di tautan tetap utuh.
 - Tautan "Notation glossary (Indonesian)" di kaki halaman bahasa Inggris.
 

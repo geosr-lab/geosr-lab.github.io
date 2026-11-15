@@ -116,7 +116,24 @@
         (l.teks ? '<p>' + l.teks + '</p>' : '') + (l.tex || []).map(rumus).join('') + '</div>';
     }).join('') +
       '<p><strong>Kunci: ' + f(soal.jawaban, soal.desimal) + (soal.satuan !== '–' ? ' ' + soal.satuan : '') + '</strong></p>' +
-      '<p class="kecil redup">Ingin melihat hitungan lengkapnya? Masukkan data yang sama ke <a href="../#alat">kalkulator</a>.</p>';
+      '<p class="kecil redup">Ingin melihat hitungan lengkapnya? Masukkan data yang sama ke ' + alatTerkait(soal) + '.</p>';
+  }
+
+  // Alat yang menghitung soal ini, untuk tautan di bawah pembahasan.
+  var ALAT = {
+    'pondasi-dangkal': ['../kalkulator/pondasi-dangkal.html', 'kalkulator pondasi dangkal'],
+    konsolidasi: ['../kalkulator/konsolidasi.html', 'kalkulator konsolidasi'],
+    'tiang-bor': ['../kalkulator/tiang-bor.html', 'kalkulator tiang bor'],
+    'tiang-lateral': ['../kalkulator/broms-lateral.html', 'kalkulator Broms'],
+    'spt-n160': ['../kalkulator/korelasi-spt.html', 'kalkulator korelasi N-SPT'],
+    'cpt-cu': ['../kalkulator/korelasi-cpt.html', 'kalkulator korelasi sondir'],
+    'kadar-air-cawan': ['../praktikum/kadar-air/', 'alat praktikum kadar air'],
+    'sifat-fisik': ['../praktikum/hubungan-fase/', 'alat praktikum hubungan fase'],
+    atterberg: ['../praktikum/atterberg/', 'alat praktikum batas Atterberg']
+  };
+  function alatTerkait(s) {
+    var a = ALAT[s.id] || ALAT[s.topik];
+    return a ? '<a href="' + a[0] + '">' + a[1] + '</a>' : '<a href="../alat/">kalkulator</a>';
   }
 
   function mulai() {

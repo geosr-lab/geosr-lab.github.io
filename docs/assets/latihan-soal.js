@@ -3,7 +3,7 @@
  *
  * Setiap templat membangkitkan soal dengan angka acak dari sebuah "kode soal" (seed),
  * lalu menghitung kunci jawabannya memakai modul kalkulator yang sudah diverifikasi
- * (pondasi-dangkal-hitung.js, konsolidasi-hitung.js, tiang-bor-hitung.js).
+ * (kalkulator *-hitung.js, serta praktikum/hitung-sifat-fisik.js dan hitung-atterberg.js).
  * Tidak ada kunci jawaban yang ditulis tangan.
  *
  * templat.buat(rng, F) → { teks, tanya, jawaban, satuan, desimal, langkah(F) }
@@ -19,6 +19,8 @@
   var BL = node ? require('./broms-lateral-hitung.js') : root.BromsLateral;
   var KS = node ? require('./korelasi-spt-hitung.js') : root.KorelasiSPT;
   var KC = node ? require('./korelasi-cpt-hitung.js') : root.KorelasiCPT;
+  var SF = node ? require('./praktikum/hitung-sifat-fisik.js') : root.HitungSifatFisik;
+  var AT = node ? require('./praktikum/hitung-atterberg.js') : root.HitungAtterberg;
 
   var TOLERANSI = 0.02; // jawaban dianggap benar bila selisihnya ≤ 2%
 
@@ -313,10 +315,124 @@
           }
         };
       }
+    },
+    {
+      id: 'kadar-air-cawan', topik: 'sifat-fisik', judul: 'Kadar air dari dua cawan',
+      buat: function (rng, F) {
+        var w0 = acak(rng, 15, 60, 0.5), cawan = [1, 2].map(function (i) {
+          var W3 = acak(rng, 10, 25, 0.01), kering = acak(rng, 15, 40, 0.01), w = w0 + acak(rng, -1, 1, 0.1);
+          return { nama: String(i), W3: W3, W2: Math.round((W3 + kering) * 100) / 100, W1: Math.round((W3 + kering * (1 + w / 100)) * 100) / 100 };
+        });
+        var r = SF.kadarAir({ cawan: cawan });
+        return {
+          teks: 'Dua cawan berisi contoh tanah ditimbang sebelum dan sesudah dioven: ' + cawan.map(function (c) {
+            return 'cawan ' + c.nama + ' W<sub>1</sub> = ' + F.f(c.W1, 2) + ' g, W<sub>2</sub> = ' + F.f(c.W2, 2) + ' g, W<sub>3</sub> = ' + F.f(c.W3, 2) + ' g';
+          }).join('; ') + ' (W<sub>1</sub> cawan + tanah basah, W<sub>2</sub> cawan + tanah kering, W<sub>3</sub> cawan kosong).',
+          tanya: 'Hitung kadar air rata-rata w (SNI 1965:2008).',
+          jawaban: r.w, satuan: '%', desimal: 2, data: { cawan: cawan },
+          langkah: function (F) {
+            return r.cawan.map(function (c) {
+              return { judul: 'Cawan ' + c.nama, tex: ['w_' + c.nama + ' = \\dfrac{W_1 - W_2}{W_2 - W_3}\\times 100\\% = \\dfrac{' + F.t(c.W1, 2) + ' - ' + F.t(c.W2, 2) + '}{' + F.t(c.W2, 2) + ' - ' + F.t(c.W3, 2) + '}\\times 100\\% = ' + F.t(c.w, 2) + '\\%'] };
+            }).concat([{ judul: 'Rata-rata', tex: ['w = \\tfrac{1}{2}(' + F.t(r.cawan[0].w, 2) + ' + ' + F.t(r.cawan[1].w, 2) + ') = ' + F.t(r.w, 2) + '\\%'] }]);
+          }
+        };
+      }
+    },
+    {
+      id: 'fase-berat-isi', topik: 'sifat-fisik', judul: 'Hubungan fase dari berat isi',
+      buat: function (rng, F) {
+        // Angka dibangkitkan dari e dan Sr supaya kombinasinya mungkin, lalu dibulatkan seperti data lab.
+        var Gs = acak(rng, 2.6, 2.75, 0.01), e0 = acak(rng, 0.5, 1.2, 0.01), Sr0 = acak(rng, 40, 95, 1);
+        var w = Math.round(Sr0 * e0 / Gs * 10) / 10, gamma = Math.round(Gs * (1 + w / 100) / (1 + e0) * 1000) / 1000;
+        var jenis = pilih(rng, ['e', 'Sr', 'n']);
+        var r = SF.hubunganFase({ cara: 'w-gamma', Gs: Gs, w: w, gamma: gamma });
+        var nama = { e: 'angka pori e', Sr: 'derajat kejenuhan S<sub>r</sub>', n: 'porositas n' }[jenis];
+        return {
+          teks: 'Contoh tanah tak terganggu mempunyai berat isi basah γ = ' + F.f(gamma, 3) + ' g/cm³, kadar air w = ' + F.f(w, 1) + '%, dan berat spesifik G<sub>s</sub> = ' + F.f(Gs, 2) + '. Pakai γ<sub>w</sub> = 1 g/cm³.',
+          tanya: 'Hitung ' + nama + ' (hubungan berat–volume, Das).',
+          jawaban: r[jenis], satuan: jenis === 'e' ? '–' : '%', desimal: jenis === 'e' ? 3 : 2, data: { Gs: Gs, w: w, gamma: gamma, jenis: jenis },
+          langkah: function (F) {
+            var l = [
+              { judul: 'Berat isi kering', tex: ['\\gamma_d = \\dfrac{\\gamma}{1 + w} = \\dfrac{' + F.t(gamma, 3) + '}{1 + ' + F.t(w / 100, 3) + '} = ' + F.t(r.gammaD, 4) + '\\ \\text{g/cm}^3'] },
+              { judul: 'Angka pori', tex: ['e = \\dfrac{G_s\\,\\gamma_w}{\\gamma_d} - 1 = \\dfrac{' + F.t(Gs, 2) + '\\times 1}{' + F.t(r.gammaD, 4) + '} - 1 = ' + F.t(r.e, 4)] }
+            ];
+            if (jenis === 'Sr') l.push({ judul: 'Derajat kejenuhan', tex: ['S_r = \\dfrac{w\\,G_s}{e} = \\dfrac{' + F.t(w / 100, 3) + '\\times' + F.t(Gs, 2) + '}{' + F.t(r.e, 4) + '} = ' + F.t(r.Sr, 2) + '\\%'] });
+            if (jenis === 'n') l.push({ judul: 'Porositas', tex: ['n = \\dfrac{e}{1 + e} = \\dfrac{' + F.t(r.e, 4) + '}{1 + ' + F.t(r.e, 4) + '} = ' + F.t(r.n, 2) + '\\%'] });
+            return l;
+          }
+        };
+      }
+    },
+    {
+      id: 'fase-cincin', topik: 'sifat-fisik', judul: 'Berat isi kering dari contoh cincin',
+      buat: function (rng, F) {
+        var V = acak(rng, 60, 100, 0.5), w = acak(rng, 10, 40, 0.1), g0 = acak(rng, 1.6, 2.0, 0.01);
+        var M = Math.round(g0 * V * 100) / 100;
+        var r = SF.hubunganFase({ cara: 'cincin', Gs: 2.65, w: w, M: M, V: V });
+        return {
+          teks: 'Cincin berisi contoh tanah tak terganggu bervolume V = ' + F.f(V, 1) + ' cm³. Massa tanah basah di dalam cincin M = ' + F.f(M, 2) + ' g dan kadar airnya w = ' + F.f(w, 1) + '%.',
+          tanya: 'Hitung berat isi kering γ<sub>d</sub> dalam g/cm³ (hubungan berat–volume, Das).',
+          jawaban: r.gammaD, satuan: 'g/cm³', desimal: 3, data: { V: V, M: M, w: w },
+          langkah: function (F) {
+            return [
+              { judul: 'Berat isi basah', tex: ['\\gamma = \\dfrac{M}{V} = \\dfrac{' + F.t(M, 2) + '}{' + F.t(V, 1) + '} = ' + F.t(r.gamma, 4) + '\\ \\text{g/cm}^3'] },
+              { judul: 'Berat isi kering', tex: ['\\gamma_d = \\dfrac{\\gamma}{1 + w} = \\dfrac{' + F.t(r.gamma, 4) + '}{1 + ' + F.t(w / 100, 3) + '} = ' + F.t(r.gammaD, 3) + '\\ \\text{g/cm}^3'] }
+            ];
+          }
+        };
+      }
+    },
+    {
+      id: 'll-satu-titik', topik: 'atterberg', judul: 'Batas cair metode satu titik',
+      buat: function (rng, F) {
+        var N = acak(rng, 20, 30, 1), w0 = acak(rng, 30, 75, 0.1);
+        var W3 = acak(rng, 10, 20, 0.01), kering = acak(rng, 10, 25, 0.01);
+        var t = { nama: '1', N: N, W3: W3, W2: Math.round((W3 + kering) * 100) / 100, W1: Math.round((W3 + kering * (1 + w0 / 100)) * 100) / 100 };
+        var r = AT.hitung({ metodeLL: 'satu', eksponen: 0.121, ll: [t], pl: [{ nama: '1', W1: 30, W2: 28, W3: 20 }] });
+        var k = r.titikLL[0];
+        return {
+          teks: 'Pada uji batas cair dengan alat Casagrande, alur tertutup setelah N = ' + F.f(N, 0) + ' ketukan. Contoh dari alur itu: W<sub>1</sub> (cawan + tanah basah) = ' + F.f(t.W1, 2) + ' g, W<sub>2</sub> (cawan + tanah kering) = ' + F.f(t.W2, 2) + ' g, W<sub>3</sub> (cawan) = ' + F.f(t.W3, 2) + ' g.',
+          tanya: 'Hitung batas cair LL dengan metode satu titik, β = 0,121 (ASTM D4318 metode B).',
+          jawaban: r.LL, satuan: '%', desimal: 2, data: t,
+          langkah: function (F) {
+            return [
+              { judul: 'Kadar air pada ' + F.f(N, 0) + ' ketukan', tex: ['w_N = \\dfrac{' + F.t(t.W1, 2) + ' - ' + F.t(t.W2, 2) + '}{' + F.t(t.W2, 2) + ' - ' + F.t(t.W3, 2) + '}\\times 100\\% = ' + F.t(k.w, 2) + '\\%'] },
+              { judul: 'Batas cair', tex: ['LL = w_N\\left(\\dfrac{N}{25}\\right)^{0{,}121} = ' + F.t(k.w, 2) + '\\times\\left(\\dfrac{' + F.t(N, 0) + '}{25}\\right)^{0{,}121} = ' + F.t(r.LL, 2) + '\\%'] }
+            ];
+          }
+        };
+      }
+    },
+    {
+      id: 'indeks-plastisitas', topik: 'atterberg', judul: 'Batas plastis dan indeks plastisitas',
+      buat: function (rng, F) {
+        var LL = acak(rng, 30, 75, 0.01), PL0 = acak(rng, 15, Math.min(35, LL - 8), 0.1);
+        var cawan = [1, 2].map(function (i) {
+          var W3 = acak(rng, 8, 15, 0.01), kering = acak(rng, 3, 8, 0.01), w = PL0 + acak(rng, -0.8, 0.8, 0.1);
+          return { nama: String(i), W3: W3, W2: Math.round((W3 + kering) * 100) / 100, W1: Math.round((W3 + kering * (1 + w / 100)) * 100) / 100 };
+        });
+        // Batas cair sudah diketahui: dimasukkan sebagai satu titik tepat 25 ketukan dengan kadar air = LL.
+        var r = AT.hitung({ metodeLL: 'satu', eksponen: 0.121, ll: [{ nama: '1', N: 25, W3: 0, W2: 100, W1: 100 + LL }], pl: cawan });
+        return {
+          teks: 'Batas cair suatu tanah berbutir halus LL = ' + F.f(LL, 2) + '%. Pada uji batas plastis, benang tanah yang retak pada diameter 3 mm ditimbang dalam dua cawan: ' + cawan.map(function (c) {
+            return 'cawan ' + c.nama + ' W<sub>1</sub> = ' + F.f(c.W1, 2) + ' g, W<sub>2</sub> = ' + F.f(c.W2, 2) + ' g, W<sub>3</sub> = ' + F.f(c.W3, 2) + ' g';
+          }).join('; ') + '.',
+          tanya: 'Hitung indeks plastisitas IP (SNI 1966:2008).',
+          jawaban: r.IP, satuan: '%', desimal: 2, data: { LL: LL, cawan: cawan },
+          langkah: function (F) {
+            var l = r.titikPL.map(function (c) {
+              return { judul: 'Kadar air cawan ' + c.nama, tex: ['w_' + c.nama + ' = \\dfrac{' + F.t(c.W1, 2) + ' - ' + F.t(c.W2, 2) + '}{' + F.t(c.W2, 2) + ' - ' + F.t(c.W3, 2) + '}\\times 100\\% = ' + F.t(c.w, 2) + '\\%'] };
+            });
+            l.push({ judul: 'Batas plastis dan indeks plastisitas', tex: ['PL = \\tfrac{1}{2}(' + F.t(r.titikPL[0].w, 2) + ' + ' + F.t(r.titikPL[1].w, 2) + ') = ' + F.t(r.PL, 2) + '\\%', 'IP = LL - PL = ' + F.t(LL, 2) + ' - ' + F.t(r.PL, 2) + ' = ' + F.t(r.IP, 2) + '\\%'] });
+            if (r.klas) l.push({ judul: 'Letak di bagan plastisitas', teks: 'Garis A: IP = 0,73(LL − 20) = ' + F.f(r.garisA, 2) + '%. Titik (LL, IP) jatuh di daerah ' + r.klas.simbol + ' (' + r.klas.nama.toLowerCase() + ', SNI 6371:2015).' });
+            return l;
+          }
+        };
+      }
     }
   ];
 
-  var TOPIK = { 'pondasi-dangkal': 'Pondasi dangkal', konsolidasi: 'Konsolidasi', 'tiang-bor': 'Tiang bor', 'tiang-lateral': 'Tiang lateral', penyelidikan: 'Penyelidikan tanah' };
+  var TOPIK = { 'pondasi-dangkal': 'Pondasi dangkal', konsolidasi: 'Konsolidasi', 'tiang-bor': 'Tiang bor', 'tiang-lateral': 'Tiang lateral', penyelidikan: 'Penyelidikan tanah', 'sifat-fisik': 'Sifat fisik', atterberg: 'Batas Atterberg' };
 
   function buatSoal(idTemplat, seed, F) {
     var tp = TEMPLAT.filter(function (x) { return x.id === idTemplat; })[0];
