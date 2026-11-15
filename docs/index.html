@@ -103,24 +103,38 @@
       <a class="tautan-lanjut" href="alat/">Semua kalkulator, cara memakai, dan cara mengutip</a>
     </section>
 
-    <section class="alur" aria-labelledby="judul-alur">
-      <h2 id="judul-alur">Dari lembar lab ke laporan</h2>
-      <ol class="alur-langkah">
-        <li>
-          <svg class="alur-ikon" viewBox="0 0 48 48" aria-hidden="true"><rect x="9" y="6" width="30" height="36" rx="3"/><path d="M18 6v4h12V6"/><path class="alur-isi" d="M14 18h20M14 24h20M14 30h20M14 36h12M24 15v24"/></svg>
-          <strong>Isi data lab</strong><span>Formulir seperti lembar data. Tempel dari Excel atau muat data contoh.</span>
+    <section class="alur" id="alur" aria-labelledby="judul-alur">
+      <div class="alur-kepala">
+        <h2 id="judul-alur">Dari lembar lab ke laporan</h2>
+        <p>Coba dengan uji batas cair: ubah kadar air atau jumlah ketukan, lalu lihat hitungan, grafik, dan laporannya ikut berubah. Alur yang sama dipakai di semua alat praktikum.</p>
+      </div>
+      <ol class="alur-meja">
+        <li class="alur-tahap tahap-data">
+          <h3>1. Data lab</h3>
+          <form class="alur-data" autocomplete="off" onsubmit="return false" aria-label="Data uji batas cair dan batas plastis">
+            <table>
+              <thead><tr><th scope="col">Titik</th><th scope="col">Ketukan, N</th><th scope="col">Kadar air, w (%)</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">A</th><td><input id="alurN1" inputmode="numeric" value="32" aria-label="Ketukan titik A"></td><td><input id="alurW1" inputmode="decimal" value="44,1" aria-label="Kadar air titik A"></td></tr>
+                <tr><th scope="row">B</th><td><input id="alurN2" inputmode="numeric" value="23" aria-label="Ketukan titik B"></td><td><input id="alurW2" inputmode="decimal" value="46,7" aria-label="Kadar air titik B"></td></tr>
+                <tr><th scope="row">C</th><td><input id="alurN3" inputmode="numeric" value="16" aria-label="Ketukan titik C"></td><td><input id="alurW3" inputmode="decimal" value="49,2" aria-label="Kadar air titik C"></td></tr>
+              </tbody>
+              <tfoot><tr><th scope="row" colspan="2">Batas plastis, PL (%)</th><td><input id="alurPL" inputmode="decimal" value="24,5" aria-label="Batas plastis"></td></tr></tfoot>
+            </table>
+            <button type="button" class="tombol kecil" id="alurAcak">Acak data</button>
+          </form>
         </li>
-        <li>
-          <svg class="alur-ikon" viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="9" width="34" height="30" rx="3"/><path d="M14 17h9l-5 7 5 7h-9"/><path class="alur-isi" d="M28 21h7M28 27h7"/></svg>
-          <strong>Hitung langkah demi langkah</strong><span>Rumus, sumber, substitusi angka, dan hasil yang bisa dicocokkan dengan hitungan tangan.</span>
+        <li class="alur-tahap tahap-hitung">
+          <h3>2. Hitung</h3>
+          <div id="alurHitung" class="alur-hitung" aria-live="polite"></div>
         </li>
-        <li>
-          <svg class="alur-ikon" viewBox="0 0 48 48" aria-hidden="true"><path d="M9 7v32h32"/><path class="alur-kurva" pathLength="1" d="M12 34c6-1 8-14 14-15s7 9 13-8"/><circle class="alur-isi" cx="26" cy="19" r="2.2"/></svg>
-          <strong>Grafik otomatis</strong><span>Kurva gradasi, pemadatan, konsolidasi, dan lainnya; simpan sebagai PNG.</span>
+        <li class="alur-tahap tahap-grafik">
+          <h3>3. Grafik</h3>
+          <div id="alurGrafik" class="alur-grafik"></div>
         </li>
-        <li>
-          <svg class="alur-ikon" viewBox="0 0 48 48" aria-hidden="true"><path d="M12 5h17l9 9v29H12z"/><path d="M29 5v9h9"/><path class="alur-isi" d="M17 22h15M17 28h15M17 34h9"/></svg>
-          <strong>Siap laporan</strong><span>Unduh Word, salin ke Excel, atau cetak ke PDF. Data tetap di browser Anda.</span>
+        <li class="alur-tahap tahap-laporan">
+          <h3>4. Laporan</h3>
+          <div id="alurLaporan" class="alur-laporan"><p>Ringkasan hasil muncul di sini, siap disalin ke laporan praktikum.</p></div>
         </li>
       </ol>
     </section>
@@ -139,5 +153,8 @@
   <!-- FOOTER:SELESAI -->
   <script src="assets/praktikum/sketsa.js" defer></script>
   <script src="assets/beranda.js" defer></script>
+  <script src="assets/praktikum/hitung-dasar.js" defer></script>
+  <script src="assets/praktikum/hitung-atterberg.js" defer></script>
+  <script src="assets/alur-atterberg.js" defer></script>
 </body>
 </html>
