@@ -537,7 +537,7 @@ def halaman_induk_praktikum(data, status="", relasi=None):
             "\n<body>\n  <!-- NAV:MULAI -->\n  " + menu(awalan, "praktikum") + "\n  <!-- NAV:SELESAI -->\n\n"
             "  <main class=\"wadah\">\n    <header class=\"pahlawan\">\n"
             "      <h1>Praktikum Mekanika Tanah</h1>\n"
-            f"      <p class=\"lead\">Formulir seperti lembar data lab, langkah hitungan, grafik, dan ekspor ke Word untuk tiap pengujian.{status_alat}</p>\n"
+            f"      <p class=\"lead\">Formulir seperti lembar data lab, langkah hitungan, grafik, dan ekspor ke Word untuk tiap pengujian.{status_alat} Semua alat juga bisa dijelajahi sebagai lapisan tanah di <a href=\"../penampang/\">Penampang GeoSR</a>.</p>\n"
             + rekap +
             "    </header>\n" + saring +
             "    <nav class=\"inti-bor\" aria-label=\"Kelompok pengujian\">" + "".join(inti) + "</nav>\n"
@@ -707,6 +707,8 @@ def indeks_cari(peta, catatan, alat, praktikum):
     for k in data_notasi()["kelompok"]:
         butir.append({"j": f"Kamus notasi: {k['judul']}", "d": ", ".join(re.sub(r"<[^>]+>", "", b[0]) for b in k["butir"]),
                       "h": " ".join(b[1] for b in k["butir"]), "u": f"notasi/#{slug(k['judul'])}", "k": "Notasi"})
+    butir.append({"j": "Penampang GeoSR", "d": "Semua alat dan kalkulator sebagai lapisan tanah yang bisa digeser, diperbesar, dan dibor.",
+                  "h": "jelajah penampang tanah lapisan uji bor animasi", "u": "penampang/", "k": "Jelajah"})
     for x in butir:
         x["h"] = re.sub(r"<[^>]+>", "", x["h"])
     return json.dumps(butir, ensure_ascii=False, indent=0) + "\n"
@@ -835,6 +837,86 @@ def halaman_notasi(alat, praktikum):
             f'  <script src="{awalan}assets/notasi.js" defer></script>\n</body>\n</html>\n')
 
 
+# ---------------------------------------------------------------- penampang (jelajah semua alat)
+
+def kalimat_pertama(teks):
+    teks = re.sub(r"<[^>]+>", "", teks).replace("&amp;", "&").strip()
+    m = re.match(r"(.+?[.!?])(\s|$)", teks)
+    return m.group(1) if m else teks
+
+
+def lapisan_penampang(alat, praktikum):
+    """Lapisan "Penampang GeoSR" dari atas ke bawah: enam kelompok uji praktikum, kalkulator per kategori,
+    lalu batuan dasar (latihan dan kamus notasi). Tiap butir: (judul, url relatif dari penampang/, acuan, keterangan)."""
+    lapisan = []
+    for i, k in enumerate(praktikum["kelompok"]):
+        butir = [(a["judul"], f"../praktikum/{a['id']}/", a["standar"], kalimat_pertama(a["deskripsi"]))
+                 for a in k["alat"] if a["status"] == "tersedia"]
+        lapisan.append({"judul": k["judul"], "jenis": "Praktikum", "warna": f"lapis-{i % 6 + 1}", "butir": butir})
+    kalkulator = [a for a in alat["alat"] if a["halaman"].startswith("kalkulator/")]
+    warna_kalk = {"fondasi": "kalk-1", "penurunan": "kalk-2", "penyelidikan": "kalk-3"}
+    for k in alat["kategori"]:
+        isi = [a for a in kalkulator if a["kategori"] == k["id"]]
+        if isi:
+            butir = [(re.sub(r"<[^>]+>", "", a["judul"]).replace("&amp;", "&"), f"../{a['halaman']}",
+                      re.split(r"[,;:]", html.unescape(re.sub(r"<[^>]+>", "", a["rincian"][0][1])))[0].strip(),
+                      kalimat_pertama(a["ringkas"])) for a in isi]
+            lapisan.append({"judul": k["judul"], "jenis": "Kalkulator", "warna": warna_kalk.get(k["id"], "kalk-1"), "butir": butir})
+    latihan = next(a for a in alat["alat"] if a["id"] == "latihan")
+    jumlah_notasi = sum(len(k["butir"]) for k in data_notasi()["kelompok"])
+    lapisan.append({"judul": "Batuan dasar: latihan dan rujukan", "jenis": "Belajar", "warna": "batuan", "butir": [
+        (latihan["judul"], f"../{latihan['halaman']}", f"{jumlah_soal()} jenis soal", kalimat_pertama(latihan["ringkas"])),
+        ("Kamus notasi", "../notasi/", f"{jumlah_notasi} notasi", "Arti, satuan, dan pemakaian simbol, ditambah konversi satuan.")]})
+    return lapisan
+
+
+def halaman_penampang(alat, praktikum):
+    folder, awalan = "penampang/", "../"
+    lapisan = lapisan_penampang(alat, praktikum)
+    jumlah = sum(len(l["butir"]) for l in lapisan)
+    daftar = ""
+    for n, l in enumerate(lapisan, 1):
+        li = "".join(f'<li><a href="{u}" data-acuan="{html.escape(acuan)}" data-ket="{html.escape(ket)}">{html.escape(j)}</a>'
+                     f'<span class="acuan">{html.escape(acuan)}</span></li>' for j, u, acuan, ket in l["butir"])
+        daftar += (f'\n        <section class="lapis-daftar" data-warna="{l["warna"]}" data-jenis="{l["jenis"]}">'
+                   f'<h3><span class="no">{n:02d}</span>{html.escape(l["judul"])}</h3><ul>{li}</ul></section>')
+    return (kepala("Penampang GeoSR", f"Semua {jumlah} alat praktikum, kalkulator, dan rujukan {NAMA} tersusun sebagai lapisan tanah yang bisa digeser, diperbesar, dan dibor.", awalan, folder) +
+            "\n<body>\n  <!-- NAV:MULAI -->\n  " + menu(awalan, "") + "\n  <!-- NAV:SELESAI -->\n\n"
+            "  <main class=\"wadah\">\n    <header class=\"pahlawan\" style=\"padding-bottom:16px\">\n"
+            "      <h1>Penampang GeoSR</h1>\n"
+            f"      <p class=\"lead\">Semua {jumlah} alat dan kalkulator {NAMA} tersusun sebagai lapisan tanah: enam kelompok uji praktikum di atas, "
+            "kalkulator di bawahnya, latihan di batuan dasar. Butir di tiap lapisan adalah alat yang bisa dibuka.</p>\n"
+            "    </header>\n"
+            "    <section class=\"penampang-jelajah\" id=\"jelajah\" aria-label=\"Penampang interaktif\" hidden>\n"
+            "      <div class=\"jelajah-panel\">\n"
+            "        <label for=\"cariPenampang\">Cari butir</label>\n"
+            "        <input id=\"cariPenampang\" type=\"search\" autocomplete=\"off\" placeholder=\"misalnya CBR, SNI 1744, Broms\">\n"
+            "        <p id=\"infoPenampang\" class=\"kecil redup\" role=\"status\" aria-live=\"polite\"></p>\n"
+            "        <ol class=\"jelajah-lapis\" id=\"daftarLapis\" aria-label=\"Lapisan\"></ol>\n"
+            "      </div>\n"
+            "      <div class=\"jelajah-panggung\">\n"
+            "        <canvas id=\"kanvasPenampang\" aria-hidden=\"true\"></canvas>\n"
+            "        <div class=\"jelajah-alat\" role=\"toolbar\" aria-label=\"Kendali penampang\">\n"
+            "          <button type=\"button\" class=\"tombol kecil\" id=\"tGerak\" aria-pressed=\"true\">Gerak otomatis</button>\n"
+            "          <button type=\"button\" class=\"tombol kecil\" id=\"tBor\">Uji bor</button>\n"
+            "          <button type=\"button\" class=\"tombol kecil ikon\" id=\"tKecil\" aria-label=\"Perkecil\">&minus;</button>\n"
+            "          <button type=\"button\" class=\"tombol kecil ikon\" id=\"tBesar\" aria-label=\"Perbesar\">+</button>\n"
+            "          <button type=\"button\" class=\"tombol kecil\" id=\"tUlang\">Atur ulang</button>\n"
+            "        </div>\n"
+            "        <div class=\"jelajah-kartu\" id=\"kartuPenampang\" aria-live=\"polite\" hidden></div>\n"
+            "      </div>\n"
+            "      <p class=\"kecil redup jelajah-petunjuk\">Seret untuk menggeser, gulir atau cubit untuk memperbesar, klik butir untuk membukanya, "
+            "dan klik permukaan tanah (atau tombol Uji bor) untuk mengebor: setiap lapisan yang ditembus menyumbang satu alat terdekat. "
+            "Penampang ini ilustrasi susunan situs, bukan data tanah.</p>\n"
+            "    </section>\n"
+            "    <section class=\"isi-penampang\" aria-labelledby=\"judul-isi-penampang\">\n"
+            "      <h2 id=\"judul-isi-penampang\">Isi penampang</h2>\n"
+            f"      <div class=\"kisi-lapis-daftar\" id=\"isiPenampang\">{daftar}\n      </div>\n"
+            "    </section>\n  </main>\n\n"
+            "  <!-- FOOTER:MULAI -->\n  " + footer(awalan) + "\n  <!-- FOOTER:SELESAI -->\n"
+            f'  <script src="{awalan}assets/penampang.js" defer></script>\n</body>\n</html>\n')
+
+
 def halaman_cari():
     folder, awalan = "cari/", "../"
     return (kepala("Cari", f"Cari alat praktikum, kalkulator, dan latihan di {NAMA}.", awalan, folder) +
@@ -945,6 +1027,7 @@ def bangun():
     keluaran[DOCS / "cari/index.html"] = halaman_cari()
     keluaran[DOCS / "kredit/index.html"] = halaman_kredit()
     keluaran[DOCS / "notasi/index.html"] = halaman_notasi(alat, praktikum)
+    keluaran[DOCS / "penampang/index.html"] = halaman_penampang(alat, praktikum)
     keluaran[DOCS / f"{EN}index.html"] = halaman_beranda_en(praktikum, alat)
     keluaran[DOCS / f"{EN}pembuat/index.html"] = halaman_konten(KONTEN / "en/tentang.md", f"{EN}pembuat/", peta, en=True)
     keluaran[DOCS / "index.html"] = ganti_penanda(keluaran[DOCS / "index.html"], "ALAT", kartu_beranda(alat, praktikum))

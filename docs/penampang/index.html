@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Penampang GeoSR · GeoSR</title>
+  <meta name="description" content="Semua 26 alat praktikum, kalkulator, dan rujukan GeoSR tersusun sebagai lapisan tanah yang bisa digeser, diperbesar, dan dibor.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="GeoSR · Geotechnical Soil Report">
+  <meta property="og:title" content="Penampang GeoSR · GeoSR">
+  <meta property="og:description" content="Semua 26 alat praktikum, kalkulator, dan rujukan GeoSR tersusun sebagai lapisan tanah yang bisa digeser, diperbesar, dan dibor.">
+  <meta property="og:url" content="https://defsayurinda.github.io/penampang/">
+  <meta property="og:image" content="https://defsayurinda.github.io/assets/pratinjau.png">
+  <meta property="og:locale" content="id_ID">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#f1f2ec" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#10181a" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="../assets/gaya.css">
+  <script src="../assets/tema.js"></script>
+  <link rel="icon" href="../assets/ikon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../manifest.webmanifest">
+</head>
+<body>
+  <!-- NAV:MULAI -->
+  <nav class="nav">
+    <div class="wadah">
+      <a class="merek" href="../" aria-label="GeoSR, beranda"><svg class="merek-tanda" viewBox="0 0 22 26" aria-hidden="true"><rect x="0" y="0" width="22" height="26" rx="2" style="fill:none"/><rect x="0" y="0" width="22" height="6" rx="1" style="fill:var(--lapis-3)"/><rect x="0" y="7.5" width="22" height="7" rx="1" style="fill:var(--lapis-2)"/><rect x="0" y="16" width="22" height="4" rx="1" style="fill:var(--lapis-4)"/><rect x="0" y="21.5" width="22" height="4.5" rx="1" style="fill:var(--lapis-5)"/></svg><span>GeoSR<span class="merek-lengkap">Geotechnical Soil Report</span></span></a>
+      <button class="tema-tombol" type="button" aria-label="Tema: ikut sistem" title="Ganti tema"><svg viewBox="0 0 20 20" aria-hidden="true"><g class="ikon-otomatis"><circle cx="10" cy="10" r="6.5"/><path d="M10 3.5a6.5 6.5 0 0 0 0 13z" class="isi"/></g><g class="ikon-terang"><circle cx="10" cy="10" r="3.4"/><path d="M10 2v2.2M10 15.8V18M2 10h2.2M15.8 10H18M4.3 4.3l1.6 1.6M14.1 14.1l1.6 1.6M4.3 15.7l1.6-1.6M14.1 5.9l1.6-1.6"/></g><g class="ikon-gelap"><path d="M16 12.6A6.6 6.6 0 0 1 7.4 4a6.6 6.6 0 1 0 8.6 8.6z"/></g></svg></button>
+      <button class="nav-tombol" type="button" aria-expanded="false" aria-controls="menu-utama"><span class="nav-garis" aria-hidden="true"></span><span class="sr-only">Menu</span></button>
+      <ul id="menu-utama"><li><a href="../praktikum/">Praktikum</a></li><li><a href="../alat/">Kalkulator</a></li><li><a href="../latihan/">Latihan</a></li><li><a href="../cari/">Cari</a></li></ul>
+    </div>
+  </nav>
+  <!-- NAV:SELESAI -->
+
+  <main class="wadah">
+    <header class="pahlawan" style="padding-bottom:16px">
+      <h1>Penampang GeoSR</h1>
+      <p class="lead">Semua 26 alat dan kalkulator GeoSR tersusun sebagai lapisan tanah: enam kelompok uji praktikum di atas, kalkulator di bawahnya, latihan di batuan dasar. Butir di tiap lapisan adalah alat yang bisa dibuka.</p>
+    </header>
+    <section class="penampang-jelajah" id="jelajah" aria-label="Penampang interaktif" hidden>
+      <div class="jelajah-panel">
+        <label for="cariPenampang">Cari butir</label>
+        <input id="cariPenampang" type="search" autocomplete="off" placeholder="misalnya CBR, SNI 1744, Broms">
+        <p id="infoPenampang" class="kecil redup" role="status" aria-live="polite"></p>
+        <ol class="jelajah-lapis" id="daftarLapis" aria-label="Lapisan"></ol>
+      </div>
+      <div class="jelajah-panggung">
+        <canvas id="kanvasPenampang" aria-hidden="true"></canvas>
+        <div class="jelajah-alat" role="toolbar" aria-label="Kendali penampang">
+          <button type="button" class="tombol kecil" id="tGerak" aria-pressed="true">Gerak otomatis</button>
+          <button type="button" class="tombol kecil" id="tBor">Uji bor</button>
+          <button type="button" class="tombol kecil ikon" id="tKecil" aria-label="Perkecil">&minus;</button>
+          <button type="button" class="tombol kecil ikon" id="tBesar" aria-label="Perbesar">+</button>
+          <button type="button" class="tombol kecil" id="tUlang">Atur ulang</button>
+        </div>
+        <div class="jelajah-kartu" id="kartuPenampang" aria-live="polite" hidden></div>
+      </div>
+      <p class="kecil redup jelajah-petunjuk">Seret untuk menggeser, gulir atau cubit untuk memperbesar, klik butir untuk membukanya, dan klik permukaan tanah (atau tombol Uji bor) untuk mengebor: setiap lapisan yang ditembus menyumbang satu alat terdekat. Penampang ini ilustrasi susunan situs, bukan data tanah.</p>
+    </section>
+    <section class="isi-penampang" aria-labelledby="judul-isi-penampang">
+      <h2 id="judul-isi-penampang">Isi penampang</h2>
+      <div class="kisi-lapis-daftar" id="isiPenampang">
+        <section class="lapis-daftar" data-warna="lapis-1" data-jenis="Praktikum"><h3><span class="no">01</span>Sifat fisik</h3><ul><li><a href="../praktikum/kadar-air/" data-acuan="SNI 1965:2008" data-ket="Kadar air tiap cawan dan rata-ratanya dari penimbangan basah dan kering.">Kadar air</a><span class="acuan">SNI 1965:2008</span></li><li><a href="../praktikum/berat-spesifik/" data-acuan="SNI 1964:2008" data-ket="Gs tiap piknometer dengan koreksi suhu massa jenis air, dan rata-ratanya.">Berat spesifik (piknometer)</a><span class="acuan">SNI 1964:2008</span></li><li><a href="../praktikum/hubungan-fase/" data-acuan="Diagram fase" data-ket="Angka pori, porositas, derajat kejenuhan, dan berat isi (basah, kering, jenuh, terendam) dengan diagram fase.">Hubungan berat–volume</a><span class="acuan">Diagram fase</span></li></ul></section>
+        <section class="lapis-daftar" data-warna="lapis-2" data-jenis="Praktikum"><h3><span class="no">02</span>Konsistensi dan gradasi</h3><ul><li><a href="../praktikum/atterberg/" data-acuan="SNI 1967:2008 · SNI 1966:2008" data-ket="Batas cair (kurva aliran atau satu titik), batas plastis, indeks plastisitas, dan posisi di bagan plastisitas.">Batas Atterberg</a><span class="acuan">SNI 1967:2008 · SNI 1966:2008</span></li><li><a href="../praktikum/batas-susut/" data-acuan="SNI 3422:2008" data-ket="Batas susut dan rasio susut dari volume tanah basah dan kering, dengan volume langsung atau air raksa.">Batas susut</a><span class="acuan">SNI 3422:2008</span></li><li><a href="../praktikum/saringan/" data-acuan="SNI 3423:2008" data-ket="Persen lolos tiap saringan, kurva gradasi, D10/D30/D60, Cu, Cc, dan fraksi kerikil/pasir/halus.">Analisa saringan</a><span class="acuan">SNI 3423:2008</span></li><li><a href="../praktikum/hidrometer/" data-acuan="SNI 3423:2008" data-ket="Hidrometer 152H dengan hukum Stokes, persen lolos, dan kurva gradasi gabungan saringan–hidrometer beserta fraksi lanau dan lempung.">Analisa hidrometer</a><span class="acuan">SNI 3423:2008</span></li><li><a href="../praktikum/klasifikasi/" data-acuan="SNI 6371:2015 · AASHTO M 145" data-ket="Simbol dan nama kelompok USCS serta kelompok dan indeks kelompok AASHTO.">Klasifikasi tanah</a><span class="acuan">SNI 6371:2015 · AASHTO M 145</span></li></ul></section>
+        <section class="lapis-daftar" data-warna="lapis-3" data-jenis="Praktikum"><h3><span class="no">03</span>Kepadatan</h3><ul><li><a href="../praktikum/pemadatan/" data-acuan="SNI 1742:2008 · SNI 1743:2008" data-ket="Kurva pemadatan orde 2 atau 3, kadar air optimum, kepadatan kering maksimum, dan garis ZAV.">Pemadatan (Proctor)</a><span class="acuan">SNI 1742:2008 · SNI 1743:2008</span></li><li><a href="../praktikum/sand-cone/" data-acuan="SNI 2828:2011" data-ket="Kalibrasi pasir, volume lubang, berat isi kering lapangan, dan derajat kepadatan.">Kerucut pasir (sand cone)</a><span class="acuan">SNI 2828:2011</span></li><li><a href="../praktikum/cbr/" data-acuan="SNI 1744:2012" data-ket="Kurva beban–penetrasi dua permukaan, koreksi titik nol, CBR 2,54 mm dan 5,08 mm, pengembangan, dan berat isi.">CBR laboratorium</a><span class="acuan">SNI 1744:2012</span></li></ul></section>
+        <section class="lapis-daftar" data-warna="lapis-4" data-jenis="Praktikum"><h3><span class="no">04</span>Permeabilitas</h3><ul><li><a href="../praktikum/permeabilitas-tetap/" data-acuan="ASTM D2434" data-ket="Debit, gradien hidrolik, dan koefisien permeabilitas k tiap percobaan beserta rata-ratanya, mengikuti form constant head.">Permeabilitas tinggi tekan tetap (constant head)</a><span class="acuan">ASTM D2434</span></li><li><a href="../praktikum/permeabilitas-turun/" data-acuan="ASTM D5084" data-ket="Luas buret dan benda uji, koefisien permeabilitas k dari penurunan muka air h1 ke h2, dan rata-rata tiga percobaan.">Permeabilitas tinggi tekan turun (falling head)</a><span class="acuan">ASTM D5084</span></li></ul></section>
+        <section class="lapis-daftar" data-warna="lapis-5" data-jenis="Praktikum"><h3><span class="no">05</span>Kekuatan dan konsolidasi</h3><ul><li><a href="../praktikum/geser-langsung/" data-acuan="SNI 3420:2016" data-ket="Tegangan geser tiap benda uji, koreksi luas opsional, garis keruntuhan Mohr–Coulomb, c dan φ.">Kuat geser langsung</a><span class="acuan">SNI 3420:2016</span></li><li><a href="../praktikum/tekan-bebas/" data-acuan="SNI 3638:2012" data-ket="Kurva tegangan–regangan dengan koreksi luas, qu (puncak atau pada regangan 15%), cu, E50, dan sensitivitas.">Kuat tekan bebas (UCS)</a><span class="acuan">SNI 3638:2012</span></li><li><a href="../praktikum/konsolidasi-lab/" data-acuan="SNI 2812:2011" data-ket="Kurva e–log p, Cc, Cs, mv, dan cv dengan metode akar waktu Taylor otomatis tiap tahap beban.">Konsolidasi laboratorium</a><span class="acuan">SNI 2812:2011</span></li></ul></section>
+        <section class="lapis-daftar" data-warna="lapis-6" data-jenis="Praktikum"><h3><span class="no">06</span>Uji lapangan</h3><ul><li><a href="../praktikum/sondir/" data-acuan="SNI 2827:2008" data-ket="PK, JP, hambatan lekat, JHL, hambatan setempat, rasio gesekan, dan grafik terhadap kedalaman seperti form lab.">Sondir</a><span class="acuan">SNI 2827:2008</span></li><li><a href="../praktikum/spt/" data-acuan="SNI 4153:2008" data-ket="Nilai N dan N60, kepadatan atau konsistensi menurut N, dan log bor berpola lapisan dengan grafik N terhadap kedalaman.">SPT dan log bor</a><span class="acuan">SNI 4153:2008</span></li></ul></section>
+        <section class="lapis-daftar" data-warna="kalk-1" data-jenis="Kalkulator"><h3><span class="no">07</span>Fondasi</h3><ul><li><a href="../kalkulator/tiang-bor.html" data-acuan="Reese &amp; Wright (1977)" data-ket="Metode Reese &amp; Wright (1977) dengan profil tanah dan langkah hitungan per lapisan.">Daya dukung tiang bor dari N-SPT</a><span class="acuan">Reese &amp; Wright (1977)</span></li><li><a href="../kalkulator/broms-lateral.html" data-acuan="Broms (1964)" data-ket="Metode Broms (1964): moda tiang pendek, menengah, atau panjang, grafik Pult terhadap panjang tiang.">Kapasitas lateral tiang metode Broms</a><span class="acuan">Broms (1964)</span></li><li><a href="../kalkulator/pondasi-dangkal.html" data-acuan="Persamaan daya dukung umum" data-ket="Persamaan daya dukung umum dengan faktor bentuk, kedalaman, dan koreksi muka air tanah.">Kapasitas dukung pondasi dangkal</a><span class="acuan">Persamaan daya dukung umum</span></li></ul></section>
+        <section class="lapis-daftar" data-warna="kalk-2" data-jenis="Kalkulator"><h3><span class="no">08</span>Penurunan</h3><ul><li><a href="../kalkulator/konsolidasi.html" data-acuan="Terzaghi 1D" data-ket="Lempung NC dan OC, diagram e–log σ&#x27;, dan kurva penurunan terhadap waktu.">Penurunan konsolidasi</a><span class="acuan">Terzaghi 1D</span></li></ul></section>
+        <section class="lapis-daftar" data-warna="kalk-3" data-jenis="Kalkulator"><h3><span class="no">09</span>Penyelidikan tanah</h3><ul><li><a href="../kalkulator/korelasi-spt.html" data-acuan="Warman (2019)" data-ket="Koreksi N60 dan (N1)60, lalu Dr, φ, E, cu, dan vs dari korelasi empiris.">Korelasi parameter tanah dari N-SPT</a><span class="acuan">Warman (2019)</span></li><li><a href="../kalkulator/korelasi-cpt.html" data-acuan="Warman (2019)" data-ket="Dari qc dan fs: Dr dan φ pasir; cu, St, OCR, CR, vs lempung.">Korelasi parameter tanah dari sondir (CPT)</a><span class="acuan">Warman (2019)</span></li></ul></section>
+        <section class="lapis-daftar" data-warna="batuan" data-jenis="Belajar"><h3><span class="no">10</span>Batuan dasar: latihan dan rujukan</h3><ul><li><a href="../latihan/" data-acuan="17 jenis soal" data-ket="Tujuh belas jenis soal dengan angka acak, dicek otomatis, lengkap dengan pembahasan.">Bank soal geoteknik</a><span class="acuan">17 jenis soal</span></li><li><a href="../notasi/" data-acuan="96 notasi" data-ket="Arti, satuan, dan pemakaian simbol, ditambah konversi satuan.">Kamus notasi</a><span class="acuan">96 notasi</span></li></ul></section>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER:MULAI -->
+  <footer>
+    <div class="wadah kaki-isi">
+      <div class="kaki-merek"><a href="../">GeoSR</a><span>Geotechnical Soil Report · dibuat oleh <a href="../pembuat/">Defsa Yurinda</a></span></div>
+      <dl class="kaki-etiket"><div><dt>Pembuat</dt><dd><a href="../pembuat/">Profil</a> · <a href="../pembuat/catatan/">Catatan</a></dd></div><div><dt>Kode</dt><dd><a href="https://github.com/defsayurinda/defsayurinda.github.io">GitHub</a></dd></div><div><dt>Lisensi</dt><dd>Kode <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE">MIT</a>, tulisan <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE-TULISAN">CC BY 4.0</a> · <a href="../kredit/">Kredit aset</a></dd></div><div><dt>Rujukan</dt><dd><a href="../notasi/">Kamus notasi</a></dd></div></dl>
+    </div>
+  </footer>
+  <script src="../assets/daftar-sw.js" defer></script>
+  <script src="../assets/gerak.js" defer></script>
+  <script src="../assets/palet.js" defer></script>
+  <!-- FOOTER:SELESAI -->
+  <script src="../assets/penampang.js" defer></script>
+</body>
+</html>
