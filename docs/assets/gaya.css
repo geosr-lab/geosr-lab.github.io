@@ -517,6 +517,30 @@ th + th, td + td { border-left: 0; }
 @media (max-width: 880px) { .tata-kalk { grid-template-columns: minmax(0, 1fr); } .tata-kalk aside { position: static !important; } }
 .profil-svg { width: 100%; height: auto; display: block; }
 
+/* Penggeser bantu di bawah isian angka kalkulator (Umum.pasangGeser) */
+.geser-bantu { display: block; width: 100%; margin: 6px 0 0; height: 24px; accent-color: var(--aksen); cursor: pointer; }
+.geser-bantu:focus-visible { outline: 2px solid var(--aksen); outline-offset: 2px; }
+
+/* Panel ringkasan kalkulator pondasi dangkal: sketsa kecil, angka utama, porsi suku q_u */
+.panel-ringkas #sketsa svg { max-height: 190px; }
+.ringkas-angka { margin: 12px 0 0; font-variant-numeric: tabular-nums; }
+.ringkas-angka div { display: flex; flex-direction: column-reverse; padding: 8px 0; border-top: 1px solid var(--garis); }
+.ringkas-angka dt { font-size: 13px; color: var(--teks-2); }
+.ringkas-angka dd { margin: 0; font: 800 26px/1.15 var(--huruf-judul); font-stretch: 112%; color: var(--laterit); }
+.ringkas-angka dd small { font: 600 14px var(--huruf-teks); color: var(--teks-2); }
+.ringkas-judul { margin: 10px 0 6px; font-size: 13px; font-weight: 600; color: var(--teks-2); }
+.tumpuk { display: flex; height: 14px; border-radius: 4px; overflow: hidden; background: var(--permukaan-2); }
+.tumpuk span { display: block; height: 100%; transition: width .4s var(--mulus); }
+.tumpuk .s1, .tumpuk-legenda .s1::before { background: var(--aksen); }
+.tumpuk .s2, .tumpuk-legenda .s2::before { background: var(--laterit); }
+.tumpuk .s3, .tumpuk-legenda .s3::before { background: var(--lapis-4); }
+.tumpuk-legenda { list-style: none; margin: 8px 0 0; padding: 0; font-size: 13px; }
+.tumpuk-legenda li { display: flex; align-items: center; gap: 8px; padding: 2px 0; }
+.tumpuk-legenda li::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: 2px; }
+.tumpuk-legenda span { flex: 1; color: var(--teks-2); }
+.tumpuk-legenda b { font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) { .tumpuk span { transition: none; } }
+
 /* Daftar lompat di atas hasil kalkulator; menempel di bawah menu pada layar lebar. */
 .lompat { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: var(--j-5) 0 0; padding: 8px 0; scrollbar-width: none;
   border-bottom: 1px solid var(--garis); background: color-mix(in srgb, var(--latar) 92%, transparent); }

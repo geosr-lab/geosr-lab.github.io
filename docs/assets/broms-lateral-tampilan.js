@@ -236,6 +236,7 @@
     var r = BromsLateral.hitung(m);
     gambarSketsa(m, r);
     gambarHasil(m, r);
+    U.segarkanGeser();
     U.simpanKeHash(keadaan);
   }
 
@@ -249,6 +250,8 @@
     });
     $('tanah').addEventListener('change', function () { keadaan.tanah = $('tanah').value; aturAktif(); perbarui(); });
     $('kepala').addEventListener('change', function () { keadaan.kepala = $('kepala').value; perbarui(); });
+    U.pasangGeser('L', 1, 20, 0.5, 'm');
+    U.pasangGeser('e', 0, 3, 0.1, 'm');
     $('muatContoh').addEventListener('click', function () { keadaan = salin(CONTOH); isiFormulir(); perbarui(); });
     $('bagikan').addEventListener('click', function () { U.simpanKeHash(keadaan); U.salinTautan($('pesanBagikan')); });
     perbarui();
