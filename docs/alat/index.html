@@ -140,6 +140,25 @@
     </section>
   <!-- DAFTAR-ALAT:SELESAI -->
 
+    <section class="coba-cepat" id="cobaDayaDukung" aria-labelledby="judul-coba">
+      <h2 id="judul-coba">Coba cepat: faktor daya dukung</h2>
+      <p>Geser sudut geser dalam dan lihat bagaimana N<sub>c</sub>, N<sub>q</sub>, dan N<sub>γ</sub> melonjak. Kenaikannya tajam: dari 30° ke 35°, N<sub>q</sub> hampir dua kali lipat (18,40 menjadi 33,30). Selisih beberapa derajat pada φ' langsung terasa di kapasitas dukung.</p>
+      <div class="coba-isi">
+        <div class="coba-kendali">
+          <label for="phiCoba">Sudut geser dalam, φ'</label>
+          <div class="coba-geser"><input id="phiCoba" type="range" min="0" max="45" step="1" value="30"><output id="phiNilai" for="phiCoba">30°</output></div>
+          <dl class="coba-nilai">
+            <div class="nilai-c"><dt>N<sub>c</sub> <span>Prandtl (1921)</span></dt><dd id="nilaiNc">–</dd></div>
+            <div class="nilai-q"><dt>N<sub>q</sub> <span>Reissner (1924)</span></dt><dd id="nilaiNq">–</dd></div>
+            <div class="nilai-g"><dt>N<sub>γ</sub> <span>Vesic (1973)</span></dt><dd id="nilaiNg">–</dd></div>
+          </dl>
+          <a class="tombol utama kecil" id="bukaDayaDukung" href="../kalkulator/pondasi-dangkal.html">Buka kalkulator</a>
+        </div>
+        <figure class="coba-grafik" id="grafikDayaDukung"></figure>
+      </div>
+      <p class="kecil redup">Rumus sama dengan kalkulator pondasi dangkal (Das, <em>Principles of foundation engineering</em>, bab kapasitas dukung). Sumbu tegak logaritmik; bagian kurva di bawah 1 tidak digambar.</p>
+    </section>
+
     <section>
       <h2>Cara memakai</h2>
       <ol>
@@ -181,5 +200,7 @@
   <script src="../assets/palet.js" defer></script>
   <!-- FOOTER:SELESAI -->
   <script src="../assets/praktikum/sketsa.js" defer></script>
+  <script src="../assets/pondasi-dangkal-hitung.js" defer></script>
+  <script src="../assets/pratinjau-daya-dukung.js" defer></script>
 </body>
 </html>
