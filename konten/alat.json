@@ -224,17 +224,17 @@
       "id": "latihan",
       "judul": "Bank soal geoteknik",
       "judul_pendek": "Latihan Soal Geoteknik",
-      "deskripsi": "Latihan soal geoteknik dengan angka acak dan pembahasan langkah demi langkah: pondasi dangkal, konsolidasi, dan tiang bor.",
+      "deskripsi": "Latihan soal geoteknik dengan angka acak dan pembahasan langkah demi langkah: pondasi dangkal, konsolidasi, tiang bor, tiang lateral, dan penyelidikan tanah.",
       "kategori": "latihan",
       "lencana": "Latihan",
       "halaman": "latihan/",
-      "ringkas": "Sembilan jenis soal dengan angka acak, dicek otomatis, lengkap dengan pembahasan.",
+      "ringkas": "Dua belas jenis soal dengan angka acak, dicek otomatis, lengkap dengan pembahasan.",
       "judul_rincian": "Latihan soal geoteknik",
       "lencana_rincian": "Bank soal",
       "rincian": [
         [
           "Topik",
-          "Pondasi dangkal, konsolidasi, tiang bor (9 jenis soal)"
+          "Pondasi dangkal, konsolidasi, tiang bor, tiang lateral, penyelidikan tanah (12 jenis soal)"
         ],
         [
           "Cara kerja",

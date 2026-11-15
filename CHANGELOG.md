@@ -5,6 +5,7 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 ## [Belum dirilis]
 
 ### Ditambahkan
+- Latihan soal: topik baru "Tiang lateral" (Broms tiang pendek di pasir) dan "Penyelidikan tanah" ((N<sub>1</sub>)<sub>60</sub> dari N-SPT, c<sub>u</sub> dari sondir); bank soal menjadi 12 jenis. Kunci dihitung modul kalkulator yang sudah teruji dan dicocokkan dengan hitungan Python di `tests/verifikasi_latihan.py` (300 soal per templat).
 - Palet cari di semua halaman (`docs/assets/palet.js`): Ctrl+K (⌘K), atau "/" di halaman yang tidak punya kotak cari sendiri, membuka kotak cari cepat dari `cari.json`; saat kosong menampilkan alat yang terakhir dibuka dan tujuan utama; panah, Enter, Esc, klik di luar untuk menutup. Tautan "Cari" di menu membuka palet (Ctrl/Shift+klik tetap ke halaman Cari).
 - Kamus notasi (`/notasi/`): 96 simbol mekanika tanah dan fondasi yang dipakai di situs, dikelompokkan per topik, dengan arti, satuan, catatan simbol yang artinya berbeda antartopik, tautan ke alat yang memakainya, kotak cari (tersimpan di `?q=`), dan tabel konversi satuan. Data di `konten/notasi.json`; tautan "Kamus notasi" di kaki semua halaman; setiap kelompok masuk pencarian situs.
 - Kalkulator korelasi parameter tanah dari sondir (`/kalkulator/korelasi-cpt.html`): R<sub>f</sub>, D<sub>r</sub> Baldi dkk. dan φ dari Tabel 5.1–5.2 untuk pasir; c<sub>u</sub>, S<sub>t</sub>, OCR (dua cara), CR, dan v<sub>s</sub> untuk lempung, dari Warman (2019) Bab 5. M<sub>0</sub> Lunne dkk. dan α Sanglerat belum dimuat karena tabel di buku perlu dicek.
