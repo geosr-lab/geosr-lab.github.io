@@ -390,7 +390,7 @@
     // Bilah aksi: menempel di kanan atas (desktop) atau di bawah layar (ponsel). Ekspor dikumpulkan dalam satu menu.
     function htmlBilahAksi() {
       return '<div class="bilah-aksi tidak-cetak" id="bilah-aksi">' +
-        '<button type="button" class="tombol kecil utama" data-aksi="contoh"><span><span class="lbl-panjang">Muat </span>data contoh</span></button>' +
+        '<button type="button" class="tombol kecil utama" data-aksi="contoh"><span><span class="lbl-panjang">Muat data contoh</span><span class="lbl-pendek">Data contoh</span></span></button>' +
         '<button type="button" class="tombol kecil" data-aksi="hitung">Hitung</button>' +
         '<div class="menu-ekspor"><button type="button" class="tombol kecil" id="tombol-ekspor" aria-haspopup="true" aria-expanded="false" aria-controls="menu-ekspor">Ekspor<span class="segitiga" aria-hidden="true"></span></button>' +
         '<div class="menu-ekspor-isi" id="menu-ekspor" role="menu" hidden>' +
@@ -444,6 +444,12 @@
       var d = b.parentNode;
       if (b.offsetLeft < d.scrollLeft) d.scrollLeft = b.offsetLeft - 8;
       else if (b.offsetLeft + b.offsetWidth > d.scrollLeft + d.clientWidth) d.scrollLeft = b.offsetLeft + b.offsetWidth - d.clientWidth + 8;
+      tandaLuap(d);
+    }
+    // Bila tab tidak muat, tepi kanan dipudarkan sebagai tanda masih bisa digeser; hilang saat sudah di ujung.
+    function tandaLuap(d) {
+      d.classList.toggle('meluap', d.scrollWidth > d.clientWidth + 1);
+      d.classList.toggle('di-ujung', d.scrollLeft + d.clientWidth >= d.scrollWidth - 2);
     }
     function htmlTabDaftar() {
       return '<div class="tab-daftar" role="tablist" aria-label="Bagian alat">' + TAB.map(function (t, i) {
@@ -777,6 +783,10 @@
     var kepalaTab = document.createElement('div');
     kepalaTab.className = 'kepala-tab'; kepalaTab.id = 'kepala-tab';
     kepalaTab.innerHTML = htmlTabDaftar() + htmlBilahAksi();
+    (function (d) {
+      d.addEventListener('scroll', function () { tandaLuap(d); }, { passive: true });
+      addEventListener('resize', function () { tandaLuap(d); });
+    })(kepalaTab.querySelector('.tab-daftar'));
     var kopCetak = document.createElement('div');
     kopCetak.id = 'kop-cetak'; kopCetak.className = 'hanya-cetak';
     [kopCetak, kepalaTab, pPengantar, pData, pHasil, pGrafik, pSumber].forEach(function (x) { akar.appendChild(x); });

@@ -43,6 +43,7 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 - Klaim sumber dan pengujian di beranda dan README disesuaikan dengan status tiap alat.
 
 ### Diperbaiki
+- Alat praktikum di ponsel: tombol utama bilah bawah memakai label pendek "Data contoh" (sebelumnya "data contoh" berhuruf kecil, terlihat seperti terpotong); di layar ≤ 420 px nomor tab disembunyikan sehingga lima tab muat tanpa digeser (360–390 px: luap 0 px), dan bila tab tetap tidak muat tepi kanannya dipudarkan sebagai tanda bisa digeser.
 - `skrip/buat.py` menulis berkas dengan akhir baris LF di Windows, mengisi `judul_en` dan `ringkas_en`, dan memakai judul tab "· GeoSR".
 - Teks dari tautan berbagi dan isian formulir praktikum di-escape sebelum masuk HTML (XSS).
 - Syarat data 4d di bawah ujung tiang hanya untuk Meyerhof.
