@@ -64,6 +64,16 @@ Panjang baris teks bacaan paling banyak 42em (±80 karakter); lead 64ch.
 - Animasi berhenti saat tab tersembunyi; `prefers-reduced-motion: reduce` menampilkan keadaan akhir tanpa gerak.
 - Transisi antarhalaman memakai View Transitions bila didukung.
 - Contoh yang sudah benar: alur "Dari lembar lab ke laporan" di beranda (`alur-atterberg.js`), angka hasil yang menghitung naik, garis tab yang bergeser.
+- Pengecualian yang disengaja (keputusan Defsa, 15 Nov 2026): Penampang GeoSR (`penampang.js`, hero beranda dan `/penampang/`) bergerak terus tanpa ujung dan interaktif. Syaratnya: berhenti saat tab tersembunyi atau di luar layar, diam saat `prefers-reduced-motion`, ada sakelar "Gerak otomatis", dan isinya juga tersedia sebagai daftar tautan biasa.
+
+## Cahaya dan kedalaman
+
+Keputusan Defsa, 15 November 2026: tampilan datar terasa seperti buatan AI, jadi gradasi, bayangan, cahaya, dan color grading dipakai **bila memodelkan cahaya atau materi**, bukan sebagai hiasan acak.
+- Satu sumber cahaya: kiri atas, hangat. Bayangan jatuh ke kanan bawah, dingin. Color grading di kanvas penampang: lapisan `soft-light` hangat (kiri atas) ke teal gelap (kanan bawah), lalu vinyet.
+- Tanah: makin dalam makin gelap dan dingin; tiap lapisan bergradasi terang di atas ke gelap di bawah; lapisan atas menaungi lapisan bawah (bayangan di bawah batas); tanah di bawah muka air tanah sedikit kebiruan (jenuh). Butir dan kerikil punya bayangan jatuh, sisi terang, dan kilap.
+- Tema gelap adalah malam: bulan dan bintang, butir berpendar tipis dengan warna lapisannya.
+- Antarmuka di atas kanvas memakai kaca buram (`--kaca`, `backdrop-filter`). Kartu dasbor (`.petak`) memakai `--cahaya-atas` (garis terang 1 px di tepi atas), `--bayang-dalam`, dan sorot lembut yang mengikuti kursor (`--mx`, `--my`, diisi `gerak.js`).
+- Warna turunan dihitung dari token (campuran dengan putih atau hitam), bukan warna baru tanpa pasangan gelap.
 
 ## Teks
 
@@ -76,7 +86,7 @@ Panjang baris teks bacaan paling banyak 42em (±80 karakter); lead 64ch.
 
 Ciri template dan tulisan AI yang tidak dipakai:
 - Label kecil berhuruf kapital berspasi di atas judul (eyebrow), titik tengah sebagai hiasan di antara label, panah "→" di teks tautan.
-- Latar krem dengan aksen oranye bata; kartu bundar seragam dengan bayangan sama; gradasi sebagai hiasan; cahaya (glow) dekoratif; pil status acak.
+- Latar krem dengan aksen oranye bata; kartu bundar seragam dengan bayangan sama; gradasi atau cahaya (glow) yang tidak memodelkan cahaya atau materi (lihat "Cahaya dan kedalaman"); pil status acak.
 - Animasi muncul di setiap bagian; latar video atau 3D.
 - Pembuka kosong, kata penekanan tanpa angka (sangat, krusial, signifikan), daftar tiga hal yang dipaksakan, nada iklan.
 - Gambar atau video buatan AI. Aset luar hanya berlisensi jelas (CC0, CC BY, MIT, OFL, dsb.), disimpan lokal, dicatat di `docs/assets/kredit.json`.

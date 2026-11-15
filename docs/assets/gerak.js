@@ -37,6 +37,17 @@
     }
   })();
 
+  // ------------------------------------------------------------ cahaya kursor di kartu dasbor
+  // Sorot lembut mengikuti kursor di atas .petak (CSS memakai --mx dan --my). Hanya penunjuk tetikus.
+  document.addEventListener('pointermove', function (e) {
+    if (e.pointerType !== 'mouse' || !e.target.closest) return;
+    var p = e.target.closest('.petak');
+    if (!p) return;
+    var r = p.getBoundingClientRect();
+    p.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    p.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  }, { passive: true });
+
   // ------------------------------------------------------------ riwayat untuk "Lanjutkan" di beranda
   // Hanya disimpan di localStorage browser pengguna: alamat, judul, jenis, waktu. Maksimal 6, terbaru di depan.
   (function () {

@@ -37,25 +37,25 @@
       <h1>Penampang GeoSR</h1>
       <p class="lead">Semua 26 alat dan kalkulator GeoSR tersusun sebagai lapisan tanah: enam kelompok uji praktikum di atas, kalkulator di bawahnya, latihan di batuan dasar. Butir di tiap lapisan adalah alat yang bisa dibuka.</p>
     </header>
-    <section class="penampang-jelajah" id="jelajah" aria-label="Penampang interaktif" hidden>
+    <section class="penampang-jelajah" id="jelajah" aria-label="Penampang interaktif" data-penampang="penuh" data-sumber="isiPenampang" hidden>
       <div class="jelajah-panel">
         <label for="cariPenampang">Cari butir</label>
-        <input id="cariPenampang" type="search" autocomplete="off" placeholder="misalnya CBR, SNI 1744, Broms">
-        <p id="infoPenampang" class="kecil redup" role="status" aria-live="polite"></p>
-        <ol class="jelajah-lapis" id="daftarLapis" aria-label="Lapisan"></ol>
+        <input id="cariPenampang" class="pn-cari" type="search" autocomplete="off" placeholder="misalnya CBR, SNI 1744, Broms">
+        <p id="infoPenampang" class="kecil redup pn-info" role="status" aria-live="polite"></p>
+        <ol class="jelajah-lapis pn-lapis" id="daftarLapis" aria-label="Lapisan"></ol>
       </div>
       <div class="jelajah-panggung">
-        <canvas id="kanvasPenampang" aria-hidden="true"></canvas>
+        <canvas id="kanvasPenampang" class="pn-kanvas" aria-hidden="true"></canvas>
         <div class="jelajah-alat" role="toolbar" aria-label="Kendali penampang">
-          <button type="button" class="tombol kecil" id="tGerak" aria-pressed="true">Gerak otomatis</button>
-          <button type="button" class="tombol kecil" id="tBor">Uji bor</button>
-          <button type="button" class="tombol kecil ikon" id="tKecil" aria-label="Perkecil">&minus;</button>
-          <button type="button" class="tombol kecil ikon" id="tBesar" aria-label="Perbesar">+</button>
-          <button type="button" class="tombol kecil" id="tUlang">Atur ulang</button>
+          <button type="button" class="tombol kecil" id="tGerak" data-aksi="gerak" aria-pressed="true">Gerak otomatis</button>
+          <button type="button" class="tombol kecil" id="tBor" data-aksi="bor">Uji bor</button>
+          <button type="button" class="tombol kecil ikon" id="tKecil" data-aksi="kecil" aria-label="Perkecil">&minus;</button>
+          <button type="button" class="tombol kecil ikon" id="tBesar" data-aksi="besar" aria-label="Perbesar">+</button>
+          <button type="button" class="tombol kecil" id="tUlang" data-aksi="ulang">Atur ulang</button>
         </div>
-        <div class="jelajah-kartu" id="kartuPenampang" aria-live="polite" hidden></div>
+        <div class="jelajah-kartu pn-kartu" id="kartuPenampang" aria-live="polite" hidden></div>
       </div>
-      <p class="kecil redup jelajah-petunjuk">Seret untuk menggeser, gulir atau cubit untuk memperbesar, klik butir untuk membukanya, dan klik permukaan tanah (atau tombol Uji bor) untuk mengebor: setiap lapisan yang ditembus menyumbang satu alat terdekat. Penampang ini ilustrasi susunan situs, bukan data tanah.</p>
+      <p class="kecil redup jelajah-petunjuk">Seret untuk menggeser, gulir atau cubit untuk memperbesar, klik butir untuk membukanya, dan klik permukaan tanah (atau tombol Uji bor) untuk mengebor: setiap lapisan yang ditembus menyumbang satu alat terdekat. Segitiga biru dan garis putus yang mengalir adalah muka air tanah; tanah di bawahnya jenuh, jadi tampak lebih kebiruan. Penampang ini ilustrasi susunan situs, bukan data tanah.</p>
     </section>
     <section class="isi-penampang" aria-labelledby="judul-isi-penampang">
       <h2 id="judul-isi-penampang">Isi penampang</h2>
