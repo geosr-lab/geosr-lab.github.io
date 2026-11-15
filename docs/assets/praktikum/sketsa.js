@@ -280,6 +280,7 @@
 
   // Kalkulator korelasi N-SPT memakai gambar uji SPT yang sama.
   S['korelasi-spt'] = { ket: S.spt.ket, svg: S.spt.svg };
+  S['korelasi-cpt'] = { ket: S.sondir.ket, svg: S.sondir.svg };
 
   S['broms-lateral'] = {
     ket: 'Beban lateral P di atas muka tanah mendorong tiang. Tanah di depan tiang menahan dengan reaksi per satuan panjang; di lempung, reaksi di 1,5b teratas diabaikan.',

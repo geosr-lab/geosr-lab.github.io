@@ -291,6 +291,44 @@
       ],
       "judul_en": "Soil parameters from SPT N-values",
       "ringkas_en": "N<sub>60</sub> and (N<sub>1</sub>)<sub>60</sub> corrections, then D<sub>r</sub>, φ, E, c<sub>u</sub>, and v<sub>s</sub> from empirical correlations."
+    },
+    {
+      "id": "korelasi-cpt",
+      "judul": "Korelasi parameter tanah dari sondir (CPT)",
+      "judul_pendek": "Kalkulator Korelasi Sondir",
+      "deskripsi": "Dari qc dan fs sondir, perkiraan kepadatan relatif dan sudut geser pasir, serta kuat geser undrained, sensitivitas, OCR, rasio kompresi, dan kecepatan gelombang geser lempung, dengan rujukan halaman.",
+      "kategori": "penyelidikan",
+      "lencana": "Penyelidikan tanah",
+      "halaman": "kalkulator/korelasi-cpt.html",
+      "ringkas": "Dari q<sub>c</sub> dan f<sub>s</sub>: D<sub>r</sub> dan φ pasir; c<sub>u</sub>, S<sub>t</sub>, OCR, CR, v<sub>s</sub> lempung.",
+      "rincian": [
+        [
+          "Rujukan",
+          "Warman (2019), Kementerian PUPR, Bab 5"
+        ],
+        [
+          "Masukan",
+          "q<sub>c</sub>, f<sub>s</sub> (kg/cm²), kedalaman, γ, MAT, faktor korelasi lempung"
+        ],
+        [
+          "Keluaran",
+          "R<sub>f</sub>, D<sub>r</sub>, φ, c<sub>u</sub>, S<sub>t</sub>, OCR, CR, v<sub>s</sub>"
+        ]
+      ],
+      "skrip": [
+        "docs/assets/korelasi-cpt-hitung.js",
+        "docs/assets/korelasi-cpt-tampilan.js"
+      ],
+      "sumber": [
+        "Warman, H. (penyusun) (2019). Kumpulan korelasi parameter geoteknik dan fondasi. Kementerian PUPR. Bab 5, hlm. 53–61. Mengutip Baldi dkk. (1986), Meyerhof (1956), Bergdahl dkk. (1993), Schmertmann (1978), Mayne dan Kemper (1988), CUR (1996), Mayne dan Rix (1995)."
+      ],
+      "status": "sekunder",
+      "tanggal_cek": "2026-11-15",
+      "uji": [
+        "tests/verifikasi_korelasi_cpt.py"
+      ],
+      "judul_en": "Soil parameters from CPT (sondir)",
+      "ringkas_en": "From q<sub>c</sub> and f<sub>s</sub>: D<sub>r</sub> and φ for sand; c<sub>u</sub>, S<sub>t</sub>, OCR, CR, v<sub>s</sub> for clay."
     }
   ]
 }
