@@ -454,6 +454,8 @@ footer::before {
 .kaki-merek { display: grid; gap: 2px; }
 .kaki-merek a { font-family: var(--huruf-judul); font-weight: 800; font-stretch: 112%; font-size: 18px; color: var(--teks); text-decoration: none; }
 .kaki-merek a:hover { color: var(--aksen); }
+.kaki-merek span a { font: inherit; color: var(--aksen); text-decoration: underline; }
+.kaki-merek span a:hover { color: var(--aksen-tua); }
 .kaki-etiket { display: flex; flex-wrap: wrap; gap: 1px; margin: 0; background: var(--garis); border: 1px solid var(--garis); border-radius: 4px; overflow: hidden; }
 .kaki-etiket > div { flex: 1 1 auto; background: var(--latar); padding: 7px 14px 8px; }
 .kaki-etiket dt { font-family: var(--huruf-judul); font-stretch: 90%; font-size: 12px; font-weight: 600; }
