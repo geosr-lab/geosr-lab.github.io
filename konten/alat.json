@@ -54,7 +54,9 @@
       "tanggal_cek": "2026-09-26",
       "uji": [
         "tests/verifikasi_tiang_bor.py"
-      ]
+      ],
+      "judul_en": "Axial capacity of bored piles from SPT",
+      "ringkas_en": "Reese &amp; Wright (1977) method with a soil profile and step-by-step calculation per layer."
     },
     {
       "id": "pondasi-dangkal",
@@ -91,7 +93,9 @@
       "tanggal_cek": "2026-09-25",
       "uji": [
         "tests/verifikasi_pondasi_dangkal.py"
-      ]
+      ],
+      "judul_en": "Bearing capacity of shallow foundations",
+      "ringkas_en": "General bearing capacity equation with shape and depth factors and a groundwater correction."
     },
     {
       "id": "konsolidasi",
@@ -128,7 +132,9 @@
       "tanggal_cek": "2026-09-25",
       "uji": [
         "tests/verifikasi_konsolidasi.py"
-      ]
+      ],
+      "judul_en": "Consolidation settlement",
+      "ringkas_en": "Normally and over-consolidated clay, e–log σ' diagram, and settlement over time."
     },
     {
       "id": "praktikum",
