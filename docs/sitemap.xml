@@ -2,19 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://defsayurinda.github.io/</loc></url>
   <url><loc>https://defsayurinda.github.io/alat/</loc></url>
-  <url><loc>https://defsayurinda.github.io/cara-memakai-ai/</loc></url>
-  <url><loc>https://defsayurinda.github.io/cara-memakai-ai/batasan-dan-etika/</loc></url>
-  <url><loc>https://defsayurinda.github.io/cara-memakai-ai/contoh-prompt/</loc></url>
-  <url><loc>https://defsayurinda.github.io/cara-memakai-ai/preferensi/</loc></url>
   <url><loc>https://defsayurinda.github.io/cari/</loc></url>
-  <url><loc>https://defsayurinda.github.io/catatan/</loc></url>
-  <url><loc>https://defsayurinda.github.io/catatan/01-mengenal-claude-dan-claude-code/</loc></url>
-  <url><loc>https://defsayurinda.github.io/catatan/02-git-dan-pull-request-pertama/</loc></url>
-  <url><loc>https://defsayurinda.github.io/catatan/03-membangun-situs-dan-kalkulator/</loc></url>
   <url><loc>https://defsayurinda.github.io/kalkulator/konsolidasi.html</loc></url>
   <url><loc>https://defsayurinda.github.io/kalkulator/pondasi-dangkal.html</loc></url>
   <url><loc>https://defsayurinda.github.io/kalkulator/tiang-bor.html</loc></url>
   <url><loc>https://defsayurinda.github.io/latihan/</loc></url>
+  <url><loc>https://defsayurinda.github.io/pembuat/</loc></url>
+  <url><loc>https://defsayurinda.github.io/pembuat/cara-memakai-ai/</loc></url>
+  <url><loc>https://defsayurinda.github.io/pembuat/cara-memakai-ai/batasan-dan-etika/</loc></url>
+  <url><loc>https://defsayurinda.github.io/pembuat/cara-memakai-ai/contoh-prompt/</loc></url>
+  <url><loc>https://defsayurinda.github.io/pembuat/cara-memakai-ai/preferensi/</loc></url>
+  <url><loc>https://defsayurinda.github.io/pembuat/catatan/</loc></url>
+  <url><loc>https://defsayurinda.github.io/pembuat/catatan/01-mengenal-claude-dan-claude-code/</loc></url>
+  <url><loc>https://defsayurinda.github.io/pembuat/catatan/02-git-dan-pull-request-pertama/</loc></url>
+  <url><loc>https://defsayurinda.github.io/pembuat/catatan/03-membangun-situs-dan-kalkulator/</loc></url>
+  <url><loc>https://defsayurinda.github.io/pembuat/skill/</loc></url>
+  <url><loc>https://defsayurinda.github.io/pembuat/skill/asisten-teknik-sipil/</loc></url>
   <url><loc>https://defsayurinda.github.io/praktikum/</loc></url>
   <url><loc>https://defsayurinda.github.io/praktikum/atterberg/</loc></url>
   <url><loc>https://defsayurinda.github.io/praktikum/batas-susut/</loc></url>
@@ -34,7 +37,4 @@
   <url><loc>https://defsayurinda.github.io/praktikum/sondir/</loc></url>
   <url><loc>https://defsayurinda.github.io/praktikum/spt/</loc></url>
   <url><loc>https://defsayurinda.github.io/praktikum/tekan-bebas/</loc></url>
-  <url><loc>https://defsayurinda.github.io/skill/</loc></url>
-  <url><loc>https://defsayurinda.github.io/skill/asisten-teknik-sipil/</loc></url>
-  <url><loc>https://defsayurinda.github.io/tentang/</loc></url>
 </urlset>

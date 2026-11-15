@@ -5,12 +5,36 @@
  *    konsolidasi" memindahkan bentuk di antara dua keadaan.
  * 2. Halaman alat: kartu hasil yang angkanya berubah diberi kilat singkat; hasil yang baru muncul
  *    tampil bertahap dan garis grafik tergambar.
+ * 3. Menu lipat di layar sempit (tombol menu, tutup dengan Esc, klik tautan, atau klik di luar).
  * Semua gerak dimatikan bila pengguna memilih prefers-reduced-motion.
  */
 (function () {
   'use strict';
   if (typeof document === 'undefined') return;
   var hemat = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ------------------------------------------------------------ menu lipat (ponsel)
+  (function () {
+    var nav = document.querySelector('.nav');
+    var tombol = nav && nav.querySelector('.nav-tombol');
+    if (!tombol) return;
+    function atur(buka) {
+      nav.classList.toggle('terbuka', buka);
+      tombol.setAttribute('aria-expanded', buka ? 'true' : 'false');
+    }
+    tombol.addEventListener('click', function () { atur(tombol.getAttribute('aria-expanded') !== 'true'); });
+    nav.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('#menu-utama a')) atur(false); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav.classList.contains('terbuka')) { atur(false); tombol.focus(); }
+    });
+    document.addEventListener('click', function (e) { if (nav.classList.contains('terbuka') && !nav.contains(e.target)) atur(false); });
+    // Bila layar dilebarkan, menu kembali ke keadaan biasa.
+    if (window.matchMedia) {
+      var lebar = window.matchMedia('(min-width: 721px)');
+      var tutup = function (m) { if (m.matches) atur(false); };
+      if (lebar.addEventListener) lebar.addEventListener('change', tutup); else if (lebar.addListener) lebar.addListener(tutup);
+    }
+  })();
 
   // ------------------------------------------------------------ penampang beranda
   var NS = 'http://www.w3.org/2000/svg';

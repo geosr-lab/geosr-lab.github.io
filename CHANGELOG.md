@@ -17,6 +17,7 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 - `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1, terjemahan resmi), templat Issue dan PR, `CITATION.cff`, Dependabot untuk GitHub Actions.
 
 ### Diubah
+- Nama situs menjadi GeoSR (Geotechnical Soil Report). Menu utama: Praktikum, Kalkulator, Latihan, Cari, dengan menu lipat di layar sempit. Profil, catatan belajar, cara memakai AI, dan skill dipindah ke `/pembuat/` dan hanya ditautkan dari kaki halaman; alamat lama mengarah ke alamat baru. Status sumber pindah ke bawah halaman alat. Versi cache 0.11.0.
 - Tampilan baru bertema lembar data lab: kertas milimeter, warna lapisan tanah per kelompok pengujian, huruf Archivo dan Plus Jakarta Sans lokal, animasi penampang tanah di beranda, dan transisi halaman yang menghormati `prefers-reduced-motion`. Warna aksen menjadi `#1d6a63`, termasuk grafik yang diekspor.
 - Formulir dan tabel hasil alat praktikum disamakan dengan nama, urutan, simbol, dan satuan form lab; versi cache 0.10.0.
 - Alamat situs menjadi https://defsayurinda.github.io/ dan akun menjadi `defsayurinda`.

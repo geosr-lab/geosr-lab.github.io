@@ -69,7 +69,7 @@ def main():
     praktikum = json.loads((AKAR / "konten/praktikum.json").read_text(encoding="utf-8"))
     wajib = [a["halaman"] for a in registri["alat"]]
     wajib += [f"praktikum/{a['id']}/" for k in praktikum["kelompok"] for a in k["alat"] if a["status"] == "tersedia"]
-    wajib += [f"catatan/{c.stem}/" for c in sorted((AKAR / "konten/catatan").glob("*.md"))]
+    wajib += [f"pembuat/catatan/{c.stem}/" for c in sorted((AKAR / "konten/catatan").glob("*.md"))]
     for u in wajib:
         if u not in url:
             gagal.append(f"cari.json: {u} belum terindeks")

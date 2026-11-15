@@ -1,6 +1,6 @@
-# Defsa Yurinda · Situs dan alat geoteknik
+# GeoSR · Geotechnical Soil Report
 
-Kalkulator geoteknik, pengolah data praktikum Mekanika Tanah, dan latihan soal yang menampilkan langkah hitungan dan sumber rumusnya, terbit di **[defsayurinda.github.io](https://defsayurinda.github.io/)**.
+Pengolah data praktikum Mekanika Tanah, kalkulator geoteknik, dan latihan soal yang menampilkan langkah hitungan dan sumber rumusnya, terbit di **[defsayurinda.github.io](https://defsayurinda.github.io/)**. Dibuat oleh Defsa Yurinda ([profil](https://defsayurinda.github.io/pembuat/)).
 
 [![Verifikasi](https://github.com/defsayurinda/defsayurinda.github.io/actions/workflows/verifikasi.yml/badge.svg)](https://github.com/defsayurinda/defsayurinda.github.io/actions/workflows/verifikasi.yml)
 [![Situs](https://img.shields.io/badge/situs-defsayurinda.github.io-1a1a1a)](https://defsayurinda.github.io/)
@@ -52,7 +52,8 @@ docs/       situs yang diterbitkan GitHub Pages
   kalkulator/, latihan/, alat/     halaman alat (ditulis tangan)
   assets/*-hitung.js               rumus, dipisah dari tampilan supaya bisa diuji
   assets/praktikum/                kerangka, grafik, rumus, dan definisi alat praktikum
-  tentang/, catatan/, praktikum/   halaman hasil bangun dari konten/ (jangan diedit langsung)
+  praktikum/, pembuat/             halaman hasil bangun dari konten/ (jangan diedit langsung)
+  tentang/, catatan/, …            halaman pengalih ke alamat baru di pembuat/
 skrip/      bangun_situs.py: ubah konten/ jadi halaman; buat.py: kerangka alat atau catatan baru
 tests/      verifikasi hitungan, bank soal, tautan, keamanan, dan registri
 ```
