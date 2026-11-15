@@ -3,11 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Defsa Yurinda · Teknik Sipil</title>
-  <meta name="description" content="Defsa Yurinda, mahasiswa Teknik Sipil Universitas Jambi. Kalkulator geoteknik dengan langkah hitungan lengkap dan latihan soal, gratis untuk siapa saja.">
+  <title>GeoSR · Geotechnical Soil Report</title>
+  <meta name="description" content="Pengolah data praktikum Mekanika Tanah, kalkulator geoteknik, dan latihan soal, lengkap dengan langkah hitungan dan sumber rumus. Gratis dan langsung jalan di browser.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Defsa Yurinda · Teknik Sipil">
-  <meta property="og:description" content="Defsa Yurinda, mahasiswa Teknik Sipil Universitas Jambi. Kalkulator geoteknik dengan langkah hitungan lengkap dan latihan soal, gratis untuk siapa saja.">
+  <meta property="og:site_name" content="GeoSR · Geotechnical Soil Report">
+  <meta property="og:title" content="GeoSR · Geotechnical Soil Report">
+  <meta property="og:description" content="Pengolah data praktikum Mekanika Tanah, kalkulator geoteknik, dan latihan soal, lengkap dengan langkah hitungan dan sumber rumus. Gratis dan langsung jalan di browser.">
   <meta property="og:url" content="https://defsayurinda.github.io/">
   <meta property="og:image" content="https://defsayurinda.github.io/assets/pratinjau.png">
   <meta property="og:locale" content="id_ID">
@@ -22,8 +23,9 @@
   <!-- NAV:MULAI -->
   <nav class="nav">
     <div class="wadah">
-      <a class="merek" href="./"><svg class="merek-tanda" viewBox="0 0 22 26" aria-hidden="true"><rect x="0" y="0" width="22" height="26" rx="2" style="fill:none"/><rect x="0" y="0" width="22" height="6" rx="1" style="fill:var(--lapis-3)"/><rect x="0" y="7.5" width="22" height="7" rx="1" style="fill:var(--lapis-2)"/><rect x="0" y="16" width="22" height="4" rx="1" style="fill:var(--lapis-4)"/><rect x="0" y="21.5" width="22" height="4.5" rx="1" style="fill:var(--lapis-5)"/></svg><span>Defsa<span class="merek-lengkap"> Yurinda</span></span></a>
-      <ul><li><a href="alat/">Alat</a></li><li><a href="latihan/">Latihan</a></li><li><a href="catatan/">Catatan</a></li><li><a href="tentang/">Tentang</a></li><li><a href="cari/">Cari</a></li></ul>
+      <a class="merek" href="./" aria-label="GeoSR, beranda"><svg class="merek-tanda" viewBox="0 0 22 26" aria-hidden="true"><rect x="0" y="0" width="22" height="26" rx="2" style="fill:none"/><rect x="0" y="0" width="22" height="6" rx="1" style="fill:var(--lapis-3)"/><rect x="0" y="7.5" width="22" height="7" rx="1" style="fill:var(--lapis-2)"/><rect x="0" y="16" width="22" height="4" rx="1" style="fill:var(--lapis-4)"/><rect x="0" y="21.5" width="22" height="4.5" rx="1" style="fill:var(--lapis-5)"/></svg><span>GeoSR<span class="merek-lengkap">Geotechnical Soil Report</span></span></a>
+      <button class="nav-tombol" type="button" aria-expanded="false" aria-controls="menu-utama"><span class="nav-garis" aria-hidden="true"></span><span class="sr-only">Menu</span></button>
+      <ul id="menu-utama"><li><a href="praktikum/">Praktikum</a></li><li><a href="alat/">Kalkulator</a></li><li><a href="latihan/">Latihan</a></li><li><a href="cari/">Cari</a></li></ul>
     </div>
   </nav>
   <!-- NAV:SELESAI -->
@@ -31,12 +33,12 @@
   <main class="wadah">
     <header class="pahlawan beranda-pahlawan">
       <div>
-        <p class="asal"><svg viewBox="0 0 16 20" aria-hidden="true"><rect width="16" height="5" rx="1" style="fill:var(--lapis-3)"/><rect y="6" width="16" height="6" rx="1" style="fill:var(--lapis-2)"/><rect y="13" width="16" height="7" rx="1" style="fill:var(--lapis-4)"/></svg>Teknik Sipil, Universitas Jambi</p>
-        <h1><span class="baris">Defsa</span> <span class="baris">Yurinda</span></h1>
-        <p class="lead">Kalkulator geoteknik, pengolah data praktikum Mekanika Tanah, dan latihan soal, lengkap dengan langkah hitungan dan sumber rumusnya. Semuanya berjalan di browser tanpa perlu daftar.</p>
+        <p class="asal"><svg viewBox="0 0 16 20" aria-hidden="true"><rect width="16" height="5" rx="1" style="fill:var(--lapis-3)"/><rect y="6" width="16" height="6" rx="1" style="fill:var(--lapis-2)"/><rect y="13" width="16" height="7" rx="1" style="fill:var(--lapis-4)"/></svg>Geotechnical Soil Report</p>
+        <h1><span class="baris">GeoSR</span></h1>
+        <p class="lead">Olah data praktikum Mekanika Tanah dan hitung soal geoteknik dengan formulir seperti lembar lab. Hasil, grafik, dan langkah hitungannya siap dipindah ke laporan.</p>
         <div class="baris-tombol">
-          <a class="tombol utama" href="alat/">Lihat semua alat</a>
-          <a class="tombol" href="praktikum/">Praktikum Mekanika Tanah</a>
+          <a class="tombol utama" href="praktikum/">Mulai praktikum</a>
+          <a class="tombol" href="alat/">Kalkulator</a>
           <a class="tombol" href="latihan/">Latihan soal</a>
         </div>
       </div>
@@ -50,13 +52,13 @@
     </header>
 
     <section>
-      <h2>Alat</h2>
+      <h2>Yang bisa dikerjakan</h2>
       <div class="alat-unggulan">
         <!-- ALAT:MULAI -->
   <a class="kartu" href="kalkulator/tiang-bor.html" data-kat="fondasi">
           <span class="lencana">Fondasi dalam</span>
           <h3>Daya dukung tiang bor dari N-SPT</h3>
-          <p class="redup">Metode Reese &amp; Wright (1977) dengan profil tanah dan langkah hitungan. Meyerhof disembunyikan sementara sampai rumusnya dicek ulang.</p>
+          <p class="redup">Metode Reese &amp; Wright (1977) dengan profil tanah dan langkah hitungan per lapisan.</p>
         </a>
         <a class="kartu" href="kalkulator/pondasi-dangkal.html" data-kat="fondasi">
           <span class="lencana">Fondasi dangkal</span>
@@ -82,45 +84,24 @@
         </a>
   <!-- ALAT:SELESAI -->
       </div>
-      <a class="tautan-lanjut" href="alat/">Semua alat, cara memakai, dan cara mengutip</a>
+      <a class="tautan-lanjut" href="alat/">Semua kalkulator, cara memakai, dan cara mengutip</a>
     </section>
 
     <section>
-      <h2>Kenapa hasilnya bisa diperiksa</h2>
-      <div class="bukti">
-        <div><h3><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M5 4v18M5 7h13M5 13h9M5 19h15" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="5" cy="7" r="2.6" fill="currentColor"/><circle cx="5" cy="13" r="2.6" fill="currentColor"/><circle cx="5" cy="19" r="2.6" fill="currentColor"/></svg>Langkah ditampilkan</h3><p>Setiap hasil disertai diketahui, rumus, substitusi angka, dan catatan asumsi. Bisa dicocokkan dengan hitungan tangan.</p></div>
-        <div><h3><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M6 3h10l5 5v15H6z M16 3v5h5 M9.5 13h8 M9.5 17h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>Rumus bersumber</h3><p>Setiap rumus menyebut sumbernya. Status sumber tiap alat (asli, sekunder, atau belum terverifikasi) tercantum di README, dan rumus yang ternyata tidak sesuai sumber disembunyikan sampai diperbaiki.</p></div>
-        <div><h3><svg viewBox="0 0 26 26" aria-hidden="true"><path d="M3 21h20M6 21V11M11 21V6M16 21v-8M21 21V9" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M4 9l6-5 5 6 7-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2 2.2"/></svg>Diuji otomatis</h3><p>Setiap perubahan diuji terhadap perhitungan Python terpisah dan uji sifat. Pondasi dangkal dan konsolidasi juga dicocokkan dengan nilai tabel buku teks; contoh soal buku utuh belum ada.</p></div>
-      </div>
-    </section>
-
-    <section>
-      <h2>Catatan terbaru</h2>
-        <!-- CATATAN:MULAI -->
-  <ol class="daftar-nomor">
-          <li><a href="catatan/03-membangun-situs-dan-kalkulator/"><span class="nomor">03</span><span class="judul">Membangun situs dan kalkulator bersama Claude Code</span><span class="ringkas">Catatan ini merangkum cara situs defsayurinda.github.io dibuat: tiga kalkulator geoteknik dan satu bank soal, dikerjakan Claude Code dalam empat tahap, masing-masing lewat Pull…</span></a></li>
-          <li><a href="catatan/02-git-dan-pull-request-pertama/"><span class="nomor">02</span><span class="judul">Git dan Pull Request pertama</span><span class="ringkas">Buat PR tanpa Claude, langsung dari web GitHub:</span></a></li>
-          <li><a href="catatan/01-mengenal-claude-dan-claude-code/"><span class="nomor">01</span><span class="judul">Mengenal Claude dan Claude Code</span><span class="ringkas">Claude adalah asisten AI buatan Anthropic. Saya memakainya lewat claude.ai, di browser atau aplikasi ponsel. Di sana Claude bisa diajak diskusi, membaca file yang dilampirkan…</span></a></li>
-        </ol>
-  <!-- CATATAN:SELESAI -->
-      <a class="tautan-lanjut" href="catatan/">Semua catatan</a>
-    </section>
-
-    <section>
-      <h2>Tentang</h2>
-      <p class="redup" style="max-width:68ch">Situs ini dibuat oleh Defsa Yurinda, mahasiswa Teknik Sipil Universitas Jambi, bersama Claude Code. Isinya bebas dipakai dan disalin dengan mencantumkan sumber (CC BY 4.0).</p>
-      <div class="baris-tombol">
-        <a class="tombol" href="tentang/">Tentang saya</a>
-        <a class="tombol" href="cara-memakai-ai/">Cara saya memakai AI</a>
-      </div>
+      <ul class="ciri">
+        <li><strong>Langkah lengkap</strong><span>Diketahui, rumus, substitusi angka, dan hasil, bisa dicocokkan dengan hitungan tangan.</span></li>
+        <li><strong>Rumus bersumber</strong><span>Setiap rumus menyebut SNI, ASTM, atau buku acuannya di halaman alat.</span></li>
+        <li><strong>Siap laporan</strong><span>Unduh Word, salin ke Excel, simpan grafik PNG, atau cetak ke PDF.</span></li>
+        <li><strong>Tanpa daftar</strong><span>Data tersimpan di browser Anda sendiri dan tetap bisa dipakai tanpa internet.</span></li>
+      </ul>
     </section>
   </main>
 
   <!-- FOOTER:MULAI -->
   <footer>
     <div class="wadah kaki-isi">
-      <div class="kaki-merek"><a href="./">Defsa Yurinda</a><span>Teknik Sipil, Universitas Jambi</span></div>
-      <dl class="kaki-etiket"><div><dt>Kode dan tulisan</dt><dd><a href="https://github.com/defsayurinda/defsayurinda.github.io">GitHub</a></dd></div><div><dt>Lisensi</dt><dd>Kode <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE">MIT</a>, tulisan <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE-TULISAN">CC BY 4.0</a></dd></div></dl>
+      <div class="kaki-merek"><a href="./">GeoSR</a><span>Geotechnical Soil Report · dibuat oleh <a href="pembuat/">Defsa Yurinda</a></span></div>
+      <dl class="kaki-etiket"><div><dt>Pembuat</dt><dd><a href="pembuat/">Profil</a> · <a href="pembuat/catatan/">Catatan</a></dd></div><div><dt>Kode</dt><dd><a href="https://github.com/defsayurinda/defsayurinda.github.io">GitHub</a></dd></div><div><dt>Lisensi</dt><dd>Kode <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE">MIT</a>, tulisan <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE-TULISAN">CC BY 4.0</a></dd></div></dl>
     </div>
   </footer>
   <script src="assets/daftar-sw.js" defer></script>

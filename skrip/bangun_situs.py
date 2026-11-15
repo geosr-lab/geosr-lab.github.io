@@ -32,25 +32,52 @@ SITUS = "https://defsayurinda.github.io/"
 REPO = "https://github.com/defsayurinda/defsayurinda.github.io"
 DASAR_404 = "/"
 
-MENU = [("alat/", "Alat", ("alat", "kalkulator", "praktikum")),
+NAMA = "GeoSR"
+KEPANJANGAN = "Geotechnical Soil Report"
+PEMBUAT = "Defsa Yurinda"
+
+MENU = [("praktikum/", "Praktikum", ("praktikum",)),
+        ("alat/", "Kalkulator", ("alat", "kalkulator")),
         ("latihan/", "Latihan", ("latihan",)),
-        ("catatan/", "Catatan", ("catatan",)),
-        ("tentang/", "Tentang", ("tentang", "cara-memakai-ai", "skill")),
         ("cari/", "Cari", ("cari",))]
+
+# Isi pribadi (profil, catatan belajar, cara memakai AI, skill) dikumpulkan di area pembuat,
+# hanya ditautkan dari kaki halaman. Alamat lama diarahkan ke alamat baru.
+PRIBADI = "pembuat/"
 
 
 # ---------------------------------------------------------------- peta sumber → halaman
 
 def peta_halaman():
     """Kembalikan daftar (berkas sumber, folder keluaran relatif terhadap docs/)."""
-    peta = [(KONTEN / "tentang.md", "tentang/")]
+    peta = [(KONTEN / "tentang.md", PRIBADI)]
     for bagian in ("cara-memakai-ai", "skill"):
         # Urutkan menurut nama (peka huruf besar) supaya urutan sama di Windows dan Linux/CI.
         for f in sorted((KONTEN / bagian).glob("*.md"), key=lambda p: p.name):
-            peta.append((f, f"{bagian}/" if f.name == "README.md" else f"{bagian}/{f.stem}/"))
+            peta.append((f, f"{PRIBADI}{bagian}/" if f.name == "README.md" else f"{PRIBADI}{bagian}/{f.stem}/"))
     for f in sorted((KONTEN / "catatan").glob("*.md"), key=lambda p: p.name):
-        peta.append((f, f"catatan/{f.stem}/"))
+        peta.append((f, f"{PRIBADI}catatan/{f.stem}/"))
     return peta
+
+
+def peta_pengalih(peta):
+    """Alamat lama → alamat baru untuk halaman pribadi yang dipindah ke area pembuat."""
+    pengalih = {"tentang/": PRIBADI, "catatan/": f"{PRIBADI}catatan/"}
+    for _, folder in peta:
+        if folder.startswith(PRIBADI) and folder != PRIBADI:
+            pengalih[folder[len(PRIBADI):]] = folder
+    return pengalih
+
+
+def halaman_pengalih(lama, baru):
+    href = relatif(lama, baru)
+    awalan = "../" * kedalaman(lama)
+    return ('<!doctype html>\n<html lang="id">\n<head>\n  <meta charset="utf-8">\n'
+            f'  <title>Pindah · {NAMA}</title>\n  <meta name="robots" content="noindex">\n'
+            f'  <link rel="canonical" href="{SITUS}{baru}">\n  <meta http-equiv="refresh" content="0; url={href}">\n'
+            f'  <link rel="manifest" href="{awalan}manifest.webmanifest">\n'
+            f'</head>\n<body>\n  <p>Halaman ini pindah ke <a href="{href}">{SITUS}{baru}</a>.</p>\n'
+            f'  <script src="{awalan}assets/daftar-sw.js" defer></script>\n</body>\n</html>\n')
 
 
 def kedalaman(folder):
@@ -76,9 +103,11 @@ def menu(awalan, aktif):
     tanda = ' aria-current="page"'
     butir = "".join(f'<li><a href="{awalan}{url}"{tanda if aktif in kunci else ""}>{nama}</a></li>'
                     for url, nama, kunci in MENU)
-    return (f'<nav class="nav">\n    <div class="wadah">\n      <a class="merek" href="{awalan or "./"}">{TANDA_MEREK}'
-            f'<span>Defsa<span class="merek-lengkap"> Yurinda</span></span></a>\n'
-            f'      <ul>{butir}</ul>\n    </div>\n  </nav>')
+    return (f'<nav class="nav">\n    <div class="wadah">\n      <a class="merek" href="{awalan or "./"}" aria-label="{NAMA}, beranda">{TANDA_MEREK}'
+            f'<span>{NAMA}<span class="merek-lengkap">{KEPANJANGAN}</span></span></a>\n'
+            '      <button class="nav-tombol" type="button" aria-expanded="false" aria-controls="menu-utama">'
+            '<span class="nav-garis" aria-hidden="true"></span><span class="sr-only">Menu</span></button>\n'
+            f'      <ul id="menu-utama">{butir}</ul>\n    </div>\n  </nav>')
 
 
 def skrip_sw(awalan):
@@ -90,9 +119,11 @@ def footer(awalan, sumber=None):
     sel_sumber = (f'<div><dt>Halaman ini</dt><dd><a href="{REPO}/blob/main/{sumber}">Sumber tulisan</a></dd></div>'
                   if sumber else "")
     return ('<footer>\n    <div class="wadah kaki-isi">\n'
-            f'      <div class="kaki-merek"><a href="{awalan or "./"}">Defsa Yurinda</a><span>Teknik Sipil, Universitas Jambi</span></div>\n'
+            f'      <div class="kaki-merek"><a href="{awalan or "./"}">{NAMA}</a><span>{KEPANJANGAN} · dibuat oleh '
+            f'<a href="{awalan}{PRIBADI}">{PEMBUAT}</a></span></div>\n'
             '      <dl class="kaki-etiket">'
-            f'<div><dt>Kode dan tulisan</dt><dd><a href="{REPO}">GitHub</a></dd></div>{sel_sumber}'
+            f'<div><dt>Pembuat</dt><dd><a href="{awalan}{PRIBADI}">Profil</a> · <a href="{awalan}{PRIBADI}catatan/">Catatan</a></dd></div>'
+            f'<div><dt>Kode</dt><dd><a href="{REPO}">GitHub</a></dd></div>{sel_sumber}'
             f'<div><dt>Lisensi</dt><dd>Kode <a href="{REPO}/blob/main/LICENSE">MIT</a>, tulisan '
             f'<a href="{REPO}/blob/main/LICENSE-TULISAN">CC BY 4.0</a></dd></div></dl>\n'
             '    </div>\n  </footer>' + skrip_sw(awalan))
@@ -144,10 +175,11 @@ def kepala(judul, ringkasan, awalan, url, tambahan=""):
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{j} · Defsa Yurinda</title>
+  <title>{j} · {NAMA}</title>
   <meta name="description" content="{r}">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="{j} · Defsa Yurinda">
+  <meta property="og:site_name" content="{NAMA} · {KEPANJANGAN}">
+  <meta property="og:title" content="{j} · {NAMA}">
   <meta property="og:description" content="{r}">
   <meta property="og:url" content="{SITUS}{url}">
   <meta property="og:image" content="{SITUS}assets/pratinjau.png">
@@ -168,12 +200,16 @@ def halaman_konten(sumber, folder, peta, sebelum=None, sesudah=None):
     isi = tulis_ulang_tautan(isi, sumber, folder, peta)
     awalan = "../" * kedalaman(folder)
     aktif = bagian_aktif(folder)
-    if aktif == "catatan":
-        atas = ("catatan/", "Semua catatan")
-    elif aktif == "tentang" or folder in ("cara-memakai-ai/", "skill/"):
-        atas = ("tentang/", "Tentang") if aktif != "tentang" else ("", "Beranda")
+    sub = folder[len(PRIBADI):] if folder.startswith(PRIBADI) else folder
+    if folder == PRIBADI:
+        atas = ("", "Beranda")
+    elif sub.startswith("catatan/"):
+        atas = (f"{PRIBADI}catatan/", "Semua catatan")
+    elif sub in ("cara-memakai-ai/", "skill/"):
+        atas = (PRIBADI, "Pembuat")
     else:
-        atas = (f"{aktif}/", {"cara-memakai-ai": "Cara saya memakai AI", "skill": "Skill Claude"}[aktif])
+        bagian = sub.split("/")[0]
+        atas = (f"{PRIBADI}{bagian}/", {"cara-memakai-ai": "Cara saya memakai AI", "skill": "Skill Claude"}[bagian])
     remah = f'<p class="remah"><a href="{awalan}{atas[0]}">{atas[1]}</a></p>'
     navigasi = ""
     if sebelum or sesudah:
@@ -200,7 +236,7 @@ def alur_sebelum_sesudah(sebelum, sesudah, lapis_sebelum="", lapis_sesudah=""):
 def daftar_catatan(peta):
     hasil = []
     for sumber, folder in peta:
-        if folder.startswith("catatan/"):
+        if folder.startswith(f"{PRIBADI}catatan/"):
             judul, ringkasan = judul_dan_ringkasan(sumber.read_text(encoding="utf-8"))
             nomor, _, nama = judul.partition(" — ")
             hasil.append((nomor, nama or judul, ringkasan, folder))
@@ -208,13 +244,14 @@ def daftar_catatan(peta):
 
 
 def halaman_daftar_catatan(catatan):
-    folder, awalan = "catatan/", "../"
+    folder, awalan = f"{PRIBADI}catatan/", "../../"
     butir = "\n".join(
         f'        <li><a href="{relatif(folder, f)}"><span class="nomor">{html.escape(n)}</span><span class="judul">{html.escape(j)}</span>'
         f'<span class="ringkas">{html.escape(r)}</span></a></li>' for n, j, r, f in reversed(catatan))
     return (kepala("Catatan belajar", "Catatan saya selama belajar Git, GitHub, dan Claude Code untuk kuliah teknik sipil.", awalan, folder) +
-            "\n<body>\n  <!-- NAV:MULAI -->\n  " + menu(awalan, "catatan") + "\n  <!-- NAV:SELESAI -->\n\n"
+            "\n<body>\n  <!-- NAV:MULAI -->\n  " + menu(awalan, "pembuat") + "\n  <!-- NAV:SELESAI -->\n\n"
             "  <main class=\"wadah\">\n    <header class=\"pahlawan\">\n"
+            f"      <p class=\"remah\"><a href=\"{awalan}{PRIBADI}\">Pembuat</a></p>\n"
             "      <h1>Catatan belajar</h1>\n"
             "      <p class=\"lead\">Catatan saya selama belajar Git, GitHub, dan Claude Code. Setiap catatan berisi konsep, contoh dari pengalaman sendiri, dan latihan.</p>\n"
             "    </header>\n    <ol class=\"daftar-nomor\">\n" + butir +
@@ -304,8 +341,9 @@ def halaman_alat_praktikum(alat, kelompok, status="", data=None, relasi=None):
             f"      <p class=\"remah\"><a href=\"{awalan}praktikum/\">Praktikum Mekanika Tanah</a>"
             f"<span class=\"pemisah\" aria-hidden=\"true\">/</span><a href=\"{awalan}praktikum/#{slug(kelompok)}\">{html.escape(kelompok)}</a></p>\n"
             f"      <h1>{html.escape(alat['judul'])}</h1>\n      <p class=\"lead\">{html.escape(alat['deskripsi'])}</p>\n"
-            f"      {etiket}{baris_relasi}\n      {status}\n    </header>\n"
-            f"    <div id=\"alat-praktikum\" data-alat=\"{alat['id']}\"></div>{alur}\n  </main>\n\n"
+            f"      {etiket}{baris_relasi}\n    </header>\n"
+            f"    <div id=\"alat-praktikum\" data-alat=\"{alat['id']}\"></div>{alur}\n"
+            f"    <div class=\"status-bawah\">{status}</div>\n  </main>\n\n"
             "  <!-- FOOTER:MULAI -->\n  " + footer(awalan) + "\n  <!-- FOOTER:SELESAI -->\n"
             f'  <script src="{awalan}assets/katex/katex.min.js" defer></script>\n'
             f'  <script src="{awalan}assets/umum.js" defer></script>{skrip}\n</body>\n</html>\n')
@@ -356,10 +394,8 @@ def halaman_induk_praktikum(data, status="", relasi=None):
     return (kepala("Praktikum Mekanika Tanah", f"{semua} alat pengolah data praktikum Mekanika Tanah: formulir seperti lembar data laboratorium, langkah hitungan, grafik, dan ekspor ke Word dan Excel.", awalan, folder) +
             "\n<body>\n  <!-- NAV:MULAI -->\n  " + menu(awalan, "praktikum") + "\n  <!-- NAV:SELESAI -->\n\n"
             "  <main class=\"wadah\">\n    <header class=\"pahlawan\">\n"
-            f"      <p class=\"remah\"><a href=\"{awalan}alat/\">Semua alat</a></p>\n"
             "      <h1>Praktikum Mekanika Tanah</h1>\n"
             f"      <p class=\"lead\">Pengolah data praktikum dengan formulir seperti lembar data laboratorium. {status_alat}</p>\n"
-            f"      {status}\n"
             "      <nav class=\"inti-bor\" aria-label=\"Kelompok pengujian\">" + "".join(inti) + "</nav>\n"
             "    </header>\n"
             "    <div class=\"cara-pakai\">\n"
@@ -368,7 +404,8 @@ def halaman_induk_praktikum(data, status="", relasi=None):
             "      <div><h3>NIM untuk data individu</h3><p>Alat yang memakai data individu punya kotak NIM di atas formulir. Dua digit terakhir NIM dibagi 100 lalu ditambahkan ke kolom yang ditentukan, dan langkahnya ikut tampil di hasil.</p></div>\n"
             "      <div><h3>Siap untuk laporan</h3><p>Unduh Word dengan Times New Roman dan tabel tanpa garis vertikal, grafik PNG, salin ke Excel, atau cetak dengan kop identitas contoh.</p></div>\n"
             "    </div>\n" + "\n".join(bagian) + "\n" + bagian_arus +
-            "    <section>\n      <div class=\"catatan\"><strong>Untuk laporan.</strong> Alat ini membantu mengolah dan memeriksa data. Ikuti modul dan arahan asisten laboratorium untuk format laporan resmi, termasuk bila perhitungan harus ditulis tangan.</div>\n    </section>\n  </main>\n\n"
+            "    <section>\n      <div class=\"catatan\"><strong>Untuk laporan.</strong> Alat ini membantu mengolah dan memeriksa data. Ikuti modul dan arahan asisten laboratorium untuk format laporan resmi, termasuk bila perhitungan harus ditulis tangan.</div>\n    </section>\n"
+            f"    <div class=\"status-bawah\">{status}</div>\n  </main>\n\n"
             "  <!-- FOOTER:MULAI -->\n  " + footer(awalan) + "\n  <!-- FOOTER:SELESAI -->\n</body>\n</html>\n")
 
 
@@ -450,13 +487,6 @@ def seragamkan(berkas, teks):
     return ganti_penanda(teks, "FOOTER", footer(awalan), wajib=False)
 
 
-def sisip_catatan_beranda(teks, catatan):
-    butir = "\n".join(f'          <li><a href="{f}"><span class="nomor">{html.escape(n)}</span><span class="judul">{html.escape(j)}</span>'
-                      f'<span class="ringkas">{html.escape(r)}</span></a></li>'
-                      for n, j, r, f in list(reversed(catatan))[:3])
-    return ganti_penanda(teks, "CATATAN", f'<ol class="daftar-nomor">\n{butir}\n        </ol>')
-
-
 def sitemap(berkas_html):
     url = sorted(SITUS + (p.relative_to(DOCS).as_posix().removesuffix("index.html"))
                  for p in berkas_html if p.name != "404.html")
@@ -480,7 +510,7 @@ def indeks_cari(peta, catatan, alat, praktikum):
     for sumber, folder in peta:
         teks = sumber.read_text(encoding="utf-8")
         judul, ringkasan = judul_dan_ringkasan(teks)
-        jenis = "Catatan" if folder.startswith("catatan/") else "Tulisan"
+        jenis = "Catatan pembuat" if folder.startswith(f"{PRIBADI}catatan/") else "Pembuat"
         butir.append({"j": judul, "d": ringkasan, "h": subjudul(teks), "u": folder, "k": jenis})
     for x in butir:
         x["h"] = re.sub(r"<[^>]+>", "", x["h"])
@@ -489,7 +519,7 @@ def indeks_cari(peta, catatan, alat, praktikum):
 
 def halaman_cari():
     folder, awalan = "cari/", "../"
-    return (kepala("Cari", "Cari alat, alat praktikum, catatan, dan tulisan di situs Defsa Yurinda.", awalan, folder) +
+    return (kepala("Cari", f"Cari alat praktikum, kalkulator, dan latihan di {NAMA}.", awalan, folder) +
             "\n<body>\n  <!-- NAV:MULAI -->\n  " + menu(awalan, "cari") + "\n  <!-- NAV:SELESAI -->\n\n"
             "  <main class=\"wadah\">\n    <header class=\"pahlawan\" style=\"padding-bottom:16px\">\n"
             "      <h1>Cari</h1>\n    </header>\n"
@@ -562,12 +592,16 @@ def bangun():
     urutan_catatan = [(f"{n} · {j}", f) for n, j, _, f in catatan]
     for sumber, folder in peta:
         sebelum = sesudah = None
-        if folder.startswith("catatan/"):
+        if folder.startswith(f"{PRIBADI}catatan/"):
             i = [f for _, f in urutan_catatan].index(folder)
             sebelum = urutan_catatan[i - 1] if i > 0 else None
             sesudah = urutan_catatan[i + 1] if i + 1 < len(urutan_catatan) else None
         keluaran[DOCS / folder / "index.html"] = halaman_konten(sumber, folder, peta, sebelum, sesudah)
-    keluaran[DOCS / "catatan/index.html"] = halaman_daftar_catatan(catatan)
+    keluaran[DOCS / f"{PRIBADI}catatan/index.html"] = halaman_daftar_catatan(catatan)
+    pengalih = set()
+    for lama, baru in peta_pengalih(peta).items():
+        keluaran[DOCS / lama / "index.html"] = halaman_pengalih(lama, baru)
+        pengalih.add(DOCS / lama / "index.html")
     praktikum = data_praktikum()
     alat = data_alat()
     status_praktikum = lencana_status(next(a for a in alat["alat"] if a["id"] == "praktikum"))
@@ -583,8 +617,6 @@ def bangun():
         if berkas in dihasilkan:
             continue
         teks = seragamkan(berkas, berkas.read_text(encoding="utf-8"))
-        if berkas == DOCS / "index.html":
-            teks = sisip_catatan_beranda(teks, catatan)
         keluaran[berkas] = teks
     for a in alat["alat"]:
         target = DOCS / a["halaman"]
@@ -597,7 +629,7 @@ def bangun():
     keluaran[DOCS / "alat/index.html"] = ganti_penanda(keluaran[DOCS / "alat/index.html"], "DAFTAR-ALAT", daftar_halaman_alat(alat))
     readme = AKAR / "README.md"
     keluaran[readme] = ganti_penanda(readme.read_text(encoding="utf-8"), "ALAT", tabel_readme(alat), baris_baru=True)
-    semua_html = set(k for k in keluaran if k.suffix == ".html") | set(DOCS.rglob("*.html"))
+    semua_html = (set(k for k in keluaran if k.suffix == ".html") | set(DOCS.rglob("*.html"))) - pengalih
     keluaran[DOCS / "sitemap.xml"] = sitemap(semua_html)
     keluaran[DOCS / "sw.js"] = service_worker()
     keluaran[DOCS / "robots.txt"] = f"User-agent: *\nAllow: /\nSitemap: {SITUS}sitemap.xml\n"
