@@ -75,5 +75,6 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 - Syarat data 4d di bawah ujung tiang hanya untuk Meyerhof.
 
 ### Dihapus
+- Kode ilustrasi penampang SVG lama di beranda (`gerak.js`, bagian "penampang beranda", 220 baris) dan CSS yang tak terpakai lagi (`.penampang`, `.pilih-keadaan`, `.penampang-info`, `.penampang-mini`, `.mini-panggung`, animasi `endap`, `turun`, `ajak-lapis`); beranda sudah memakai blok tanah 3D. Ekspor Word dan PNG diuji ulang di alat Atterberg: `.docx` tetap berkas zip dengan `word/document.xml` dan gambar grafik, PNG grafik valid, tanpa efek khusus layar. Versi cache 0.40.1.
 - Hasil Meyerhof (1976) dan soal `meyerhof-selimut` disembunyikan sampai rumusnya dicocokkan dengan PUPR (2019).
 - Opsi tiang pancang di kalkulator tiang bor.
