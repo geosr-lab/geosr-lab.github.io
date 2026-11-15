@@ -154,6 +154,34 @@
     }
     bangun();
   }
+  // Penggeser bantu di bawah isian angka. Isian tetap sumber nilai (boleh di luar rentang penggeser);
+  // menggeser mengisi isian lalu memicu event "input" sehingga alur hitung kalkulator berjalan seperti biasa.
+  var daftarGeser = [];
+  function pasangGeser(id, min, maks, langkah, satuan) {
+    var isian = document.getElementById(id);
+    if (!isian || document.getElementById(id + '-geser')) return;
+    var g = document.createElement('input');
+    g.type = 'range'; g.id = id + '-geser'; g.className = 'geser-bantu'; g.min = min; g.max = maks; g.step = langkah;
+    g.tabIndex = 0;
+    var label = document.querySelector('label[for="' + id + '"]');
+    if (label) { if (!label.id) label.id = 'label-' + id; g.setAttribute('aria-labelledby', label.id); }
+    isian.insertAdjacentElement('afterend', g);
+    function dariIsian() {
+      var v = parseFloat(isian.value);
+      if (isFinite(v)) g.value = Math.min(maks, Math.max(min, v));
+      g.setAttribute('aria-valuetext', (isFinite(v) ? f(v, langkah < 1 ? (langkah < 0.1 ? 2 : 1) : 0) : '–') + (satuan ? (satuan === '°' ? '' : ' ') + satuan : ''));
+    }
+    g.addEventListener('input', function () {
+      isian.value = g.value;
+      isian.dispatchEvent(new Event('input', { bubbles: true }));
+    });
+    isian.addEventListener('input', dariIsian);
+    daftarGeser.push(dariIsian);
+    dariIsian();
+  }
+  // Dipanggil kalkulator setelah formulir diisi ulang tanpa event (muat contoh, tautan berbagi).
+  function segarkanGeser() { daftarGeser.forEach(function (fn) { fn(); }); }
+
   function pasangSemua() { pasangLaporan(); pasangLompat(); }
   if (typeof document !== 'undefined' && document.addEventListener) {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pasangSemua);
@@ -165,6 +193,7 @@
     salin: function (o) { return JSON.parse(JSON.stringify(o)); },
     f: f, t: t, tex: tex, rumus: rumus, esc: esc, tanpaHTML: tanpaHTML,
     simpanKeHash: simpanKeHash, bacaHash: bacaHash, salinTautan: salinTautan, tautanLaporan: tautanLaporan,
+    pasangGeser: pasangGeser, segarkanGeser: segarkanGeser,
     KN_PER_TON: 9.80665
   };
 })();

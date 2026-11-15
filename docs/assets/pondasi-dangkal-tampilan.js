@@ -184,11 +184,33 @@
     el.innerHTML = h;
   }
 
+  // Panel ringkasan yang menempel di samping formulir: angka utama dan porsi tiap suku q_u.
+  // Nilai diambil dari hasil PondasiDangkal.hitung yang sama dengan langkah hitungan (tanpa hitungan baru).
+  function gambarRingkasLangsung(m, r) {
+    var el = $('ringkasLangsung');
+    if (!el) return;
+    if (r.galat.length) { el.innerHTML = '<p class="redup kecil">Lengkapi masukan untuk melihat ringkasan.</p>'; return; }
+    var lajur = m.bentuk === 'lajur';
+    var suku = [['s1', 'Kohesi, c\' N<sub>c</sub>', r.suku1], ['s2', 'Tanah di atas dasar, q N<sub>q</sub>', r.suku2], ['s3', 'Lebar pondasi, ½γBN<sub>γ</sub>', r.suku3]];
+    var porsi = function (v) { return r.qu > 0 ? Math.max(0, v) / r.qu * 100 : 0; };
+    el.innerHTML =
+      '<dl class="ringkas-angka">' +
+        '<div><dt>Kapasitas dukung ultimit, q<sub>u</sub></dt><dd>' + f(r.qu, 0) + ' <small>kPa</small></dd></div>' +
+        '<div><dt>Kapasitas dukung izin, q<sub>all</sub></dt><dd>' + f(r.qall, 0) + ' <small>kPa</small></dd></div>' +
+        '<div><dt>Beban izin, Q<sub>all</sub></dt><dd>' + f(r.Qall, 0) + ' <small>' + (lajur ? 'kN/m' : 'kN') + '</small></dd></div>' +
+      '</dl>' +
+      '<p class="ringkas-judul">Porsi suku q<sub>u</sub></p>' +
+      '<div class="tumpuk" aria-hidden="true">' + suku.map(function (s) { return '<span class="' + s[0] + '" style="width:' + porsi(s[2]).toFixed(2) + '%"></span>'; }).join('') + '</div>' +
+      '<ul class="tumpuk-legenda">' + suku.map(function (s) { return '<li class="' + s[0] + '"><span>' + s[1] + '</span><b>' + f(porsi(s[2]), 0) + '%</b></li>'; }).join('') + '</ul>';
+  }
+
   function perbarui() {
     var m = masukan();
     var r = PondasiDangkal.hitung(m);
     gambarSketsa(m, r);
+    gambarRingkasLangsung(m, r);
     gambarHasil(m, r);
+    U.segarkanGeser();
     U.simpanKeHash(keadaan);
   }
 
@@ -202,6 +224,10 @@
     $('adaMAT').addEventListener('change', function () { keadaan.adaMAT = $('adaMAT').checked; aturAktif(); perbarui(); });
     $('muatContoh').addEventListener('click', function () { keadaan = salin(CONTOH); isiFormulir(); perbarui(); });
     $('bagikan').addEventListener('click', function () { U.simpanKeHash(keadaan); U.salinTautan($('pesanBagikan')); });
+    // Penggeser bantu untuk parameter yang paling sering dicoba-coba.
+    U.pasangGeser('phi', 0, 45, 1, '°');
+    U.pasangGeser('B', 0.5, 5, 0.1, 'm');
+    U.pasangGeser('Df', 0, 3, 0.1, 'm');
     perbarui();
   }
 
