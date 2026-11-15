@@ -73,6 +73,20 @@
     { nama: 'Lempung kaku', warna: 'var(--lapis-5)', pola: 'pola-lempung' }
   ];
 
+  // Pengujian yang biasa dipakai untuk tiap lapisan penampang (urutan sama dengan LAPIS) dan untuk pondasinya.
+  var UJI_LAPIS = [
+    { ket: 'Tanah permukaan yang sering dipakai sebagai timbunan atau tanah dasar jalan.',
+      alat: [['kadar-air', 'Kadar air'], ['atterberg', 'Batas Atterberg'], ['pemadatan', 'Pemadatan (Proctor)'], ['cbr', 'CBR laboratorium'], ['sand-cone', 'Kerucut pasir (sand cone)']] },
+    { ket: 'Lapisan yang mudah mampat; besar dan lama penurunannya dibaca dari uji konsolidasi.',
+      alat: [['atterberg', 'Batas Atterberg'], ['hidrometer', 'Analisa hidrometer'], ['konsolidasi-lab', 'Konsolidasi laboratorium'], ['tekan-bebas', 'Kuat tekan bebas (UCS)'], ['sondir', 'Sondir']] },
+    { ket: 'Dinilai dari sebaran ukuran butir, kemampuan meloloskan air, dan kepadatannya di lapangan.',
+      alat: [['saringan', 'Analisa saringan'], ['berat-spesifik', 'Berat spesifik (piknometer)'], ['permeabilitas-tetap', 'Permeabilitas tinggi tekan tetap'], ['geser-langsung', 'Kuat geser langsung'], ['spt', 'SPT dan log bor']] },
+    { ket: 'Lapisan pendukung; kekuatannya dibaca dari uji geser, uji tekan, dan nilai N.',
+      alat: [['tekan-bebas', 'Kuat tekan bebas (UCS)'], ['geser-langsung', 'Kuat geser langsung'], ['konsolidasi-lab', 'Konsolidasi laboratorium'], ['spt', 'SPT dan log bor'], ['sondir', 'Sondir']] }
+  ];
+  var UJI_PONDASI = { nama: 'Pondasi telapak', ket: 'Daya dukung dan penurunan pondasi dihitung di kalkulator.',
+    tautan: [['kalkulator/pondasi-dangkal.html', 'Kapasitas dukung pondasi dangkal'], ['kalkulator/konsolidasi.html', 'Penurunan konsolidasi'], ['kalkulator/tiang-bor.html', 'Tiang bor dari N-SPT']] };
+
   function el(nama, atr, induk) {
     var e = document.createElementNS(NS, nama);
     for (var k in atr) e.setAttribute(k, atr[k]);
@@ -163,6 +177,27 @@
     teksS.textContent = 's';
 
     bingkai.appendChild(svg);
+
+    // Lapisan dan pondasi bisa diklik (atau dipilih dengan papan ketik) untuk melihat pengujian yang relevan.
+    var info = document.getElementById('penampang-info'), dipilih = null;
+    function pilih(target, data, nama) {
+      if (dipilih) dipilih.classList.remove('dipilih');
+      dipilih = target; target.classList.add('dipilih'); svg.classList.add('ada-pilihan');
+      if (!info) return;
+      var tautan = data.tautan || data.alat.map(function (a) { return ['praktikum/' + a[0] + '/', a[1]]; });
+      info.innerHTML = '<p><strong>' + nama + '.</strong> ' + data.ket + '</p><ul class="chip-daftar">' +
+        tautan.map(function (t) { return '<li><a class="chip" href="' + t[0] + '">' + t[1] + '</a></li>'; }).join('') + '</ul>';
+    }
+    function bisaDipilih(target, data, nama) {
+      target.setAttribute('tabindex', '0');
+      target.setAttribute('role', 'button');
+      target.setAttribute('aria-label', nama + ': lihat pengujian yang relevan');
+      target.classList.add('bisa-pilih');
+      target.addEventListener('click', function () { pilih(target, data, nama); });
+      target.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pilih(target, data, nama); } });
+    }
+    for (var li = 0; li < LAPIS.length; li++) bisaDipilih(isi[li].parentNode, UJI_LAPIS[li], LAPIS[li].nama);
+    bisaDipilih(gGeser, UJI_PONDASI, UJI_PONDASI.nama);
 
     function gambar(u) {
       var p = BATAS.map(function (_, k) { return titik(k, u); });
