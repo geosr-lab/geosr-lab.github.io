@@ -127,7 +127,7 @@ def menu(awalan, aktif, folder=None):
     beranda = f"{awalan}{EN}" if en else (awalan or "./")
     return (f'<nav class="nav">\n    <div class="wadah">\n      <a class="merek" href="{beranda}" aria-label="{NAMA}, {"home" if en else "beranda"}">{TANDA_MEREK}'
             f'<span>{NAMA}<span class="merek-lengkap">{KEPANJANGAN}</span></span></a>\n'
-            f'      {TOMBOL_TEMA}\n'
+            f'      {tombol_tema(en)}\n'
             '      <button class="nav-tombol" type="button" aria-expanded="false" aria-controls="menu-utama">'
             '<span class="nav-garis" aria-hidden="true"></span><span class="sr-only">Menu</span></button>\n'
             f'      <ul id="menu-utama">{butir}</ul>\n    </div>\n  </nav>')
@@ -141,6 +141,13 @@ TOMBOL_TEMA = ('<button class="tema-tombol" type="button" aria-label="Tema: ikut
                'M4.3 4.3l1.6 1.6M14.1 14.1l1.6 1.6M4.3 15.7l1.6-1.6M14.1 5.9l1.6-1.6"/></g>'
                '<g class="ikon-gelap"><path d="M16 12.6A6.6 6.6 0 0 1 7.4 4a6.6 6.6 0 1 0 8.6 8.6z"/></g>'
                '</svg></button>')
+
+
+def tombol_tema(en=False):
+    if not en:
+        return TOMBOL_TEMA
+    return TOMBOL_TEMA.replace('aria-label="Tema: ikut sistem" title="Ganti tema"',
+                               'aria-label="Theme: follow system" title="Change theme"')
 
 
 def skrip_sw(awalan):
