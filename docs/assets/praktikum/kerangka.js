@@ -338,7 +338,8 @@
       if (tb.jenis === 'daftar') {
         var kol = kolomDaftar(tb);
         return kepalaTabel +
-          '<div class="tabel-gulir"><table class="tabel-isian tabel-daftar"><thead><tr><th>No.</th>' + kol.map(function (k) {
+          // Tabel panjang (lebih dari 15 baris) digulir di dalam kotaknya sendiri dengan kepala menempel.
+          '<div class="tabel-gulir' + (data.length > 15 ? ' tabel-panjang' : '') + '"><table class="tabel-isian tabel-daftar"><thead><tr><th>No.</th>' + kol.map(function (k) {
             return '<th class="' + (kolomAngka(k) ? 'angka' : '') + '">' + k.label + (k.satuan ? '<br><span class="kecil redup" style="font-weight:600">(' + k.satuan + ')</span>' : '') +
               (k.opsional && !k.teks && k.dinamis === undefined ? '<br><span class="kecil redup" style="font-weight:600">opsional</span>' : '') + '</th>';
           }).join('') + '<th></th></tr></thead><tbody>' +
