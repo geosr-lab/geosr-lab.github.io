@@ -37,6 +37,22 @@
     }
   })();
 
+  // ------------------------------------------------------------ riwayat untuk "Lanjutkan" di beranda
+  // Hanya disimpan di localStorage browser pengguna: alamat, judul, jenis, waktu. Maksimal 6, terbaru di depan.
+  (function () {
+    var p = location.pathname, jenis = null;
+    if (/\/praktikum\/[a-z0-9-]+\/$/.test(p)) jenis = 'Praktikum';
+    else if (/\/kalkulator\/[a-z0-9-]+\.html$/.test(p)) jenis = 'Kalkulator';
+    else if (/\/latihan\/$/.test(p)) jenis = 'Latihan';
+    else if (/\/notasi\/$/.test(p)) jenis = 'Notasi';
+    if (!jenis) return;
+    try {
+      var daftar = JSON.parse(localStorage.getItem('geosr-riwayat') || '[]').filter(function (r) { return r && r.u !== p; });
+      daftar.unshift({ u: p, j: document.title.split(' · ')[0].replace(/^Kalkulator /, ''), k: jenis, t: Date.now() });
+      localStorage.setItem('geosr-riwayat', JSON.stringify(daftar.slice(0, 6)));
+    } catch (e) { /* penyimpanan tidak tersedia */ }
+  })();
+
   // ------------------------------------------------------------ tombol tema
   (function () {
     var tombol = document.querySelector('.tema-tombol');
@@ -269,7 +285,7 @@
         tandai(1);
         // Sesudah menurun, lapisan berdenyut sekali sebagai tanda bisa diklik.
         lerp(0, 1, 2300, function () { svg.classList.add('ajak'); setTimeout(function () { svg.classList.remove('ajak'); }, 2200); });
-      }, 1750);
+      }, 900);
     }
     var r = fig.getBoundingClientRect();
     if (r.top < innerHeight * 0.8 && r.bottom > 0 && !document.hidden) mulai();
