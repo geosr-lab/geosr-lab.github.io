@@ -56,11 +56,6 @@
     });
   }
 
-  // ------------------------------------------------------------ alur kerja: animasi hanya jalan saat terlihat
-  var alur = document.querySelector('.alur');
-  if (alur && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function (e) { alur.classList.toggle('jalan', e[0].isIntersecting); }, { threshold: 0.3 }).observe(alur);
-  }
 
   // ------------------------------------------------------------ lanjutkan
   var bagian = document.getElementById('lanjutkan'), wadah = document.getElementById('daftarLanjutkan');

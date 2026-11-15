@@ -652,46 +652,94 @@ footer::before {
 .rekap-mini dt { font-size: 13px; color: var(--teks-2); }
 .rekap-mini dd { margin: 0; font: 800 26px/1.1 var(--huruf-judul); color: var(--laterit); }
 
-/* Alur kerja: data lab → hitungan → grafik → laporan. Garis penghubung mengalir, tiap langkah menyala bergiliran. */
-.alur-langkah { list-style: none; margin: var(--j-5) 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--j-5); counter-reset: alur; }
-.alur-langkah li { position: relative; display: flex; flex-direction: column; gap: 4px; counter-increment: alur; }
-.alur-langkah li strong { font: 700 17px/1.3 var(--huruf-judul); }
-.alur-langkah li strong::before { content: counter(alur) ". "; color: var(--teks-2); }
-.alur-langkah li span { font-size: 14.5px; color: var(--teks-2); }
-.alur-ikon {
-  width: 72px; height: 72px; padding: 10px; box-sizing: border-box; margin-bottom: 8px; border: 1.5px solid var(--garis); border-radius: 18px; background: var(--permukaan);
-  fill: none; stroke: var(--teks); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; position: relative; z-index: 1;
+/* Alur kerja di beranda: contoh hidup uji batas cair, data lab → hitung → grafik → laporan.
+   Setiap angka berubah, satu butir data mengalir lewat penghubung antartahap (lihat alur-atterberg.js). */
+.alur-kepala p { max-width: 68ch; margin: 6px 0 0; color: var(--teks-2); }
+.alur-meja { --sela: 28px; list-style: none; margin: var(--j-5) 0 0; padding: 0; display: grid; gap: var(--sela);
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr) minmax(0, 1.3fr) minmax(0, 1fr); align-items: stretch; }
+.alur-tahap { position: relative; min-width: 0; display: flex; flex-direction: column; padding: 14px 16px 16px;
+  background: var(--permukaan); border: 1px solid var(--garis); border-radius: var(--radius); }
+.alur-tahap h3 { margin: 0 0 10px; font: 700 15px/1.3 var(--huruf-judul); color: var(--teks-2); }
+.alur-tahap.segar { animation: alur-segar .9s ease-out; }
+@keyframes alur-segar { from { border-color: var(--aksen); box-shadow: 0 0 0 3px var(--aksen-lembut); } }
+
+/* penghubung antartahap dan butir data yang mengalir */
+.alur-tahap:not(:last-child)::after { content: ""; position: absolute; top: 50%; right: calc(-1 * var(--sela)); width: var(--sela); height: 2px;
+  background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--aksen) 55%, transparent) 0 5px, transparent 5px 9px); }
+.alur-butir { position: absolute; z-index: 1; top: calc(50% - 4px); right: calc(-1 * var(--sela)); width: 9px; height: 9px; margin-right: -4px;
+  border-radius: 50%; background: var(--laterit); opacity: 0; pointer-events: none; }
+.alur-tahap.kirim .alur-butir { animation: alur-kirim .42s var(--mulus); }
+@keyframes alur-kirim { from { opacity: 1; transform: translateX(calc(-1 * var(--sela))); } 80% { opacity: 1; } to { opacity: 0; transform: none; } }
+
+/* 1. data lab */
+.alur-data table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+.alur-data th, .alur-data td { padding: 3px 4px; border: 0; background: none; text-align: left; font-weight: 600; }
+.alur-data thead th { font-size: 13px; color: var(--teks-2); font-weight: 600; line-height: 1.25; vertical-align: bottom; }
+.alur-data tbody th { width: 2.2em; color: var(--laterit); font-family: var(--huruf-judul); }
+.alur-data tfoot th { font-size: 13px; color: var(--teks-2); padding-top: 10px; }
+.alur-data tfoot td { padding-top: 10px; }
+.alur-data input { width: 100%; min-width: 0; box-sizing: border-box; padding: 6px 8px; font: inherit; font-weight: 600; text-align: right;
+  color: var(--teks); background: var(--latar); border: 1px solid var(--garis); border-radius: 6px; }
+.alur-data input:focus-visible { outline: 2px solid var(--aksen); outline-offset: 1px; border-color: var(--aksen); }
+.alur-data .tombol { margin-top: 12px; }
+
+/* 2. hitung */
+.alur-hitung { font-size: 14.5px; font-variant-numeric: tabular-nums; }
+.alur-hitung p { margin: 0 0 10px; line-height: 1.55; }
+.alur-hitung strong { color: var(--laterit); }
+.alur-rumus { font-family: var(--huruf-judul); font-weight: 700; font-size: 16px; }
+.alur-nilai { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0 0 12px; padding: 8px 10px; border-radius: 6px; background: var(--latar); }
+.alur-nilai div { display: flex; gap: 6px; }
+.alur-nilai dt { color: var(--teks-2); font-style: italic; }
+.alur-nilai dd { margin: 0; font-weight: 600; }
+.alur-galat { color: var(--galat); }
+
+/* 3. grafik */
+.alur-grafik { flex: 1; display: flex; align-items: center; }
+.alur-svg { width: 100%; height: auto; display: block; overflow: visible; transition: opacity .3s; }
+.alur-svg.redup { opacity: .35; }
+.alur-svg text { font: 600 11.5px var(--huruf-teks); fill: var(--teks-2); }
+.alur-svg .kisi { stroke: var(--kisi-tebal); stroke-width: 1; }
+.alur-svg .poros { fill: none; stroke: var(--teks); stroke-width: 1.4; }
+.alur-svg .kurva { fill: none; stroke: var(--aksen); stroke-width: 2.4; stroke-linecap: round; }
+.alur-svg .bantu { fill: none; stroke: var(--laterit); stroke-width: 1.2; stroke-dasharray: 4 3; }
+.alur-svg .titik circle { fill: var(--permukaan); stroke: var(--aksen); stroke-width: 2.2; }
+.alur-svg .penanda-ll circle { fill: var(--laterit); }
+.alur-svg .penanda-ll text { font-size: 12px; font-weight: 700; fill: var(--laterit); paint-order: stroke; stroke: var(--permukaan); stroke-width: 3px; }
+.alur-svg .titik, .alur-svg .penanda-ll { transition: transform .55s var(--mulus); }
+.alur-svg.gambar .kurva { stroke-dasharray: 1; animation: alur-garis .6s ease-out .15s both; }
+.alur-svg.gambar .bantu { animation: alur-muncul .4s ease-out .6s both; }
+@keyframes alur-garis { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes alur-muncul { from { opacity: 0; } }
+
+/* 4. laporan: lembar ringkas */
+.alur-laporan { display: flex; flex-direction: column; flex: 1; font-size: 14.5px; }
+.alur-laporan p { margin: 0 0 10px; line-height: 1.5; }
+.alur-laporan .laporan-judul { font: 700 17px/1.2 var(--huruf-judul); padding-bottom: 8px; border-bottom: 2px solid var(--laterit); }
+.laporan-angka { margin: 0 0 10px; font-variant-numeric: tabular-nums; }
+.laporan-angka div { display: flex; justify-content: space-between; gap: 8px; padding: 5px 0; border-bottom: 1px solid var(--garis); }
+.laporan-angka dt { color: var(--teks-2); }
+.laporan-angka dd { margin: 0; font-weight: 700; color: var(--laterit); }
+.alur-laporan .laporan-catatan { font-size: 13px; color: var(--peringatan); }
+.alur-laporan .laporan-sumber { font-size: 13px; color: var(--teks-2); }
+.alur-laporan .tombol { margin-top: auto; align-self: flex-start; }
+
+@media (max-width: 1060px) {
+  .alur-meja { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .alur-tahap:not(:last-child)::after, .alur-butir { display: none; }
 }
-.alur-ikon .alur-isi { stroke: var(--aksen); }
-.alur-ikon circle.alur-isi { fill: var(--aksen); stroke: none; }
-.alur-ikon .alur-kurva { stroke: var(--laterit); stroke-width: 2.4; }
-.alur-langkah li:not(:last-child)::after {
-  content: ""; position: absolute; top: 35px; left: 84px; right: calc(-1 * var(--j-5) + 12px); height: 2px;
-  background: repeating-linear-gradient(90deg, var(--aksen) 0 8px, transparent 8px 16px); opacity: .55;
+@media (max-width: 640px) {
+  .alur-meja { --sela: 24px; grid-template-columns: minmax(0, 1fr); }
+  .alur-tahap:not(:last-child)::after { display: block; top: auto; bottom: calc(-1 * var(--sela)); right: auto; left: 32px; width: 2px; height: var(--sela);
+    background: repeating-linear-gradient(180deg, color-mix(in srgb, var(--aksen) 55%, transparent) 0 5px, transparent 5px 9px); }
+  .alur-butir { display: block; top: auto; right: auto; bottom: calc(-1 * var(--sela)); left: 28px; margin: 0 0 -4px; }
+  @keyframes alur-kirim-turun { from { opacity: 1; transform: translateY(calc(-1 * var(--sela))); } 80% { opacity: 1; } to { opacity: 0; transform: none; } }
+  .alur-tahap.kirim .alur-butir { animation-name: alur-kirim-turun; }
 }
-@media (max-width: 720px) {
-  .alur-langkah { grid-template-columns: minmax(0, 1fr); gap: var(--j-4); }
-  .alur-langkah li { padding-left: 88px; min-height: 72px; justify-content: center; }
-  .alur-ikon { position: absolute; left: 0; top: 0; margin: 0; }
-  .alur-langkah li:not(:last-child)::after { top: 78px; bottom: calc(-1 * var(--j-4) - 2px); left: 35px; right: auto; width: 2px; height: auto;
-    background: repeating-linear-gradient(180deg, var(--aksen) 0 8px, transparent 8px 16px); }
+@media (prefers-reduced-motion: reduce) {
+  .alur-tahap.segar, .alur-tahap.kirim .alur-butir, .alur-svg.gambar .kurva, .alur-svg.gambar .bantu { animation: none; }
+  .alur-svg .titik, .alur-svg .penanda-ll { transition: none; }
 }
-@media (prefers-reduced-motion: no-preference) {
-  .alur.jalan .alur-langkah li:not(:last-child)::after { animation: alir 1s linear infinite; }
-  .alur.jalan .alur-ikon { animation: sorot 6s ease-in-out infinite; }
-  .alur.jalan li:nth-child(2) .alur-ikon { animation-delay: 1.5s; }
-  .alur.jalan li:nth-child(3) .alur-ikon { animation-delay: 3s; }
-  .alur.jalan li:nth-child(4) .alur-ikon { animation-delay: 4.5s; }
-  .alur.jalan .alur-kurva { stroke-dasharray: 1 1; animation: gambar-ulang 6s ease-in-out 3s infinite; }
-}
-@media (prefers-reduced-motion: no-preference) and (max-width: 720px) { .alur.jalan .alur-langkah li:not(:last-child)::after { animation-name: alir-turun; } }
-@keyframes alir { from { background-position: 0 0; } to { background-position: 16px 0; } }
-@keyframes alir-turun { from { background-position: 0 0; } to { background-position: 0 16px; } }
-@keyframes sorot {
-  0%, 30%, 100% { border-color: var(--garis); transform: none; box-shadow: none; }
-  8%, 20% { border-color: var(--aksen); transform: translateY(-3px); box-shadow: 0 8px 22px -12px var(--aksen); }
-}
-@keyframes gambar-ulang { 0% { stroke-dashoffset: 1; } 18%, 100% { stroke-dashoffset: 0; } }
 
 /* Alat unggulan di beranda: praktikum besar di kiri, alat lain bertumpuk di kanan */
 .alat-unggulan { display: grid; gap: 14px; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); grid-auto-flow: dense; }
