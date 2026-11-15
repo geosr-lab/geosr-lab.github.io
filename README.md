@@ -19,6 +19,7 @@ Tabel ini dibangun otomatis dari [`konten/alat.json`](konten/alat.json). Kolom s
 | Alat | Isi | Status sumber |
 |---|---|---|
 | [Kalkulator Tiang Bor N-SPT](https://defsayurinda.github.io/kalkulator/tiang-bor.html) | Hitung daya dukung aksial tiang bor dari data N-SPT dengan metode Reese & Wright (1977), lengkap dengan langkah hitungan dan asumsinya. | Sumber sekunder |
+| [Kalkulator Lateral Tiang Broms](https://defsayurinda.github.io/kalkulator/broms-lateral.html) | Hitung beban lateral ultimit tiang tunggal metode Broms di tanah kohesif atau nonkohesif, kepala bebas atau terjepit, dengan moda keruntuhan, panjang peralihan, dan langkah hitungan. | Sumber sekunder |
 | [Kalkulator Pondasi Dangkal](https://defsayurinda.github.io/kalkulator/pondasi-dangkal.html) | Hitung kapasitas dukung pondasi dangkal dengan persamaan daya dukung umum: faktor bentuk, kedalaman, dan koreksi muka air tanah, lengkap dengan langkah hitungan. | Belum terverifikasi |
 | [Kalkulator Penurunan Konsolidasi](https://defsayurinda.github.io/kalkulator/konsolidasi.html) | Hitung penurunan konsolidasi primer satu dimensi untuk lempung NC dan OC beserta lajunya terhadap waktu, lengkap dengan diagram e–log σ' dan langkah hitungan. | Belum terverifikasi |
 | [Praktikum Mekanika Tanah](https://defsayurinda.github.io/praktikum/) | 18 alat pengolah data praktikum Mekanika Tanah: formulir seperti lembar data laboratorium, langkah hitungan, grafik, dan ekspor ke Word dan Excel. | Belum terverifikasi |

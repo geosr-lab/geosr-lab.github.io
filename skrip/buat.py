@@ -41,7 +41,7 @@ def tulis_baru(jalur, isi):
     if jalur.exists():
         sys.exit(f"Berkas sudah ada, tidak ditimpa: {jalur.relative_to(AKAR)}")
     jalur.parent.mkdir(parents=True, exist_ok=True)
-    jalur.write_text(isi, encoding="utf-8")
+    jalur.write_text(isi, encoding="utf-8", newline="\n")
     print("  dibuat", jalur.relative_to(AKAR))
 
 
@@ -95,10 +95,10 @@ HALAMAN = """<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{judul} · Defsa Yurinda</title>
+  <title>{judul} · GeoSR</title>
   <meta name="description" content="{deskripsi}">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="{judul} · Defsa Yurinda">
+  <meta property="og:title" content="{judul} · GeoSR">
   <meta property="og:description" content="{deskripsi}">
   <meta property="og:url" content="https://defsayurinda.github.io/kalkulator/{id}.html">
   <meta property="og:image" content="https://defsayurinda.github.io/assets/pratinjau.png">
@@ -229,8 +229,9 @@ def buat_alat(a):
         "skrip": [f"docs/assets/{id_}-hitung.js", f"docs/assets/{id_}-tampilan.js"],
         "sumber": a.sumber, "status": "belum", "tanggal_cek": date.today().isoformat(),
         "uji": [f"tests/verifikasi_{id_.replace('-', '_')}.py"],
+        "judul_en": a.judul, "ringkas_en": esc(deskripsi),
     })
-    REGISTRI.write_text(json.dumps(reg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    REGISTRI.write_text(json.dumps(reg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     print("  entri ditambahkan ke konten/alat.json (status: belum)")
 
 

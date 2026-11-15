@@ -278,6 +278,16 @@
       '<path class="ga" d="M64 62v8"/>' + label(70, 68, 's') + label(160, 60, 'timbunan', 'middle') + label(300, 126, 'lempung', 'end') + label(300, 170, 'pasir', 'end') + label(300, 88, 'pasir', 'end')
   };
 
+  S['broms-lateral'] = {
+    ket: 'Beban lateral P di atas muka tanah mendorong tiang. Tanah di depan tiang menahan dengan reaksi per satuan panjang; di lempung, reaksi di 1,5b teratas diabaikan.',
+    svg: '<rect class="t2" x="0" y="60" width="320" height="120"/><path class="g" d="M0 60H144M160 60H320"/>' +
+      '<g class="a" style="--dx:-8px;--t:.1s;--d:1s"><rect class="g m" x="144" y="26" width="16" height="140"/></g>' +
+      '<g class="a" style="--o:0;--dx:-14px;--t:0s;--d:.6s">' + panah(84, 32, 140, 32) + '</g>' +
+      '<g class="a" style="--o:0;--dx:12px;--t:1s;--d:.6s">' + [100, 120, 140, 160].map(function (y) { return panah(212, y, 166, y); }).join('') + '</g>' +
+      '<path class="ga" d="M174 60v28"/>' + label(180, 79, '1,5b') + '<path class="ga" d="M112 32v28"/>' + label(106, 51, 'e', 'end') +
+      label(84, 24, 'P') + label(218, 134, 'reaksi tanah')
+  };
+
   function isi(fig) {
     var id = fig.getAttribute('data-sketsa'), s = S[id];
     if (!s || fig.querySelector('svg')) return !!s;

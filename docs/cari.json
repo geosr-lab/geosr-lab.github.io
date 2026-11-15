@@ -7,6 +7,13 @@
 "k": "Alat"
 },
 {
+"j": "Kapasitas lateral tiang metode Broms",
+"d": "Hitung beban lateral ultimit tiang tunggal metode Broms di tanah kohesif atau nonkohesif, kepala bebas atau terjepit, dengan moda keruntuhan, panjang peralihan, dan langkah hitungan.",
+"h": "Broms (1964), rumus dari Reese (1986) FHWA-RD-85-106 b, L, e, My, kepala bebas/terjepit, cu atau γ dan φ, FS Pult, Pizin, moda keruntuhan, momen maksimum, panjang peralihan, grafik Pult–L",
+"u": "kalkulator/broms-lateral.html",
+"k": "Alat"
+},
+{
 "j": "Kapasitas dukung pondasi dangkal",
 "d": "Hitung kapasitas dukung pondasi dangkal dengan persamaan daya dukung umum: faktor bentuk, kedalaman, dan koreksi muka air tanah, lengkap dengan langkah hitungan.",
 "h": "Persamaan daya dukung umum: Nγ Vesic (1973), faktor bentuk De Beer (1970), faktor kedalaman Hansen (1970) Bentuk, B, L, Df, c', φ', γ, muka air tanah, SF qu, qall (gross dan net), Qall, porsi tiap suku, sketsa",

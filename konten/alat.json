@@ -59,6 +59,45 @@
       "ringkas_en": "Reese &amp; Wright (1977) method with a soil profile and step-by-step calculation per layer."
     },
     {
+      "id": "broms-lateral",
+      "judul": "Kapasitas lateral tiang metode Broms",
+      "judul_pendek": "Kalkulator Lateral Tiang Broms",
+      "deskripsi": "Hitung beban lateral ultimit tiang tunggal metode Broms di tanah kohesif atau nonkohesif, kepala bebas atau terjepit, dengan moda keruntuhan, panjang peralihan, dan langkah hitungan.",
+      "kategori": "fondasi",
+      "lencana": "Fondasi dalam",
+      "halaman": "kalkulator/broms-lateral.html",
+      "ringkas": "Metode Broms (1964): moda tiang pendek, menengah, atau panjang, grafik P<sub>ult</sub> terhadap panjang tiang.",
+      "rincian": [
+        [
+          "Metode",
+          "Broms (1964), rumus dari Reese (1986) FHWA-RD-85-106"
+        ],
+        [
+          "Masukan",
+          "b, L, e, M<sub>y</sub>, kepala bebas/terjepit, c<sub>u</sub> atau γ dan φ, FS"
+        ],
+        [
+          "Keluaran",
+          "P<sub>ult</sub>, P<sub>izin</sub>, moda keruntuhan, momen maksimum, panjang peralihan, grafik P<sub>ult</sub>–L"
+        ]
+      ],
+      "skrip": [
+        "docs/assets/broms-lateral-hitung.js",
+        "docs/assets/broms-lateral-tampilan.js"
+      ],
+      "sumber": [
+        "Reese, L. C. (1986). Behavior of piles and pile groups under lateral load (FHWA-RD-85-106). Federal Highway Administration. Bab 7.1, hlm. 141–155, pers. (7.1)–(7.26).",
+        "Broms, B. B. (1964a, 1964b). Lateral resistance of piles in cohesive / cohesionless soils. JSMFD ASCE 90(SM2), 90(SM3). Sumber asli, baru bagian asumsi reaksi tanah yang dibaca langsung."
+      ],
+      "status": "sekunder",
+      "tanggal_cek": "2026-11-15",
+      "uji": [
+        "tests/verifikasi_broms_lateral.py"
+      ],
+      "judul_en": "Lateral capacity of piles (Broms method)",
+      "ringkas_en": "Broms (1964) method: short, intermediate, or long pile failure mode, with a P<sub>ult</sub>–length chart."
+    },
+    {
       "id": "pondasi-dangkal",
       "judul": "Kapasitas dukung pondasi dangkal",
       "judul_pendek": "Kalkulator Pondasi Dangkal",

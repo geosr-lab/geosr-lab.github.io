@@ -5,6 +5,7 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 ## [Belum dirilis]
 
 ### Ditambahkan
+- Kalkulator kapasitas lateral tiang metode Broms (`/kalkulator/broms-lateral.html`): tanah kohesif atau nonkohesif, kepala bebas atau terjepit, moda tiang pendek/menengah/panjang, panjang peralihan, grafik P<sub>ult</sub> terhadap L, dan langkah hitungan. Rumus dari Reese (1986) FHWA-RD-85-106 Bab 7.1; uji `tests/verifikasi_broms_lateral.py` mencocokkan semua angka contoh sumber.
 - Tab Pengantar 16 alat praktikum memuat "Alat dan langkah praktikum": daftar alat, bahan, dan langkah kerja dari laporan praktikum Mekanika Tanah kelompok 3 (teks dirapikan, dengan rujukan halaman), dari kolom `cara_uji` di `konten/praktikum.json`. Batas Atterberg memuat batas cair dan batas plastis; SPT memuat juga pengeboran dan pengambilan sampel.
 - Versi bahasa Inggris sederhana: beranda `/en/` dan profil pembuat `/en/pembuat/` (dari `konten/en/tentang.md`), tautan bahasa di menu halaman berpadanan, `hreflang` dan `og:locale en_US`, serta `README.en.md`. Alatnya tetap berbahasa Indonesia. Versi cache 0.16.0.
 - Kalkulator tiang bor N-SPT, pondasi dangkal, dan penurunan konsolidasi dengan langkah hitungan.
@@ -38,6 +39,7 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 - Klaim sumber dan pengujian di beranda dan README disesuaikan dengan status tiap alat.
 
 ### Diperbaiki
+- `skrip/buat.py` menulis berkas dengan akhir baris LF di Windows, mengisi `judul_en` dan `ringkas_en`, dan memakai judul tab "· GeoSR".
 - Teks dari tautan berbagi dan isian formulir praktikum di-escape sebelum masuk HTML (XSS).
 - Syarat data 4d di bawah ujung tiang hanya untuk Meyerhof.
 
