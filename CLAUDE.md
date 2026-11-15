@@ -65,6 +65,7 @@ Repo **publik** milik Defsa Yurinda (mahasiswa Teknik Sipil, Universitas Jambi).
 - Setiap perubahan hitungan wajib lolos semua `tests/verifikasi_*.py`. Uji yang hanya menyalin rumus JS ke Python belum cukup; tambahkan contoh soal buku (judul dan halaman di komentar) dan uji sifat.
 - Teks dari pengguna atau URL (tautan berbagi) harus lewat `esc()` atau `textContent` sebelum masuk `innerHTML`.
 - Bank soal: soal dibangkitkan dari templat; kunci selalu dihitung modul `*-hitung.js`. Templat baru wajib masuk `tests/verifikasi_latihan.py`.
+- Sebelum mengubah tampilan, baca [`DESIGN.md`](DESIGN.md) (token warna dan huruf, komponen, aturan gerak, larangan).
 - Tampilan dicek di 390 px dan 1280 px, terang dan gelap, tanpa gulir horizontal dan tanpa rumus KaTeX gagal (`.katex-error`). Tautan diperiksa `tests/verifikasi_tautan.py`.
 - Format hitungan: diketahui, ditanya, penyelesaian (rumus, sumber, substitusi), hasil dan penjelasan, catatan. Desimal koma, ribuan titik.
 - Yang ditunda karena sumber belum terverifikasi: O'Neill & Reese (1999), Terzaghi (1943) untuk pondasi dangkal. Status Meyerhof dan Reese & Wright di kalkulator tiang bor: lihat temuan B1–B5 di rencana.
