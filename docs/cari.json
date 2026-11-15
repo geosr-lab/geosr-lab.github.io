@@ -306,5 +306,12 @@
 "h": "Lebar, panjang, kedalaman fondasi Tekanan tanah di dasar fondasi Faktor kapasitas dukung Faktor bentuk Faktor kedalaman Kapasitas dukung ultimit dan izin Faktor keamanan Tahanan ujung dan tahanan selimut tiang Daya dukung aksial ultimit dan izin tiang Diameter atau lebar tiang Tinggi beban lateral di atas muka tanah Beban lateral ultimit Momen leleh tiang Kedalaman geser nol; panjang di bawahnya",
 "u": "notasi/#fondasi",
 "k": "Notasi"
+},
+{
+"j": "Penampang GeoSR",
+"d": "Semua alat dan kalkulator sebagai lapisan tanah yang bisa digeser, diperbesar, dan dibor.",
+"h": "jelajah penampang tanah lapisan uji bor animasi",
+"u": "penampang/",
+"k": "Jelajah"
 }
 ]
