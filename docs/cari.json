@@ -7,6 +7,13 @@
 "k": "Alat"
 },
 {
+"j": "Kapasitas lateral tiang metode Broms",
+"d": "Hitung beban lateral ultimit tiang tunggal metode Broms di tanah kohesif atau nonkohesif, kepala bebas atau terjepit, dengan moda keruntuhan, panjang peralihan, dan langkah hitungan.",
+"h": "Broms (1964), rumus dari Reese (1986) FHWA-RD-85-106 b, L, e, My, kepala bebas/terjepit, cu atau γ dan φ, FS Pult, Pizin, moda keruntuhan, momen maksimum, panjang peralihan, grafik Pult–L",
+"u": "kalkulator/broms-lateral.html",
+"k": "Alat"
+},
+{
 "j": "Kapasitas dukung pondasi dangkal",
 "d": "Hitung kapasitas dukung pondasi dangkal dengan persamaan daya dukung umum: faktor bentuk, kedalaman, dan koreksi muka air tanah, lengkap dengan langkah hitungan.",
 "h": "Persamaan daya dukung umum: Nγ Vesic (1973), faktor bentuk De Beer (1970), faktor kedalaman Hansen (1970) Bentuk, B, L, Df, c', φ', γ, muka air tanah, SF qu, qall (gross dan net), Qall, porsi tiap suku, sketsa",
@@ -32,6 +39,13 @@
 "d": "Latihan soal geoteknik dengan angka acak dan pembahasan langkah demi langkah: pondasi dangkal, konsolidasi, dan tiang bor.",
 "h": "Pondasi dangkal, konsolidasi, tiang bor (9 jenis soal) Angka acak, jawaban dicek otomatis (toleransi 2%), pembahasan langkah demi langkah, skor",
 "u": "latihan/",
+"k": "Alat"
+},
+{
+"j": "Korelasi parameter tanah dari N-SPT",
+"d": "Koreksi N-SPT ke N60 dan (N1)60, lalu perkiraan kepadatan relatif, sudut geser, modulus elastisitas pasir, kuat geser undrained lempung, dan kecepatan gelombang geser, dengan rujukan halaman.",
+"h": "Warman (2019), Kementerian PUPR, Bab 4 NM, Ef, alat (bor, batang, tabung), kedalaman, γ, MAT, PI N60, (N1)60, Dr, φ, E, cu, konsistensi, vs",
+"u": "kalkulator/korelasi-spt.html",
 "k": "Alat"
 },
 {

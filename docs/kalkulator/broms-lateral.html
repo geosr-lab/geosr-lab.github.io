@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kalkulator Kapasitas Lateral Tiang (Broms) · GeoSR</title>
+  <meta name="description" content="Hitung kapasitas lateral ultimit tiang tunggal metode Broms untuk tanah kohesif dan nonkohesif, kepala bebas atau terjepit, lengkap dengan moda keruntuhan, panjang peralihan, dan langkah hitungan.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Kalkulator Kapasitas Lateral Tiang (Broms) · GeoSR">
+  <meta property="og:description" content="Hitung kapasitas lateral ultimit tiang tunggal metode Broms untuk tanah kohesif dan nonkohesif, kepala bebas atau terjepit, lengkap dengan moda keruntuhan, panjang peralihan, dan langkah hitungan.">
+  <meta property="og:url" content="https://defsayurinda.github.io/kalkulator/broms-lateral.html">
+  <meta property="og:image" content="https://defsayurinda.github.io/assets/pratinjau.png">
+  <meta property="og:locale" content="id_ID">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#f1f2ec" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#10181a" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="../assets/katex/katex.min.css">
+  <link rel="stylesheet" href="../assets/gaya.css">
+  <script src="../assets/tema.js"></script>
+  <link rel="icon" href="../assets/ikon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../manifest.webmanifest">
+</head>
+<body>
+  <!-- NAV:MULAI -->
+  <nav class="nav">
+    <div class="wadah">
+      <a class="merek" href="../" aria-label="GeoSR, beranda"><svg class="merek-tanda" viewBox="0 0 22 26" aria-hidden="true"><rect x="0" y="0" width="22" height="26" rx="2" style="fill:none"/><rect x="0" y="0" width="22" height="6" rx="1" style="fill:var(--lapis-3)"/><rect x="0" y="7.5" width="22" height="7" rx="1" style="fill:var(--lapis-2)"/><rect x="0" y="16" width="22" height="4" rx="1" style="fill:var(--lapis-4)"/><rect x="0" y="21.5" width="22" height="4.5" rx="1" style="fill:var(--lapis-5)"/></svg><span>GeoSR<span class="merek-lengkap">Geotechnical Soil Report</span></span></a>
+      <button class="tema-tombol" type="button" aria-label="Tema: ikut sistem" title="Ganti tema"><svg viewBox="0 0 20 20" aria-hidden="true"><g class="ikon-otomatis"><circle cx="10" cy="10" r="6.5"/><path d="M10 3.5a6.5 6.5 0 0 0 0 13z" class="isi"/></g><g class="ikon-terang"><circle cx="10" cy="10" r="3.4"/><path d="M10 2v2.2M10 15.8V18M2 10h2.2M15.8 10H18M4.3 4.3l1.6 1.6M14.1 14.1l1.6 1.6M4.3 15.7l1.6-1.6M14.1 5.9l1.6-1.6"/></g><g class="ikon-gelap"><path d="M16 12.6A6.6 6.6 0 0 1 7.4 4a6.6 6.6 0 1 0 8.6 8.6z"/></g></svg></button>
+      <button class="nav-tombol" type="button" aria-expanded="false" aria-controls="menu-utama"><span class="nav-garis" aria-hidden="true"></span><span class="sr-only">Menu</span></button>
+      <ul id="menu-utama"><li><a href="../praktikum/">Praktikum</a></li><li><a href="../alat/" aria-current="page">Kalkulator</a></li><li><a href="../latihan/">Latihan</a></li><li><a href="../cari/">Cari</a></li></ul>
+    </div>
+  </nav>
+  <!-- NAV:SELESAI -->
+
+  <main class="wadah">
+    <header class="pahlawan" style="padding-bottom:16px">
+      <p class="remah"><a href="../alat/">Kalkulator</a></p>
+      <h1>Kapasitas lateral tiang metode Broms</h1>
+      <p class="lead">Beban lateral ultimit tiang tunggal di tanah kohesif atau nonkohesif, dengan kepala bebas atau terjepit. Kalkulator memilih moda keruntuhan yang menentukan (tiang pendek, menengah, atau panjang) dan menunjukkan di panjang berapa moda itu berganti.</p>
+      <dl class="etiket"><div><dt>Jenis</dt><dd>Kalkulator</dd></div><div><dt>Topik</dt><dd>Fondasi dalam, beban lateral</dd></div><div><dt>Metode</dt><dd>Broms (1964)</dd></div></dl>
+      <figure class="sketsa sketsa-kalk" data-sketsa="broms-lateral"></figure>
+    </header>
+
+    <div class="tata-kalk">
+      <section>
+        <form id="formulir" class="kartu" autocomplete="off" onsubmit="return false">
+          <h3 style="margin-top:0">Tiang dan beban</h3>
+          <div class="isian-kisi">
+            <div>
+              <label for="kepala">Kepala tiang</label>
+              <select id="kepala">
+                <option value="bebas">Bebas (tidak tertahan rotasi)</option>
+                <option value="terjepit">Terjepit (tertahan rotasi)</option>
+              </select>
+            </div>
+            <div><label for="b">Diameter atau lebar, b (m)</label><input id="b" type="number" step="0.05" min="0.05" inputmode="decimal"></div>
+            <div><label for="L">Panjang tertanam, L (m)</label><input id="L" type="number" step="0.5" min="0.5" inputmode="decimal"></div>
+            <div><label for="e">Tinggi beban di atas tanah, e (m)</label><input id="e" type="number" step="0.1" min="0" inputmode="decimal"></div>
+            <div><label for="My">Momen leleh tiang, M<sub>y</sub> (kN·m)</label><input id="My" type="number" step="10" min="1" inputmode="decimal"></div>
+            <div><label for="FS">Faktor keamanan, FS</label><input id="FS" type="number" step="0.1" min="1" inputmode="decimal"></div>
+          </div>
+
+          <h3>Tanah</h3>
+          <div class="isian-kisi">
+            <div>
+              <label for="tanah">Jenis tanah</label>
+              <select id="tanah">
+                <option value="kohesif">Kohesif (lempung, kondisi undrained)</option>
+                <option value="nonkohesif">Nonkohesif (pasir)</option>
+              </select>
+            </div>
+            <div class="isi-kohesif"><label for="cu">Kuat geser undrained, c<sub>u</sub> (kPa)</label><input id="cu" type="number" step="1" min="1" inputmode="decimal"></div>
+            <div class="isi-nonkohesif"><label for="gamma">Berat volume, γ (kN/m³)</label><input id="gamma" type="number" step="0.5" min="1" inputmode="decimal"></div>
+            <div class="isi-nonkohesif"><label for="phi">Sudut geser, φ (°)</label><input id="phi" type="number" step="1" min="1" max="49" inputmode="decimal"></div>
+          </div>
+          <p class="kecil redup" style="margin-top:12px">Tanah dianggap homogen sepanjang tiang. Untuk pasir di bawah muka air tanah, isi γ dengan berat volume efektif (terendam), seperti di sumber. M<sub>y</sub> adalah momen saat seluruh penampang tiang leleh (sendi plastis).</p>
+          <div class="baris-tombol tidak-cetak">
+            <button type="button" class="tombol kecil" id="muatContoh">Muat data contoh</button>
+            <button type="button" class="tombol kecil" id="bagikan">Salin tautan hasil</button>
+            <button type="button" class="tombol kecil" onclick="window.print()">Cetak / simpan PDF</button>
+          </div>
+          <p id="pesanBagikan" class="kecil redup" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <aside class="kartu" style="position:sticky; top:76px">
+        <h3 style="margin-top:0">Sketsa reaksi tanah</h3>
+        <div id="sketsa"></div>
+      </aside>
+    </div>
+
+    <section id="hasil" aria-live="polite"></section>
+
+    <section>
+      <h2>Sumber rumus</h2>
+      <ul class="daftar-bersih">
+        <li>Reese, L. C. (1986). <em>Behavior of piles and pile groups under lateral load</em> (FHWA-RD-85-106). Federal Highway Administration. Bab 7.1 "Broms Method", hlm. 141–155, pers. (7.1)–(7.26), termasuk contoh hitungan yang dipakai untuk menguji kalkulator ini.</li>
+        <li>Broms, B. B. (1964a). Lateral resistance of piles in cohesive soils. <em>Journal of the Soil Mechanics and Foundations Division, ASCE</em>, 90(SM2). Broms, B. B. (1964b). Lateral resistance of piles in cohesionless soils. <em>JSMFD, ASCE</em>, 90(SM3). Sumber asli; yang sudah dibaca langsung baru bagian asumsi reaksi tanah (tiga kali tekanan pasif Rankine, pers. (4) makalah 1964b).</li>
+      </ul>
+      <p class="kecil redup">Semua angka contoh di Reese (1986) hlm. 142–155 (P<sub>ult</sub>, momen maksimum, dan panjang peralihan antarmoda) dicocokkan oleh <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/tests/verifikasi_broms_lateral.py"><code>tests/verifikasi_broms_lateral.py</code></a>, bersama hitungan Python terpisah dan uji sifat.</p>
+      <div class="catatan"><strong>Alat bantu belajar.</strong> Metode Broms memberi beban ultimit dari kesetimbangan batas, bukan defleksi. Untuk desain, periksa juga defleksi kepala tiang (misalnya dengan metode p-y) dan efek kelompok tiang. Hasil kalkulator ini tidak menggantikan analisis oleh ahli geoteknik.</div>
+    </section>
+    <div class="status-bawah">
+      <!-- STATUS:MULAI -->
+  <p class="status-sumber" data-status="sekunder"><span>Status sumber: <strong>Sumber sekunder</strong></span><span class="status-tgl">dicek 15 November 2026</span><a href="https://github.com/defsayurinda/defsayurinda.github.io#alat">arti status</a></p>
+  <!-- STATUS:SELESAI -->
+    </div>
+  </main>
+
+  <!-- FOOTER:MULAI -->
+  <footer>
+    <div class="wadah kaki-isi">
+      <div class="kaki-merek"><a href="../">GeoSR</a><span>Geotechnical Soil Report · dibuat oleh <a href="../pembuat/">Defsa Yurinda</a></span></div>
+      <dl class="kaki-etiket"><div><dt>Pembuat</dt><dd><a href="../pembuat/">Profil</a> · <a href="../pembuat/catatan/">Catatan</a></dd></div><div><dt>Kode</dt><dd><a href="https://github.com/defsayurinda/defsayurinda.github.io">GitHub</a></dd></div><div><dt>Lisensi</dt><dd>Kode <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE">MIT</a>, tulisan <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE-TULISAN">CC BY 4.0</a> · <a href="../kredit/">Kredit aset</a></dd></div></dl>
+    </div>
+  </footer>
+  <script src="../assets/daftar-sw.js" defer></script>
+  <script src="../assets/gerak.js" defer></script>
+  <!-- FOOTER:SELESAI -->
+
+  <script src="../assets/katex/katex.min.js" defer></script>
+  <script src="../assets/umum.js" defer></script>
+  <script src="../assets/praktikum/sketsa.js" defer></script>
+  <script src="../assets/broms-lateral-hitung.js" defer></script>
+  <script src="../assets/broms-lateral-tampilan.js" defer></script>
+</body>
+</html>

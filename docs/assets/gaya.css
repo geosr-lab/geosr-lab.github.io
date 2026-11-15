@@ -1045,6 +1045,21 @@ details.lipat > summary:hover > h3 { color: var(--aksen); }
   .cara-blok { break-inside: avoid-page; }
 }
 
+/* Kalkulator Broms: grafik Pult terhadap L dan baris moda yang menentukan */
+.grafik-kalk { margin: var(--j-5) 0 var(--j-4); padding: var(--j-4); border: 1px solid var(--garis); border-radius: 8px; background: var(--permukaan); }
+.grafik-broms { display: block; width: 100%; height: auto; }
+.legenda-broms { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: var(--j-2); font-size: 13px; color: var(--teks-2); }
+.legenda-broms span { display: inline-flex; align-items: center; gap: 6px; }
+.legenda-broms i { display: inline-block; width: 18px; height: 4px; border-radius: 2px; }
+.legenda-broms i.titik { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--teks); background: var(--permukaan); }
+tr.baris-menentukan td { font-weight: 600; background: var(--permukaan-2); }
+
+/* Kalkulator korelasi N-SPT: ringkasan di kolom samping */
+.ringkas-spt { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--garis); border: 1px solid var(--garis); }
+.ringkas-spt > div { background: var(--permukaan); padding: 8px 12px 10px; min-width: 0; }
+.ringkas-spt dt { font-family: var(--huruf-judul); font-size: 13px; font-weight: 600; color: var(--teks-2); }
+.ringkas-spt dd { margin: 2px 0 0; font-family: var(--huruf-judul); font-size: 20px; font-weight: 700; color: var(--laterit); overflow-wrap: anywhere; }
+
 /* Halaman kalkulator: sketsa di kanan kepala halaman */
 .sketsa-kalk { margin-top: var(--j-5); max-width: 420px; }
 @media (min-width: 900px) {

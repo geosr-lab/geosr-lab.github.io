@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kalkulator Korelasi N-SPT · GeoSR</title>
+  <meta name="description" content="Koreksi N-SPT (N60 dan (N1)60) dan perkiraan parameter tanah dari N-SPT: kepadatan relatif, sudut geser, modulus elastisitas pasir, kuat geser undrained lempung, dan kecepatan gelombang geser, dengan rujukan halaman.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Kalkulator Korelasi N-SPT · GeoSR">
+  <meta property="og:description" content="Koreksi N-SPT (N60 dan (N1)60) dan perkiraan parameter tanah dari N-SPT: kepadatan relatif, sudut geser, modulus elastisitas pasir, kuat geser undrained lempung, dan kecepatan gelombang geser, dengan rujukan halaman.">
+  <meta property="og:url" content="https://defsayurinda.github.io/kalkulator/korelasi-spt.html">
+  <meta property="og:image" content="https://defsayurinda.github.io/assets/pratinjau.png">
+  <meta property="og:locale" content="id_ID">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#f1f2ec" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#10181a" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="../assets/katex/katex.min.css">
+  <link rel="stylesheet" href="../assets/gaya.css">
+  <script src="../assets/tema.js"></script>
+  <link rel="icon" href="../assets/ikon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../manifest.webmanifest">
+</head>
+<body>
+  <!-- NAV:MULAI -->
+  <nav class="nav">
+    <div class="wadah">
+      <a class="merek" href="../" aria-label="GeoSR, beranda"><svg class="merek-tanda" viewBox="0 0 22 26" aria-hidden="true"><rect x="0" y="0" width="22" height="26" rx="2" style="fill:none"/><rect x="0" y="0" width="22" height="6" rx="1" style="fill:var(--lapis-3)"/><rect x="0" y="7.5" width="22" height="7" rx="1" style="fill:var(--lapis-2)"/><rect x="0" y="16" width="22" height="4" rx="1" style="fill:var(--lapis-4)"/><rect x="0" y="21.5" width="22" height="4.5" rx="1" style="fill:var(--lapis-5)"/></svg><span>GeoSR<span class="merek-lengkap">Geotechnical Soil Report</span></span></a>
+      <button class="tema-tombol" type="button" aria-label="Tema: ikut sistem" title="Ganti tema"><svg viewBox="0 0 20 20" aria-hidden="true"><g class="ikon-otomatis"><circle cx="10" cy="10" r="6.5"/><path d="M10 3.5a6.5 6.5 0 0 0 0 13z" class="isi"/></g><g class="ikon-terang"><circle cx="10" cy="10" r="3.4"/><path d="M10 2v2.2M10 15.8V18M2 10h2.2M15.8 10H18M4.3 4.3l1.6 1.6M14.1 14.1l1.6 1.6M4.3 15.7l1.6-1.6M14.1 5.9l1.6-1.6"/></g><g class="ikon-gelap"><path d="M16 12.6A6.6 6.6 0 0 1 7.4 4a6.6 6.6 0 1 0 8.6 8.6z"/></g></svg></button>
+      <button class="nav-tombol" type="button" aria-expanded="false" aria-controls="menu-utama"><span class="nav-garis" aria-hidden="true"></span><span class="sr-only">Menu</span></button>
+      <ul id="menu-utama"><li><a href="../praktikum/">Praktikum</a></li><li><a href="../alat/" aria-current="page">Kalkulator</a></li><li><a href="../latihan/">Latihan</a></li><li><a href="../cari/">Cari</a></li></ul>
+    </div>
+  </nav>
+  <!-- NAV:SELESAI -->
+
+  <main class="wadah">
+    <header class="pahlawan" style="padding-bottom:16px">
+      <p class="remah"><a href="../alat/">Kalkulator</a></p>
+      <h1>Korelasi parameter tanah dari N-SPT</h1>
+      <p class="lead">Koreksi N-SPT ke N<sub>60</sub> dan (N<sub>1</sub>)<sub>60</sub>, lalu perkiraan awal parameter tanah dari beberapa korelasi empiris, masing-masing dengan rujukan halamannya.</p>
+      <dl class="etiket"><div><dt>Jenis</dt><dd>Kalkulator</dd></div><div><dt>Topik</dt><dd>Penyelidikan tanah</dd></div><div><dt>Rujukan</dt><dd>Warman (2019), PUPR</dd></div></dl>
+      <figure class="sketsa sketsa-kalk" data-sketsa="korelasi-spt"></figure>
+    </header>
+
+    <div class="tata-kalk">
+      <section>
+        <form id="formulir" class="kartu" autocomplete="off" onsubmit="return false">
+          <h3 style="margin-top:0">Data uji SPT</h3>
+          <div class="isian-kisi">
+            <div><label for="NM">N-SPT terukur, N<sub>M</sub></label><input id="NM" type="number" step="1" min="1" inputmode="decimal"></div>
+            <div><label for="Ef">Efisiensi palu, E<sub>f</sub> (%)</label><input id="Ef" type="number" step="1" min="1" max="100" inputmode="decimal"></div>
+            <div>
+              <label for="bor">Diameter lubang bor</label>
+              <select id="bor">
+                <option value="65-115">65–115 mm (CB = 1,0)</option>
+                <option value="150">150 mm (CB = 1,05)</option>
+                <option value="200">200 mm (CB = 1,15)</option>
+              </select>
+            </div>
+            <div><label for="batang">Panjang batang (m)</label><input id="batang" type="number" step="0.5" min="0.5" inputmode="decimal"></div>
+            <div><label for="CS">Koreksi tabung, C<sub>S</sub></label><input id="CS" type="number" step="0.05" min="1" max="1.3" inputmode="decimal"></div>
+          </div>
+          <p class="kecil redup" style="margin-top:8px">E<sub>f</sub> dari kalibrasi alat; tanpa kalibrasi, Tabel 4.1 memberi rentang C<sub>E</sub> = E<sub>f</sub>/60 sebesar 0,5–1,0 (palu donat), 0,7–1,2 (palu pengaman), 0,8–1,3 (palu otomatik). C<sub>S</sub> = 1,0 untuk tabung standar, 1,1–1,3 untuk tabung dengan pelapis.</p>
+
+          <h3>Tanah di titik uji</h3>
+          <div class="isian-kisi">
+            <div>
+              <label for="tanah">Jenis tanah</label>
+              <select id="tanah">
+                <option value="pasir">Pasir (granuler)</option>
+                <option value="lempung">Lempung (kohesif)</option>
+              </select>
+            </div>
+            <div><label for="z">Kedalaman uji, z (m)</label><input id="z" type="number" step="0.5" min="0.5" inputmode="decimal"></div>
+            <div><label for="gamma">Berat volume, γ (kN/m³)</label><input id="gamma" type="number" step="0.5" min="1" inputmode="decimal"></div>
+            <div class="isi-lempung"><label for="PI">Indeks plastisitas, PI (%)</label><input id="PI" type="number" step="1" min="0" inputmode="decimal"></div>
+          </div>
+          <div class="isian-kisi" style="margin-top:14px">
+            <label class="centang"><input id="adaMAT" type="checkbox"> Ada muka air tanah</label>
+            <div><label for="dw">Kedalaman MAT (m)</label><input id="dw" type="number" step="0.5" min="0" inputmode="decimal"></div>
+            <div><label for="gammaSat">γ<sub>sat</sub> (kN/m³)</label><input id="gammaSat" type="number" step="0.5" inputmode="decimal"></div>
+          </div>
+          <div class="baris-tombol tidak-cetak">
+            <button type="button" class="tombol kecil" id="muatContoh">Muat data contoh</button>
+            <button type="button" class="tombol kecil" id="bagikan">Salin tautan hasil</button>
+            <button type="button" class="tombol kecil" onclick="window.print()">Cetak / simpan PDF</button>
+          </div>
+          <p id="pesanBagikan" class="kecil redup" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <aside class="kartu" style="position:sticky; top:76px">
+        <h3 style="margin-top:0">Ringkas</h3>
+        <div id="ringkas"></div>
+      </aside>
+    </div>
+
+    <section id="hasil" aria-live="polite"></section>
+
+    <section>
+      <h2>Sumber rumus</h2>
+      <ul class="daftar-bersih">
+        <li>Warman, H. (penyusun) (2019). <em>Kumpulan korelasi parameter geoteknik dan fondasi</em>. Kementerian Pekerjaan Umum dan Perumahan Rakyat. Bab 4 "Uji Penetrasi Standar (SPT)", hlm. 43–50; P<sub>a</sub> = 101,3 kPa dari Daftar Konversi. Rujukan asli tiap korelasi disebut di hasil.</li>
+      </ul>
+      <p class="kecil redup">Korelasi tekanan prakonsolidasi dan OCR dari Mayne dan Kemper (1988) di hlm. 49 belum dimuat: penulisan rumusnya di buku perlu dicocokkan dulu dengan makalah aslinya. Uji <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/tests/verifikasi_korelasi_spt.py"><code>tests/verifikasi_korelasi_spt.py</code></a> mencocokkan nilai tabel, batas koreksi, dan hitungan Python terpisah.</p>
+      <div class="catatan"><strong>Perkiraan awal.</strong> Korelasi empiris bergantung pada jenis tanah dan alat tempat korelasi itu dibuat; sebarannya lebar. Pakai untuk perkiraan awal dan pembanding, lalu pastikan dengan uji laboratorium atau uji lapangan lain.</div>
+    </section>
+    <div class="status-bawah">
+      <!-- STATUS:MULAI -->
+  <p class="status-sumber" data-status="sekunder"><span>Status sumber: <strong>Sumber sekunder</strong></span><span class="status-tgl">dicek 15 November 2026</span><a href="https://github.com/defsayurinda/defsayurinda.github.io#alat">arti status</a></p>
+  <!-- STATUS:SELESAI -->
+    </div>
+  </main>
+
+  <!-- FOOTER:MULAI -->
+  <footer>
+    <div class="wadah kaki-isi">
+      <div class="kaki-merek"><a href="../">GeoSR</a><span>Geotechnical Soil Report · dibuat oleh <a href="../pembuat/">Defsa Yurinda</a></span></div>
+      <dl class="kaki-etiket"><div><dt>Pembuat</dt><dd><a href="../pembuat/">Profil</a> · <a href="../pembuat/catatan/">Catatan</a></dd></div><div><dt>Kode</dt><dd><a href="https://github.com/defsayurinda/defsayurinda.github.io">GitHub</a></dd></div><div><dt>Lisensi</dt><dd>Kode <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE">MIT</a>, tulisan <a href="https://github.com/defsayurinda/defsayurinda.github.io/blob/main/LICENSE-TULISAN">CC BY 4.0</a> · <a href="../kredit/">Kredit aset</a></dd></div></dl>
+    </div>
+  </footer>
+  <script src="../assets/daftar-sw.js" defer></script>
+  <script src="../assets/gerak.js" defer></script>
+  <!-- FOOTER:SELESAI -->
+
+  <script src="../assets/katex/katex.min.js" defer></script>
+  <script src="../assets/umum.js" defer></script>
+  <script src="../assets/praktikum/sketsa.js" defer></script>
+  <script src="../assets/korelasi-spt-hitung.js" defer></script>
+  <script src="../assets/korelasi-spt-tampilan.js" defer></script>
+</body>
+</html>
