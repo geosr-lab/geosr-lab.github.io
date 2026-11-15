@@ -604,10 +604,10 @@ def kartu_beranda(data, praktikum=None):
     for k in data["kategori"]:
         isi = [a for a in kalkulator if a["kategori"] == k["id"]]
         if isi:
-            grup += (f'\n          <h4>{html.escape(k["judul"])}</h4>\n          <ul class="daftar-ringkas">'
-                     + "".join(baris_ringkas(a["halaman"], a["id"], a["judul"], a["ringkas"]) for a in isi) + "</ul>")
+            grup += (f'\n          <div class="grup-kalk"><h4>{html.escape(k["judul"])}</h4>\n          <ul class="daftar-ringkas">'
+                     + "".join(baris_ringkas(a["halaman"], a["id"], a["judul"], a["ringkas"]) for a in isi) + "</ul></div>")
     petak.append(f'<div class="petak petak-kalkulator">\n          <span class="lencana">Kalkulator</span>\n'
-                 f'          <h3><a href="alat/">Kalkulator geoteknik</a></h3>{grup}\n        </div>')
+                 f'          <h3><a href="alat/">Kalkulator geoteknik</a></h3>\n          <div class="kisi-kalk">{grup}\n          </div>\n        </div>')
     jumlah_notasi = sum(len(k["butir"]) for k in data_notasi()["kelompok"])
     jumlah_praktikum = sum(len(k["alat"]) for k in praktikum["kelompok"]) if praktikum else 0
     belajar = (baris_ringkas(latihan["halaman"], "latihan", latihan["judul"], latihan["ringkas"])

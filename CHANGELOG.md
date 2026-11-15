@@ -32,6 +32,7 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 - `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1, terjemahan resmi), templat Issue dan PR, `CITATION.cff`, Dependabot untuk GitHub Actions.
 
 ### Diubah
+- Beranda, bagian "Mulai dari sini": kisi bento 12 kolom. Baris pertama Praktikum (7/12, enam kelompok uji dalam dua kolom) dan Belajar (5/12); baris kedua Kalkulator selebar penuh dengan topik Pondasi, Penurunan, dan Penyelidikan tanah berdampingan. Ruang kosong di petak Belajar pada 1280 px turun dari 337 px ke 98 px. Urutan di ponsel tetap Praktikum, Kalkulator, Belajar. Versi cache 0.29.0.
 - Label kecil berhuruf kapital berspasi (ciri template AI menurut `DESIGN.md`) diganti huruf biasa: "Lompat" di daftar lompat, judul kelompok kalkulator dan "Langsung ke alat" di beranda, jenis hasil di kotak cari beranda, daftar Lanjutkan, dan palet cari, serta judul kolom "Alat"/"Langkah" di tab Pengantar. Label minimal 13 px. Versi cache 0.27.2.
 - Katalog kalkulator (`/alat/`): kolom kisi tetap sehingga kartu sama besar di semua kategori; kategori dengan satu kartu (Penurunan, Latihan) ditata mendatar dengan sketsa di kiri, bukan kartu selebar halaman dengan sketsa raksasa.
 - Panjang baris teks bacaan (paragraf, daftar, catatan, langkah hasil) dibatasi ±80 karakter; sebelumnya sampai ±130 karakter di halaman kalkulator.

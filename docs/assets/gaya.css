@@ -662,9 +662,23 @@ footer::before {
 .daftar-lanjutkan .waktu { font-size: 13px; color: var(--teks-2); }
 
 /* Kisi dasbor: tiga petak setinggi sama */
-.dasbor { display: grid; gap: 14px; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr) minmax(0, .9fr); align-items: stretch; }
-@media (max-width: 1080px) { .dasbor { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .dasbor .petak-belajar { grid-column: 1 / -1; } }
-@media (max-width: 720px) { .dasbor { grid-template-columns: minmax(0, 1fr); } }
+/* Kisi bento: baris 1 Praktikum (7/12) dan Belajar (5/12), baris 2 Kalkulator selebar penuh dengan topik
+   berdampingan. Urutan sumber (dan ponsel) tetap Praktikum, Kalkulator, Belajar. */
+.dasbor { display: grid; gap: 14px; grid-template-columns: repeat(12, minmax(0, 1fr)); align-items: stretch; }
+.dasbor .petak-praktikum { grid-column: 1 / span 7; grid-row: 1; }
+.dasbor .petak-belajar { grid-column: 8 / -1; grid-row: 1; }
+.dasbor .petak-kalkulator { grid-column: 1 / -1; grid-row: 2; }
+.kisi-kalk { align-self: stretch; display: grid; gap: 0 var(--j-6); grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+.kisi-kalk h4 { margin-top: 6px; }
+@media (min-width: 721px) {
+  .petak-praktikum .kolom-inti { display: grid; grid-template-columns: 1fr 1fr; }
+  .petak-praktikum .kolom-inti li:nth-child(2) { border-top: 0; }
+  .petak-praktikum .kolom-inti li:nth-child(even) { border-left: 1px solid color-mix(in srgb, var(--teks) 25%, transparent); }
+}
+@media (max-width: 1080px) {
+  .dasbor .petak-praktikum, .dasbor .petak-belajar { grid-column: 1 / -1; grid-row: auto; }
+  .dasbor .petak-kalkulator { grid-row: auto; }
+}
 .petak { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: var(--j-5); border: 1px solid var(--garis); border-radius: var(--radius); background: var(--permukaan); min-width: 0; }
 .petak h3 { font-size: clamp(20px, 2.2vw, 24px); font-stretch: 108%; margin: 0 0 4px; }
 .petak h3 a { color: var(--teks); text-decoration: none; }
