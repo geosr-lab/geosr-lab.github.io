@@ -271,6 +271,16 @@
   function isi(fig) {
     var id = fig.getAttribute('data-sketsa'), s = S[id];
     if (!s || fig.querySelector('svg')) return !!s;
+    // Versi kecil untuk kartu katalog: hanya gambar (kartu sudah berupa tautan), diputar saat kartu disorot.
+    if (fig.classList.contains('sketsa-mini')) {
+      fig.innerHTML = '<svg class="sk" viewBox="0 0 320 180" aria-hidden="true" focusable="false">' + s.svg.replace(/ id="sk-/g, ' id="sk-' + id + '-').replace(/url\(#sk-/g, 'url(#sk-' + id + '-') + '</svg>';
+      var kartu = fig.closest('a, .kartu');
+      if (kartu) {
+        kartu.addEventListener('mouseenter', function () { putar(fig); });
+        kartu.addEventListener('focus', function () { putar(fig); });
+      }
+      return true;
+    }
     fig.innerHTML = '<button type="button" class="sketsa-bingkai" aria-label="Putar ulang animasi sketsa"><svg class="sk" viewBox="0 0 320 180" role="img" aria-label="Sketsa: ' + s.ket.replace(/"/g, '&quot;') + '">' + s.svg + '</svg></button>' +
       '<figcaption><span>' + s.ket + '</span><button type="button" class="tombol kecil sketsa-ulang tidak-cetak">Putar ulang</button></figcaption>';
     fig.addEventListener('click', function (e) { if (e.target.closest('button')) putar(fig); });
@@ -290,7 +300,9 @@
     io.observe(fig);
   }
   function pasangSemua() {
-    Array.prototype.forEach.call(document.querySelectorAll('figure[data-sketsa]'), function (fig) { if (isi(fig) && !fig.closest('.panel-alat')) amati(fig); });
+    Array.prototype.forEach.call(document.querySelectorAll('figure[data-sketsa]'), function (fig) {
+      if (isi(fig) && !fig.closest('.panel-alat') && !fig.classList.contains('sketsa-mini')) amati(fig);
+    });
   }
   if (typeof document !== 'undefined') {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pasangSemua); else pasangSemua();

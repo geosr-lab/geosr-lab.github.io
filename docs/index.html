@@ -37,19 +37,19 @@
       <div>
         <p class="asal"><svg viewBox="0 0 16 20" aria-hidden="true"><rect width="16" height="5" rx="1" style="fill:var(--lapis-3)"/><rect y="6" width="16" height="6" rx="1" style="fill:var(--lapis-2)"/><rect y="13" width="16" height="7" rx="1" style="fill:var(--lapis-4)"/></svg>Geotechnical Soil Report</p>
         <h1><span class="baris">GeoSR</span></h1>
-        <p class="lead">Olah data praktikum Mekanika Tanah dan hitung soal geoteknik dengan formulir seperti lembar lab. Hasil, grafik, dan langkah hitungannya siap dipindah ke laporan.</p>
+        <p class="lead">Olah data praktikum Mekanika Tanah dan hitung soal geoteknik lewat formulir seperti lembar lab, lengkap dengan langkah, grafik, dan ekspor ke laporan.</p>
         <div class="baris-tombol">
           <a class="tombol utama" href="praktikum/">Mulai praktikum</a>
-          <a class="tombol" href="alat/">Kalkulator</a>
-          <a class="tombol" href="latihan/">Latihan soal</a>
+          <a class="tombol" href="alat/">Buka kalkulator</a>
         </div>
       </div>
       <figure class="penampang" id="penampang">
         <div class="penampang-bingkai"></div>
         <figcaption>
-          <span>Ilustrasi lapisan tanah di bawah pondasi, bukan data uji.</span>
+          <span>Ilustrasi lapisan tanah di bawah pondasi, bukan data uji. Klik lapisan atau pondasinya.</span>
           <span class="pilih-keadaan" role="group" aria-label="Keadaan penampang"><button type="button" data-keadaan="0" aria-pressed="true">Sebelum beban</button><button type="button" data-keadaan="1" aria-pressed="false">Sesudah konsolidasi</button></span>
         </figcaption>
+        <div class="penampang-info" id="penampang-info" aria-live="polite"><p class="redup">Pilih satu lapisan untuk melihat pengujian yang biasa dipakai untuk tanah itu.</p></div>
       </figure>
     </header>
 
@@ -109,5 +109,6 @@
   <script src="assets/daftar-sw.js" defer></script>
   <script src="assets/gerak.js" defer></script>
   <!-- FOOTER:SELESAI -->
+  <script src="assets/praktikum/sketsa.js" defer></script>
 </body>
 </html>
