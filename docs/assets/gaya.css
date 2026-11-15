@@ -1889,3 +1889,11 @@ a.kartu::before, .kolom-inti a::before, .inti-bor a::before, .daftar-uji a::befo
 .alat3d figcaption { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 8px 12px; margin-top: 10px; font-size: 14px; color: var(--teks-2); line-height: 1.5; }
 .alat3d-tombol { display: flex; flex-wrap: wrap; gap: 6px; }
 @media print { .alat3d { display: none !important; } .sketsa-cadangan[hidden] { display: block !important; } }
+/* Model 3D kalkulator di kepala halaman: menggantikan tempat sketsa di kolom kanan */
+.pahlawan > .alat3d { margin-top: var(--j-5); max-width: 520px; }
+.pahlawan > .alat3d .alat3d-panggung { height: clamp(300px, 40vh, 380px); }
+.pahlawan > .alat3d figcaption { font-size: 13px; }
+@media (min-width: 900px) {
+  .pahlawan:has(.sketsa-kalk) { grid-template-columns: minmax(0, 1fr) 420px; }
+  .pahlawan:has(.sketsa-kalk) > .alat3d { grid-column: 2; grid-row: 1 / span 4; margin-top: 0; }
+}

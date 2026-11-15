@@ -959,6 +959,152 @@
     return { mulai: function () { if (A.hemat) akhir(); else mulai(); }, langkah: langkah, keadaan: k, akhir: akhir };
   }
 
+  // ---------------------------------------------------------------- bagian bersama kalkulator: tanah terpotong L dan panah beban
+  function tanahL(A, LAPIS, X, Z) {
+    var THREE = A.THREE, s = A.scene;
+    LAPIS.forEach(function (l) {
+      var bhn = A.bahan('tanah', l[2], { tekstur: l[3] }), h = l[1] - l[0];
+      var a = kotak(THREE, X, h, Z / 2, bhn); a.position.set(0, -(l[0] + l[1]) / 2, -Z / 4); s.add(a);
+      var b = kotak(THREE, X / 2, h, Z / 2, bhn); b.position.set(-X / 4, -(l[0] + l[1]) / 2, Z / 4); s.add(b);
+    });
+  }
+  function panah3d(A, warna, panjang) {
+    var THREE = A.THREE, g = new THREE.Group(), b = A.bahan('plastik', warna || [181, 83, 46], { roughness: 0.35, emissive: new THREE.Color(0, 0, 0) });
+    var batang = silinder(THREE, 0.9, 0.9, panjang, b, 16); batang.position.y = panjang / 2 + 3; g.add(batang);
+    var ujung = new THREE.Mesh(new THREE.ConeGeometry(2.2, 3.2, 24), b); ujung.rotation.x = PI; ujung.position.y = 1.6; ujung.castShadow = true; g.add(ujung);
+    g.userData.bahan = b;
+    return g;
+  }
+  function denyut(g, t, kuat) { var e = 0.5 + 0.5 * Math.sin(t * 3); g.userData.bahan.emissive.setRGB(0.35 * e * kuat, 0.1 * e * kuat, 0.03 * e * kuat); }
+
+  // ---------------------------------------------------------------- Kalkulator pondasi dangkal (1 = 10 cm)
+  function pondasiDangkal(A, hud) {
+    var THREE = A.THREE, s = A.scene;
+    tanahL(A, [[0, 12, [158, 132, 98], 'tanah'], [12, 26, [128, 136, 120], 'lempung'], [26, 40, [194, 166, 108], 'pasir']], 70, 50);
+    var beton = A.bahan('plastik', [176, 178, 172], { roughness: 0.8 });
+    var telapak = kotak(THREE, 14, 3, 14, beton); telapak.position.set(0, -7.5, 0); s.add(telapak);
+    var kolom = kotak(THREE, 4, 18, 4, beton); kolom.position.set(0, 3, 0); s.add(kolom);
+    var bola = new THREE.Mesh(new THREE.SphereGeometry(1, 40, 20, 0, PI * 2, PI / 2, PI / 2), A.bahan('kaca', [210, 110, 70], { opacity: 0.28 }));
+    bola.position.set(0, -9, 0); s.add(bola);
+    var panah = panah3d(A, null, 12); panah.position.set(0, 12, 0); s.add(panah);
+    var lb = tulisan(A, 'Df', 1.6); lb.position.set(9, -3.5, 9); s.add(lb);
+    var lbB = tulisan(A, 'B', 1.6); lbB.position.set(0, -11.5, 9); s.add(lbB);
+    var k = { t: 0, jeda: false };
+    function atur() {
+      var u = 0.5 + 0.5 * Math.sin(k.t * 1.2);
+      bola.scale.set(10 + 4 * u, 12 + 6 * u, 10 + 4 * u);
+      panah.position.y = 12 + 1.2 * Math.sin(k.t * 3); denyut(panah, k.t, 1);
+      hud.textContent = 'Beban kolom disalurkan telapak ke tanah; tegangan menyebar dan mengecil terhadap kedalaman (gambar)';
+    }
+    function mulai() { k.t = 0; atur(); }
+    function akhir() { k.t = PI / 2.4; atur(); }
+    function langkah(dt) { if (k.jeda) return; k.t += dt; atur(); }
+    langkah.aktif = function () { return !A.hemat && !k.jeda; };
+    return { mulai: function () { if (A.hemat) akhir(); else mulai(); }, langkah: langkah, keadaan: k, akhir: akhir };
+  }
+
+  // ---------------------------------------------------------------- Kalkulator tiang bor (1 = 20 cm)
+  function tiangBor(A, hud) {
+    var THREE = A.THREE, s = A.scene;
+    tanahL(A, [[0, 14, [158, 132, 98], 'tanah'], [14, 30, [128, 136, 120], 'lempung'], [30, 52, [194, 166, 108], 'pasir']], 70, 50);
+    var beton = A.bahan('plastik', [176, 178, 172], { roughness: 0.8 });
+    var tiang = silinder(THREE, 2.6, 2.6, 48, beton, 32); tiang.position.set(0, -20, 0); s.add(tiang);
+    var kepala = kotak(THREE, 12, 4, 12, beton); kepala.position.set(0, 4, 0); s.add(kepala);
+    var kolom = kotak(THREE, 4, 10, 4, beton); kolom.position.set(0, 11, 0); s.add(kolom);
+    var panah = panah3d(A, null, 10); panah.position.set(0, 16, 0); s.add(panah);
+    // panah gesekan selimut (ke atas) di sisi tiang yang terlihat, dan tahanan ujung
+    var gesek = [], hijau = A.bahan('plastik', [29, 106, 99], { roughness: 0.35, emissive: new THREE.Color(0, 0, 0) });
+    [-6, -12, -18, -24, -30, -36].forEach(function (y, i) {
+      [0.4, 1.2].forEach(function (sudut) {
+        var c = new THREE.Mesh(new THREE.ConeGeometry(0.8, 2.2, 14), hijau.clone()); c.position.set(Math.cos(sudut) * 3.6, y, Math.sin(sudut) * 3.6); c.castShadow = true; s.add(c); gesek.push({ m: c, i: i });
+      });
+    });
+    var ujungB = new THREE.Mesh(new THREE.ConeGeometry(2.4, 3.4, 24), hijau.clone()); ujungB.position.set(0, -46.5, 0); s.add(ujungB);
+    var lb1 = tulisan(A, 'Gesekan selimut', 1.4); lb1.position.set(10, -18, 6); s.add(lb1);
+    var lb2 = tulisan(A, 'Tahanan ujung', 1.4); lb2.position.set(9, -46, 6); s.add(lb2);
+    var k = { t: 0, jeda: false };
+    function atur() {
+      gesek.forEach(function (g) { var e = Math.max(0, Math.sin(k.t * 2 - g.i * 0.5)); g.m.material.emissive.setRGB(0.05 * e, 0.3 * e, 0.27 * e); g.m.scale.setScalar(0.8 + 0.4 * e); });
+      var e2 = Math.max(0, Math.sin(k.t * 2 - 3.4)); ujungB.material.emissive.setRGB(0.05 * e2, 0.3 * e2, 0.27 * e2);
+      denyut(panah, k.t, 1);
+      hud.textContent = 'Beban ditahan gesekan selimut di tiap lapisan dan tahanan ujung tiang (gambar)';
+    }
+    function mulai() { k.t = 0; atur(); }
+    function akhir() { k.t = 1; atur(); }
+    function langkah(dt) { if (k.jeda) return; k.t += dt; atur(); }
+    langkah.aktif = function () { return !A.hemat && !k.jeda; };
+    return { mulai: function () { if (A.hemat) akhir(); else mulai(); }, langkah: langkah, keadaan: k, akhir: akhir };
+  }
+
+  // ---------------------------------------------------------------- Kalkulator lateral tiang Broms (1 = 20 cm)
+  function broms(A, hud) {
+    var THREE = A.THREE, s = A.scene;
+    tanahL(A, [[0, 20, [158, 132, 98], 'tanah'], [20, 44, [128, 136, 120], 'lempung']], 70, 50);
+    var beton = A.bahan('plastik', [176, 178, 172], { roughness: 0.8 });
+    var poros = new THREE.Group(); poros.position.set(0, -24, 0); s.add(poros);   // tiang pendek berotasi di sekitar titik ini (gambar)
+    var tiang = silinder(THREE, 1.8, 1.8, 34, beton, 28); tiang.position.y = 24 + 4 - 17; poros.add(tiang);
+    var panah = new THREE.Group(); poros.add(panah);
+    var pb = A.bahan('plastik', [181, 83, 46], { roughness: 0.35, emissive: new THREE.Color(0, 0, 0) });
+    var batang = silinder(THREE, 0.8, 0.8, 1, pb, 14); batang.rotation.z = PI / 2; panah.add(batang);
+    var ujung = new THREE.Mesh(new THREE.ConeGeometry(2, 3, 20), pb); ujung.rotation.z = -PI / 2; panah.add(ujung);
+    panah.userData.bahan = pb;
+    var reaksi = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), A.bahan('kaca', [29, 106, 99], { opacity: 0.32 })); s.add(reaksi);
+    var lb = tulisan(A, 'Beban lateral', 1.4); s.add(lb);
+    var k = { t: 0, jeda: false };
+    function atur() {
+      var u = 0.5 - 0.5 * Math.cos(k.t * 1.1), pj = 6 + 8 * u;
+      batang.scale.y = pj; batang.position.set(-pj / 2 - 3, 0, 0); ujung.position.set(-1.6 + 0.1, 0, 0);
+      panah.position.set(-1.8, 24 + 2, 0);
+      poros.rotation.z = -0.06 * u;
+      // tanah di depan tiang (dekat permukaan) memberi tahanan
+      reaksi.scale.set(10 * u + 0.1, 12, 10); reaksi.position.set(1.8 + 5 * u, -6, 0);
+      lb.position.set(-14, 6, 6);
+      denyut(panah, k.t, u);
+      hud.textContent = 'Beban lateral di kepala tiang; tiang berotasi dan tanah di depannya memberi tahanan (gambar moda tiang pendek)';
+    }
+    function mulai() { k.t = 0; atur(); }
+    function akhir() { k.t = PI / 1.1; atur(); }
+    function langkah(dt) { if (k.jeda) return; k.t += dt; atur(); }
+    langkah.aktif = function () { return !A.hemat && !k.jeda; };
+    return { mulai: function () { if (A.hemat) akhir(); else mulai(); }, langkah: langkah, keadaan: k, akhir: akhir };
+  }
+
+  // ---------------------------------------------------------------- Kalkulator penurunan konsolidasi (1 = 20 cm)
+  function konsolidasiKalk(A, hud) {
+    var THREE = A.THREE, s = A.scene;
+    var X = 70, Z = 50;
+    var pasirAtas = A.bahan('tanah', [194, 166, 108], { tekstur: 'pasir' }), lempung = A.bahan('tanah', [118, 126, 112], { tekstur: 'lempung' }), pasirBawah = A.bahan('tanah', [186, 158, 102], { tekstur: 'pasir' });
+    function dua(bhn) {
+      var a = kotak(THREE, X, 1, Z / 2, bhn); a.position.z = -Z / 4; s.add(a);
+      var b = kotak(THREE, X / 2, 1, Z / 2, bhn); b.position.set(-X / 4, 0, Z / 4); s.add(b);
+      return [a, b];
+    }
+    var lapAtas = dua(pasirAtas), lapLempung = dua(lempung), lapBawah = dua(pasirBawah);
+    var timbunan = kotak(THREE, 34, 6, 40, A.bahan('tanah', [150, 124, 90], { tekstur: 'tanah' })); s.add(timbunan);
+    var air = [];
+    for (var i = 0; i < 24; i++) { var d = new THREE.Mesh(new THREE.SphereGeometry(0.55, 10, 8), A.bahan('kaca', [70, 150, 210], { opacity: 0.85 })); d.userData = { x: (Math.random() - 0.5) * 30, z: -Math.random() * 20, f: Math.random(), atas: i % 2 === 0 }; s.add(d); air.push(d); }
+    var lb = tulisan(A, 'Lempung', 1.6); lb.position.set(14, -18, 8); s.add(lb);
+    var k = { t: 0, jeda: false };
+    function letak(pasang, y0, y1) { pasang.forEach(function (m) { m.scale.y = y1 - y0; m.position.y = -(y0 + y1) / 2; }); }
+    function atur() {
+      var u = 1 - Math.exp(-k.t / 4), turun = 3 * u;     // penurunan cepat di awal lalu melambat (gambar)
+      var tebalL = 20 - turun;
+      letak(lapAtas, turun, turun + 8); letak(lapLempung, 8 + turun, 8 + turun + tebalL); letak(lapBawah, 28, 40);
+      timbunan.position.y = 3 - turun;
+      air.forEach(function (d) {
+        var g = d.userData, p = (g.f + k.t * 0.25) % 1, ytengah = -(8 + turun + tebalL / 2);
+        var yb = g.atas ? -(8 + turun) : -28;
+        d.position.set(g.x, ytengah + (yb - ytengah) * p, g.z); d.visible = u < 0.97; d.scale.setScalar(1 - p * 0.5);
+      });
+      hud.textContent = 'Air pori keluar ke lapisan pasir di atas dan bawah; lempung memampat dan permukaan turun seiring waktu (gambar)';
+    }
+    function mulai() { k.t = 0; atur(); }
+    function akhir() { k.t = 30; atur(); }
+    function langkah(dt) { if (k.jeda) return; k.t += dt; atur(); if (k.t > 16) mulai(); }
+    langkah.aktif = function () { return !A.hemat && !k.jeda; };
+    return { mulai: function () { if (A.hemat) akhir(); else mulai(); }, langkah: langkah, keadaan: k, akhir: akhir };
+  }
+
   var ADEGAN = {
     pemadatan: { buat: proctor, ukuran: 40, lantai: 0, kamera: [66, 58, 92], sasaran: [0, 17, 0], judul: 'Model 3D mould Proctor, penumbuk, timbangan, dan wadah tanah' },
     sondir: { buat: sondir, ukuran: 60, lantai: -52.5, kamera: [118, 58, 150], sasaran: [0, -10, 0], judul: 'Model 3D mesin sondir dengan angker, manometer, dan konus di dalam tanah' },
@@ -977,7 +1123,13 @@
     hidrometer: { buat: hidrometer, ukuran: 40, lantai: 0, kamera: [58, 48, 84], sasaran: [3, 24, 0], judul: 'Model 3D analisa hidrometer: gelas ukur 1000 ml berisi suspensi tanah, hidrometer, dan gelas air pembanding' },
     'batas-susut': { buat: batasSusut, ukuran: 25, lantai: 0, kamera: [18, 17, 24], sasaran: [-1, 1.5, 0], judul: 'Model 3D uji batas susut: cawan susut, cawan pencampur, spatula, dan mistar baja di atas pelat kaca' },
     'hubungan-fase': { buat: hubunganFase, ukuran: 30, lantai: 0, kamera: [32, 26, 42], sasaran: [3, 8, 0], judul: 'Model 3D diagram fase: elemen tanah dipisah menjadi udara, air, dan butir' },
-    klasifikasi: { buat: klasifikasi, ukuran: 40, lantai: 0, kamera: [26, 34, 62], sasaran: [0, 9, 0], judul: 'Model 3D contoh tanah per kelompok butir: kerikil, pasir, lanau, lempung' }
+    klasifikasi: { buat: klasifikasi, ukuran: 40, lantai: 0, kamera: [26, 34, 62], sasaran: [0, 9, 0], judul: 'Model 3D contoh tanah per kelompok butir: kerikil, pasir, lanau, lempung' },
+    'pondasi-dangkal': { buat: pondasiDangkal, ukuran: 55, lantai: -40.5, kamera: [92, 52, 118], sasaran: [0, -6, 0], judul: 'Model 3D pondasi telapak di tanah berlapis yang terpotong, dengan beban kolom dan sebaran tegangan' },
+    'tiang-bor': { buat: tiangBor, ukuran: 60, lantai: -52.5, kamera: [104, 50, 132], sasaran: [0, -14, 0], judul: 'Model 3D tiang bor menembus tanah berlapis, dengan gesekan selimut dan tahanan ujung' },
+    'broms-lateral': { buat: broms, ukuran: 55, lantai: -44.5, kamera: [96, 44, 122], sasaran: [0, -8, 0], judul: 'Model 3D tiang dengan beban lateral di kepalanya dan tahanan tanah di depannya' },
+    konsolidasi: { buat: konsolidasiKalk, ukuran: 55, lantai: -40.5, kamera: [92, 50, 118], sasaran: [0, -12, 0], judul: 'Model 3D timbunan di atas lapisan lempung di antara dua lapisan pasir, dengan aliran air pori' },
+    'korelasi-spt': { buat: spt, ukuran: 55, lantai: -44.5, kamera: [104, 66, 138], sasaran: [0, 9, 0], judul: 'Model 3D uji SPT sebagai asal nilai N untuk korelasi' },
+    'korelasi-cpt': { buat: sondir, ukuran: 60, lantai: -52.5, kamera: [118, 58, 150], sasaran: [0, -10, 0], judul: 'Model 3D sondir sebagai asal nilai qc dan fs untuk korelasi' }
   };
 
   function pasang(fig) {
