@@ -93,7 +93,6 @@
     var nav = document.createElement('nav');
     nav.className = 'lompat tidak-cetak'; nav.setAttribute('aria-label', 'Lompat ke bagian hasil'); nav.hidden = true;
     hasil.parentNode.insertBefore(nav, hasil);
-    var amat = null;
     function judul(pola, akar) {
       var h = (akar || hasil).querySelectorAll('h2');
       for (var i = 0; i < h.length; i++) if (pola.test(h[i].textContent)) return h[i];
@@ -125,21 +124,21 @@
       nav.innerHTML = '<span class="lompat-label">Lompat</span>' + isi.map(function (x) {
         return '<a href="#' + x[1].id + '" data-ke="' + x[1].id + '">' + x[0] + '</a>';
       }).join('');
-      if (amat) amat.disconnect();
-      if ('IntersectionObserver' in window) {
-        var terlihat = {};
-        amat = new IntersectionObserver(function (e) {
-          e.forEach(function (x) { terlihat[x.target.id] = x.isIntersecting; });
-          var aktif = null;
-          isi.forEach(function (x) { if (terlihat[x[1].id] && !aktif) aktif = x[1].id; });
-          if (!aktif) return;
-          Array.prototype.forEach.call(nav.querySelectorAll('a'), function (a) {
-            if (a.getAttribute('data-ke') === aktif) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
-          });
-        }, { rootMargin: '-130px 0px -55% 0px' });
-        isi.forEach(function (x) { amat.observe(x[1]); });
-      }
+      sasaran = isi;
+      sorot();
     }
+    // Bagian aktif = sasaran terakhir yang bagian atasnya sudah melewati bilah lompat (±140 px dari atas).
+    // Di atas sasaran pertama tidak ada yang disorot.
+    var sasaran = [], antri = false;
+    function sorot() {
+      antri = false;
+      var aktif = null;
+      sasaran.forEach(function (x) { if (x[1].getBoundingClientRect().top <= 140) aktif = x[1].id; });
+      Array.prototype.forEach.call(nav.querySelectorAll('a'), function (a) {
+        if (a.getAttribute('data-ke') === aktif) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+      });
+    }
+    window.addEventListener('scroll', function () { if (!antri) { antri = true; setTimeout(sorot, 80); } }, { passive: true });
     nav.addEventListener('click', function (e) {
       var a = e.target.closest('a[data-ke]');
       if (!a) return;
