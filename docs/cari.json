@@ -250,5 +250,61 @@
 "h": "Konsep Cara kerja yang dipakai Contoh: kesalahan yang tertangkap pengujian Pembagian kerja Latihan",
 "u": "pembuat/catatan/03-membangun-situs-dan-kalkulator/",
 "k": "Catatan pembuat"
+},
+{
+"j": "Kamus notasi: Sifat fisik dan hubungan fase",
+"d": "W, Ws, Ww, V, Vs, Vv, Vw, Va, w, Gs, e, n, S, γ, γd, γsat, γ', γw, ρw",
+"h": "Berat total tanah Berat butiran padat Berat air Volume total Volume butiran, pori, air, dan udara Kadar air Berat spesifik butiran Angka pori Porositas Derajat kejenuhan Berat volume (basah) Berat volume kering Berat volume jenuh Berat volume terendam (efektif) Berat volume air Massa jenis air",
+"u": "notasi/#sifat-fisik-dan-hubungan-fase",
+"k": "Notasi"
+},
+{
+"j": "Kamus notasi: Konsistensi dan gradasi",
+"d": "LL, PL, SL, PI, LI, CI, N, D10, D30, D60, Cu, Cc, D",
+"h": "Batas cair Batas plastis Batas susut Indeks plastisitas Indeks cair Indeks konsistensi Jumlah ketukan Diameter butir pada persen lolos 10, 30, 60 % Koefisien keseragaman Koefisien gradasi Diameter butir (hidrometer)",
+"u": "notasi/#konsistensi-dan-gradasi",
+"k": "Notasi"
+},
+{
+"j": "Kamus notasi: Kepadatan dan CBR",
+"d": "wopt, γd,maks, γzav, RC, CBR, Dr",
+"h": "Kadar air optimum Berat volume kering maksimum Berat volume kering tanpa rongga udara Derajat pemadatan California Bearing Ratio Kepadatan relatif",
+"u": "notasi/#kepadatan-dan-cbr",
+"k": "Notasi"
+},
+{
+"j": "Kamus notasi: Permeabilitas",
+"d": "k, i, h; h1, h2, Q, a, A, L",
+"h": "Koefisien permeabilitas Gradien hidrolik Tinggi tekan; tinggi awal dan akhir Volume air yang mengalir Luas buret, luas sampel Panjang sampel",
+"u": "notasi/#permeabilitas",
+"k": "Notasi"
+},
+{
+"j": "Kamus notasi: Tegangan dan konsolidasi",
+"d": "σ, σv, u, σ', σ'vo, σ'o, σ'p, σ'c, OCR, Δσ, Cc, Cs, Cr, CR, e0, mv, cv, Tv, U, Hdr, t50, t90, Sc",
+"h": "Tegangan total (vertikal) Tekanan air pori Tegangan efektif Tegangan vertikal efektif awal Tekanan prakonsolidasi Rasio overkonsolidasi Tambahan tegangan Indeks kompresi Indeks pengembangan; indeks rekompresi Rasio kompresi Angka pori awal Koefisien perubahan volume Koefisien konsolidasi Faktor waktu Derajat konsolidasi Panjang lintasan drainase Waktu konsolidasi 50 % dan 90 % Penurunan konsolidasi primer",
+"u": "notasi/#tegangan-dan-konsolidasi",
+"k": "Notasi"
+},
+{
+"j": "Kamus notasi: Kuat geser",
+"d": "τf, c, c', φ, φ', cu, Su, qu, ε, σn, St, Kp, Ka",
+"h": "Kuat geser Kohesi (total, efektif) Sudut geser dalam (total, efektif) Kuat geser undrained Kuat tekan bebas Regangan aksial Tegangan normal Sensitivitas Koefisien tekanan tanah pasif, aktif",
+"u": "notasi/#kuat-geser",
+"k": "Notasi"
+},
+{
+"j": "Kamus notasi: Uji lapangan: SPT dan sondir",
+"d": "N, NM, N1, N2, N3, Ef, Er, N60, (N1)60, CN, CE, CB, CR, CS, qc, PK, JP, HL, fs, HS, JHL, Rf, FR, Nc, Nkt, vs, Pa, E",
+"h": "N-SPT terukur Pukulan tiap 15 cm Efisiensi energi palu N-SPT terkoreksi energi 60 % N60 ternormalisasi tegangan efektif Faktor koreksi SPT Tahanan konus (perlawanan konus) Jumlah perlawanan Hambatan lekat Tahanan gesek selimut (hambatan setempat) Jumlah hambatan lekat Rasio gesekan Faktor konus Kecepatan gelombang geser Tekanan atmosfer Modulus elastisitas",
+"u": "notasi/#uji-lapangan-spt-dan-sondir",
+"k": "Notasi"
+},
+{
+"j": "Kamus notasi: Fondasi",
+"d": "B, L, Df, q, Nc, Nq, Nγ, Fcs, Fqs, Fγs, Fcd, Fqd, Fγd, qu, qall, FS, Qp, Qs, Qu, Qa, b, e, Pult, My, f, g",
+"h": "Lebar, panjang, kedalaman fondasi Tekanan tanah di dasar fondasi Faktor kapasitas dukung Faktor bentuk Faktor kedalaman Kapasitas dukung ultimit dan izin Faktor keamanan Tahanan ujung dan tahanan selimut tiang Daya dukung aksial ultimit dan izin tiang Diameter atau lebar tiang Tinggi beban lateral di atas muka tanah Beban lateral ultimit Momen leleh tiang Kedalaman geser nol; panjang di bawahnya",
+"u": "notasi/#fondasi",
+"k": "Notasi"
 }
 ]

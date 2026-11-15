@@ -63,8 +63,12 @@ def main():
     indeks = json.loads((DOCS / "cari.json").read_text(encoding="utf-8"))
     url = {x["u"] for x in indeks}
     for x in indeks:
-        if not berkas_url(x["u"]).exists():
+        alamat, _, jangkar = x["u"].partition("#")
+        berkas = berkas_url(alamat)
+        if not berkas.exists():
             gagal.append(f"cari.json: {x['u']} tidak ada")
+        elif jangkar and f'id="{jangkar}"' not in berkas.read_text(encoding="utf-8"):
+            gagal.append(f"cari.json: jangkar #{jangkar} tidak ada di {alamat}")
     registri = json.loads((AKAR / "konten/alat.json").read_text(encoding="utf-8"))
     praktikum = json.loads((AKAR / "konten/praktikum.json").read_text(encoding="utf-8"))
     wajib = [a["halaman"] for a in registri["alat"]]

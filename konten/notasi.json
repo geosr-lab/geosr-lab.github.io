@@ -1,0 +1,148 @@
+{
+  "_keterangan": "Kamus notasi GeoSR. skrip/bangun_situs.py membangun docs/notasi/index.html dari berkas ini. Setiap butir: [simbol (HTML sederhana), nama, satuan, keterangan, [id alat yang memakainya]]. Id alat: id praktikum (praktikum/<id>/) atau id kalkulator di konten/alat.json. Daftar Notasi Warman (2019) dipakai sebagai pembanding; arti ditulis sendiri.",
+  "kelompok": [
+    {
+      "judul": "Sifat fisik dan hubungan fase",
+      "butir": [
+        ["W", "Berat total tanah", "g; kN", "Berat butiran ditambah berat air.", ["hubungan-fase"]],
+        ["W<sub>s</sub>", "Berat butiran padat", "g; kN", "Berat tanah sesudah dikeringkan di oven.", ["kadar-air", "hubungan-fase"]],
+        ["W<sub>w</sub>", "Berat air", "g; kN", "W − W<sub>s</sub>.", ["kadar-air", "hubungan-fase"]],
+        ["V", "Volume total", "cm³; m³", "V<sub>s</sub> + V<sub>v</sub>.", ["hubungan-fase"]],
+        ["V<sub>s</sub>, V<sub>v</sub>, V<sub>w</sub>, V<sub>a</sub>", "Volume butiran, pori, air, dan udara", "cm³; m³", "V<sub>v</sub> = V<sub>w</sub> + V<sub>a</sub>.", ["hubungan-fase"]],
+        ["w", "Kadar air", "%", "W<sub>w</sub>/W<sub>s</sub> × 100. Dihitung terhadap berat kering, bukan berat total.", ["kadar-air", "hubungan-fase", "atterberg", "pemadatan"]],
+        ["G<sub>s</sub>", "Berat spesifik butiran", "–", "Perbandingan berat volume butiran dengan berat volume air pada suhu tertentu.", ["berat-spesifik", "hubungan-fase", "hidrometer"]],
+        ["e", "Angka pori", "–", "V<sub>v</sub>/V<sub>s</sub>. Jangan tertukar dengan e tinggi beban di kalkulator Broms.", ["hubungan-fase", "konsolidasi-lab"]],
+        ["n", "Porositas", "–", "V<sub>v</sub>/V = e/(1 + e).", ["hubungan-fase"]],
+        ["S", "Derajat kejenuhan", "%", "V<sub>w</sub>/V<sub>v</sub> × 100. Hubungan pokok: S e = w G<sub>s</sub>.", ["hubungan-fase"]],
+        ["γ", "Berat volume (basah)", "kN/m³", "W/V pada kadar air di lapangan.", ["hubungan-fase", "sand-cone", "pondasi-dangkal", "korelasi-spt", "korelasi-cpt"]],
+        ["γ<sub>d</sub>", "Berat volume kering", "kN/m³", "γ/(1 + w).", ["hubungan-fase", "pemadatan", "sand-cone"]],
+        ["γ<sub>sat</sub>", "Berat volume jenuh", "kN/m³", "Berat volume saat semua pori terisi air.", ["hubungan-fase", "pondasi-dangkal", "korelasi-spt", "korelasi-cpt"]],
+        ["γ'", "Berat volume terendam (efektif)", "kN/m³", "γ<sub>sat</sub> − γ<sub>w</sub>; dipakai di bawah muka air tanah.", ["hubungan-fase", "pondasi-dangkal", "broms-lateral"]],
+        ["γ<sub>w</sub>", "Berat volume air", "kN/m³", "Dipakai 9,81 kN/m³.", ["hubungan-fase", "pondasi-dangkal", "konsolidasi"]],
+        ["ρ<sub>w</sub>", "Massa jenis air", "g/cm³", "Berubah sedikit terhadap suhu; dipakai untuk koreksi suhu pada uji piknometer.", ["berat-spesifik"]]
+      ]
+    },
+    {
+      "judul": "Konsistensi dan gradasi",
+      "butir": [
+        ["LL", "Batas cair", "%", "Kadar air pada 25 ketukan alat Casagrande.", ["atterberg", "klasifikasi"]],
+        ["PL", "Batas plastis", "%", "Kadar air saat tanah yang digulung mulai retak halus.", ["atterberg", "klasifikasi"]],
+        ["SL", "Batas susut", "%", "Kadar air saat penyusutan volume berhenti.", ["batas-susut"]],
+        ["PI", "Indeks plastisitas", "%", "LL − PL.", ["atterberg", "klasifikasi", "korelasi-spt"]],
+        ["LI", "Indeks cair", "–", "(w − PL)/PI.", ["atterberg"]],
+        ["CI", "Indeks konsistensi", "–", "(LL − w)/PI.", ["atterberg", "korelasi-spt"]],
+        ["N", "Jumlah ketukan", "ketukan", "Ketukan mangkuk Casagrande sampai alur merapat 13 mm. Di uji SPT, N berarti jumlah pukulan.", ["atterberg"]],
+        ["D<sub>10</sub>, D<sub>30</sub>, D<sub>60</sub>", "Diameter butir pada persen lolos 10, 30, 60 %", "mm", "Dibaca dari kurva gradasi.", ["saringan", "klasifikasi"]],
+        ["C<sub>u</sub>", "Koefisien keseragaman", "–", "D<sub>60</sub>/D<sub>10</sub>. Jangan tertukar dengan c<sub>u</sub> kuat geser undrained.", ["saringan", "klasifikasi"]],
+        ["C<sub>c</sub>", "Koefisien gradasi", "–", "D<sub>30</sub>²/(D<sub>10</sub> D<sub>60</sub>). Di konsolidasi, C<sub>c</sub> berarti indeks kompresi.", ["saringan", "klasifikasi"]],
+        ["D", "Diameter butir (hidrometer)", "mm", "Diameter ekuivalen butir dari hukum Stokes.", ["hidrometer"]]
+      ]
+    },
+    {
+      "judul": "Kepadatan dan CBR",
+      "butir": [
+        ["w<sub>opt</sub>", "Kadar air optimum", "%", "Kadar air pada γ<sub>d</sub> terbesar di kurva pemadatan.", ["pemadatan", "cbr"]],
+        ["γ<sub>d,maks</sub>", "Berat volume kering maksimum", "kN/m³", "Puncak kurva pemadatan.", ["pemadatan", "sand-cone"]],
+        ["γ<sub>zav</sub>", "Berat volume kering tanpa rongga udara", "kN/m³", "Garis S = 100 % di grafik pemadatan; batas atas γ<sub>d</sub> untuk setiap w.", ["pemadatan"]],
+        ["RC", "Derajat pemadatan", "%", "γ<sub>d</sub> lapangan / γ<sub>d,maks</sub> × 100.", ["sand-cone"]],
+        ["CBR", "California Bearing Ratio", "%", "Beban pada penetrasi tertentu dibagi beban standar, × 100.", ["cbr"]],
+        ["D<sub>r</sub>", "Kepadatan relatif", "%", "Kepadatan pasir dibandingkan keadaan terlepas dan terpadatnya.", ["korelasi-spt", "korelasi-cpt"]]
+      ]
+    },
+    {
+      "judul": "Permeabilitas",
+      "butir": [
+        ["k", "Koefisien permeabilitas", "cm/det; m/s", "Kecepatan aliran pada gradien hidrolik satu (hukum Darcy, v = k i).", ["permeabilitas-tetap", "permeabilitas-turun"]],
+        ["i", "Gradien hidrolik", "–", "Beda tinggi tekan dibagi panjang aliran, Δh/L.", ["permeabilitas-tetap"]],
+        ["h; h<sub>1</sub>, h<sub>2</sub>", "Tinggi tekan; tinggi awal dan akhir", "cm", "Tinggi tekan tetap (constant head) atau turun (falling head).", ["permeabilitas-tetap", "permeabilitas-turun"]],
+        ["Q", "Volume air yang mengalir", "cm³", "Ditampung selama waktu t.", ["permeabilitas-tetap"]],
+        ["a, A", "Luas buret, luas sampel", "cm²", "a untuk tabung tinggi tekan turun, A untuk penampang sampel.", ["permeabilitas-tetap", "permeabilitas-turun"]],
+        ["L", "Panjang sampel", "cm", "Panjang lintasan aliran di permeameter. Di kalkulator fondasi, L berarti panjang fondasi atau tiang.", ["permeabilitas-tetap", "permeabilitas-turun"]]
+      ]
+    },
+    {
+      "judul": "Tegangan dan konsolidasi",
+      "butir": [
+        ["σ, σ<sub>v</sub>", "Tegangan total (vertikal)", "kPa", "Berat tanah dan air di atas titik tinjau per satuan luas.", ["korelasi-spt", "korelasi-cpt", "konsolidasi"]],
+        ["u", "Tekanan air pori", "kPa", "γ<sub>w</sub> × kedalaman di bawah muka air tanah (kondisi hidrostatis).", ["korelasi-cpt", "konsolidasi"]],
+        ["σ'", "Tegangan efektif", "kPa", "σ − u; tegangan yang dipikul butiran.", ["korelasi-spt", "korelasi-cpt", "konsolidasi"]],
+        ["σ'<sub>vo</sub>, σ'<sub>o</sub>", "Tegangan vertikal efektif awal", "kPa", "Tegangan efektif akibat beban tanah di atasnya (overburden).", ["korelasi-spt", "korelasi-cpt", "konsolidasi"]],
+        ["σ'<sub>p</sub>, σ'<sub>c</sub>", "Tekanan prakonsolidasi", "kPa", "Tegangan efektif terbesar yang pernah dialami tanah.", ["konsolidasi-lab", "konsolidasi", "korelasi-cpt"]],
+        ["OCR", "Rasio overkonsolidasi", "–", "σ'<sub>p</sub>/σ'<sub>vo</sub>. OCR = 1: terkonsolidasi normal.", ["konsolidasi", "korelasi-cpt"]],
+        ["Δσ", "Tambahan tegangan", "kPa", "Kenaikan tegangan akibat beban di atas lapisan.", ["konsolidasi"]],
+        ["C<sub>c</sub>", "Indeks kompresi", "–", "Kemiringan kurva e–log σ' di daerah terkonsolidasi normal.", ["konsolidasi-lab", "konsolidasi"]],
+        ["C<sub>s</sub>, C<sub>r</sub>", "Indeks pengembangan; indeks rekompresi", "–", "Kemiringan kurva e–log σ' saat beban dilepas atau dibebani ulang.", ["konsolidasi-lab", "konsolidasi"]],
+        ["CR", "Rasio kompresi", "–", "C<sub>c</sub>/(1 + e<sub>0</sub>).", ["korelasi-cpt"]],
+        ["e<sub>0</sub>", "Angka pori awal", "–", "Angka pori sebelum dibebani.", ["konsolidasi-lab", "konsolidasi"]],
+        ["m<sub>v</sub>", "Koefisien perubahan volume", "m²/kN", "Regangan volume per satuan tambahan tegangan.", ["konsolidasi-lab"]],
+        ["c<sub>v</sub>", "Koefisien konsolidasi", "m²/tahun; cm²/det", "Menentukan laju konsolidasi.", ["konsolidasi-lab", "konsolidasi"]],
+        ["T<sub>v</sub>", "Faktor waktu", "–", "c<sub>v</sub> t/H<sub>dr</sub>².", ["konsolidasi-lab", "konsolidasi"]],
+        ["U", "Derajat konsolidasi", "%", "Bagian penurunan konsolidasi yang sudah terjadi.", ["konsolidasi"]],
+        ["H<sub>dr</sub>", "Panjang lintasan drainase", "m", "Setengah tebal lapisan bila air keluar ke atas dan bawah.", ["konsolidasi-lab", "konsolidasi"]],
+        ["t<sub>50</sub>, t<sub>90</sub>", "Waktu konsolidasi 50 % dan 90 %", "menit", "Dibaca dengan cara Casagrande (log waktu) atau Taylor (akar waktu).", ["konsolidasi-lab"]],
+        ["S<sub>c</sub>", "Penurunan konsolidasi primer", "m; mm", "Penurunan akibat keluarnya air pori.", ["konsolidasi"]]
+      ]
+    },
+    {
+      "judul": "Kuat geser",
+      "butir": [
+        ["τ<sub>f</sub>", "Kuat geser", "kPa", "c + σ tan φ (Mohr–Coulomb).", ["geser-langsung"]],
+        ["c, c'", "Kohesi (total, efektif)", "kPa", "Titik potong garis keruntuhan dengan sumbu τ.", ["geser-langsung", "pondasi-dangkal"]],
+        ["φ, φ'", "Sudut geser dalam (total, efektif)", "°", "Kemiringan garis keruntuhan.", ["geser-langsung", "pondasi-dangkal", "broms-lateral", "korelasi-spt", "korelasi-cpt"]],
+        ["c<sub>u</sub>, S<sub>u</sub>", "Kuat geser undrained", "kPa", "Kuat geser lempung jenuh pada pembebanan cepat; c<sub>u</sub> = q<sub>u</sub>/2.", ["tekan-bebas", "tiang-bor", "broms-lateral", "korelasi-spt", "korelasi-cpt"]],
+        ["q<sub>u</sub>", "Kuat tekan bebas", "kPa", "Tegangan aksial saat sampel runtuh di uji UCS. Di fondasi dangkal, q<sub>u</sub> berarti kapasitas dukung ultimit.", ["tekan-bebas"]],
+        ["ε", "Regangan aksial", "%", "Perubahan tinggi dibagi tinggi awal sampel.", ["tekan-bebas"]],
+        ["σ<sub>n</sub>", "Tegangan normal", "kPa", "Beban normal dibagi luas bidang geser.", ["geser-langsung"]],
+        ["S<sub>t</sub>", "Sensitivitas", "–", "Kuat geser tak terganggu dibagi kuat geser teraduk.", ["korelasi-cpt"]],
+        ["K<sub>p</sub>, K<sub>a</sub>", "Koefisien tekanan tanah pasif, aktif", "–", "Rankine: K<sub>p</sub> = tan²(45° + φ/2), K<sub>a</sub> = tan²(45° − φ/2).", ["broms-lateral"]]
+      ]
+    },
+    {
+      "judul": "Uji lapangan: SPT dan sondir",
+      "butir": [
+        ["N, N<sub>M</sub>", "N-SPT terukur", "pukulan/30 cm", "Jumlah pukulan untuk penetrasi 15 cm kedua dan ketiga (N<sub>2</sub> + N<sub>3</sub>).", ["spt", "tiang-bor", "korelasi-spt"]],
+        ["N<sub>1</sub>, N<sub>2</sub>, N<sub>3</sub>", "Pukulan tiap 15 cm", "pukulan", "N<sub>1</sub> tidak dihitung karena tanah dasar lubang masih terganggu.", ["spt"]],
+        ["E<sub>f</sub>, E<sub>r</sub>", "Efisiensi energi palu", "%", "Energi yang sampai ke batang dibanding energi teoretis palu.", ["spt", "korelasi-spt"]],
+        ["N<sub>60</sub>", "N-SPT terkoreksi energi 60 %", "–", "N<sub>M</sub> × E<sub>f</sub>/60, ditambah koreksi alat.", ["spt", "korelasi-spt"]],
+        ["(N<sub>1</sub>)<sub>60</sub>", "N<sub>60</sub> ternormalisasi tegangan efektif", "–", "C<sub>N</sub> × N<sub>60</sub>.", ["korelasi-spt"]],
+        ["C<sub>N</sub>, C<sub>E</sub>, C<sub>B</sub>, C<sub>R</sub>, C<sub>S</sub>", "Faktor koreksi SPT", "–", "Tegangan efektif, energi, diameter bor, panjang batang, tabung sampel.", ["korelasi-spt"]],
+        ["q<sub>c</sub>, PK", "Tahanan konus (perlawanan konus)", "kg/cm²; MPa", "Gaya pada ujung konus dibagi luas konus.", ["sondir", "korelasi-cpt"]],
+        ["JP", "Jumlah perlawanan", "kg/cm²", "Bacaan konus ditambah selimut pada sondir bikonus.", ["sondir"]],
+        ["HL", "Hambatan lekat", "kg/cm²", "JP − PK.", ["sondir"]],
+        ["f<sub>s</sub>, HS", "Tahanan gesek selimut (hambatan setempat)", "kg/cm²", "HL dibagi faktor luas selimut (pada form praktikum HS = HL/10).", ["sondir", "korelasi-cpt"]],
+        ["JHL", "Jumlah hambatan lekat", "kg/cm", "Jumlah kumulatif HL × interval / faktor dari permukaan.", ["sondir"]],
+        ["R<sub>f</sub>, FR", "Rasio gesekan", "%", "f<sub>s</sub>/q<sub>c</sub> × 100.", ["sondir", "korelasi-cpt"]],
+        ["N<sub>c</sub>, N<sub>kt</sub>", "Faktor konus", "–", "Pembagi untuk menghitung c<sub>u</sub> dari q<sub>c</sub>; umumnya 14–16.", ["korelasi-cpt"]],
+        ["v<sub>s</sub>", "Kecepatan gelombang geser", "m/s", "Dipakai untuk modulus geser regangan kecil dan klasifikasi situs gempa.", ["korelasi-spt", "korelasi-cpt"]],
+        ["P<sub>a</sub>", "Tekanan atmosfer", "kPa", "Dipakai 101,3 kPa untuk menormalkan tegangan.", ["korelasi-spt"]],
+        ["E", "Modulus elastisitas", "MPa", "Kekakuan tanah untuk hitungan penurunan segera.", ["korelasi-spt"]]
+      ]
+    },
+    {
+      "judul": "Fondasi",
+      "butir": [
+        ["B, L, D<sub>f</sub>", "Lebar, panjang, kedalaman fondasi", "m", "Untuk fondasi lingkaran B adalah diameter.", ["pondasi-dangkal"]],
+        ["q", "Tekanan tanah di dasar fondasi", "kPa", "γ D<sub>f</sub> (dengan koreksi muka air tanah).", ["pondasi-dangkal"]],
+        ["N<sub>c</sub>, N<sub>q</sub>, N<sub>γ</sub>", "Faktor kapasitas dukung", "–", "Fungsi φ'. Di kalkulator sondir, N<sub>c</sub> berarti faktor konus.", ["pondasi-dangkal"]],
+        ["F<sub>cs</sub>, F<sub>qs</sub>, F<sub>γs</sub>", "Faktor bentuk", "–", "Koreksi untuk fondasi bujur sangkar, persegi panjang, dan lingkaran.", ["pondasi-dangkal"]],
+        ["F<sub>cd</sub>, F<sub>qd</sub>, F<sub>γd</sub>", "Faktor kedalaman", "–", "Koreksi untuk kedalaman D<sub>f</sub>.", ["pondasi-dangkal"]],
+        ["q<sub>u</sub>, q<sub>all</sub>", "Kapasitas dukung ultimit dan izin", "kPa", "q<sub>all</sub> = q<sub>u</sub>/FS.", ["pondasi-dangkal"]],
+        ["FS", "Faktor keamanan", "–", "Pembagi beban ultimit menjadi beban izin.", ["pondasi-dangkal", "tiang-bor", "broms-lateral"]],
+        ["Q<sub>p</sub>, Q<sub>s</sub>", "Tahanan ujung dan tahanan selimut tiang", "kN", "Q<sub>u</sub> = Q<sub>p</sub> + Q<sub>s</sub>.", ["tiang-bor"]],
+        ["Q<sub>u</sub>, Q<sub>a</sub>", "Daya dukung aksial ultimit dan izin tiang", "kN", "Q<sub>a</sub> = Q<sub>u</sub>/FS.", ["tiang-bor"]],
+        ["b", "Diameter atau lebar tiang", "m", "Notasi Broms; di kalkulator tiang bor dipakai D.", ["broms-lateral"]],
+        ["e", "Tinggi beban lateral di atas muka tanah", "m", "Notasi Broms; jangan tertukar dengan angka pori.", ["broms-lateral"]],
+        ["P<sub>ult</sub>", "Beban lateral ultimit", "kN", "Nilai terkecil dari moda tiang pendek, menengah, dan panjang.", ["broms-lateral"]],
+        ["M<sub>y</sub>", "Momen leleh tiang", "kN·m", "Momen saat sendi plastis terbentuk.", ["broms-lateral"]],
+        ["f, g", "Kedalaman geser nol; panjang di bawahnya", "m", "Notasi Broms untuk letak momen maksimum.", ["broms-lateral"]]
+      ]
+    }
+  ],
+  "konversi": [
+    ["Tekanan", [["1 kg/cm²", "98,0665 kPa"], ["1 t/m²", "9,80665 kPa"], ["1 bar", "100 kPa"], ["1 atm", "101,325 kPa"], ["1 MPa", "1.000 kPa"], ["1 psi", "6,895 kPa"], ["1 ksf (kip/ft²)", "47,88 kPa"]]],
+    ["Gaya", [["1 kgf", "9,80665 N"], ["1 tf (ton gaya)", "9,80665 kN"], ["1 kip", "4,448 kN"], ["1 lbf", "4,448 N"]]],
+    ["Berat volume", [["1 t/m³", "9,80665 kN/m³"], ["1 g/cm³ (massa jenis)", "berat volume 9,80665 kN/m³"], ["1 pcf (lb/ft³)", "0,1571 kN/m³"]]],
+    ["Panjang dan momen", [["1 ft", "0,3048 m"], ["1 in", "25,4 mm"], ["1 ft·kip", "1,356 kN·m"], ["1 t·m", "9,80665 kN·m"]]],
+    ["Permeabilitas dan konsolidasi", [["1 cm/det", "0,01 m/s"], ["1 m/s", "100 cm/det"], ["1 cm²/det", "3.153,6 m²/tahun (1 tahun = 365 hari)"], ["1 m²/tahun", "3,171 × 10⁻⁴ cm²/det"]]]
+  ]
+}
