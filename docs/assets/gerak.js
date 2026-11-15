@@ -215,20 +215,54 @@
       });
     });
 
-    if (hemat) { gambar(1); sekarang = 1; tandai(1); fig.classList.add('mulai'); return; }
-    gambar(0); tandai(0);
-    // Mulai saat penampang terlihat.
+    if (hemat) { gambar(1); sekarang = 1; tandai(1); return; }
+    // Keadaan akhir digambar dulu, supaya penampang tidak pernah tampil kosong (mis. tab latar, ponsel lambat).
+    // Animasi baru diputar saat penampang terlihat: mulai dari keadaan awal, lapisan mengendap, lalu menurun.
+    gambar(1); sekarang = 1; tandai(1);
+    var sudah = false;
     function mulai() {
+      if (sudah || document.hidden) return;
+      sudah = true;
+      gambar(0); sekarang = 0; tandai(0);
       fig.classList.add('mulai');
       setTimeout(function () { tandai(1); lerp(0, 1, 2300); }, 1750);
     }
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (e) { if (e[0].isIntersecting) { io.disconnect(); mulai(); } }, { threshold: 0.35 });
+    var r = fig.getBoundingClientRect();
+    if (r.top < innerHeight * 0.8 && r.bottom > 0 && !document.hidden) mulai();
+    else if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (e) { if (e[0].isIntersecting && !document.hidden) { io.disconnect(); mulai(); } }, { threshold: 0.35 });
       io.observe(fig);
-    } else mulai();
+    }
   }
 
   // ------------------------------------------------------------ hasil hitungan
+  // Angka hasil menghitung naik dari 0 (± 0,55 s) saat hasil baru muncul atau tab Hasil dibuka.
+  // Teks asli dikembalikan persis di akhir; ekspor membaca angka dari hitungan, bukan dari teks ini.
+  function hitungNaik(wadah) {
+    if (hemat || !wadah) return;
+    Array.prototype.forEach.call(wadah.querySelectorAll('.nilai-besar'), function (n) {
+      var tn = Array.prototype.filter.call(n.childNodes, function (c) { return c.nodeType === 3 && /\d/.test(c.nodeValue); })[0];
+      if (!tn) return;
+      if (tn._anim) { cancelAnimationFrame(tn._anim); tn.nodeValue = tn._asli; }
+      var asli = tn.nodeValue, m = asli.match(/-?\d{1,3}(?:\.\d{3})+(?:,\d+)?|-?\d+(?:,\d+)?/);
+      if (!m) return;
+      var teks = m[0], des = (teks.split(',')[1] || '').length, nilai = parseFloat(teks.replace(/\./g, '').replace(',', '.'));
+      if (!isFinite(nilai) || nilai === 0) return;
+      var t0 = null;
+      tn._asli = asli;
+      function langkah(t) {
+        if (t0 === null) t0 = t;
+        var r = Math.min(1, (t - t0) / 550), e = 1 - Math.pow(1 - r, 3);
+        if (r < 1) {
+          tn.nodeValue = asli.replace(teks, (nilai * e).toLocaleString('id-ID', { minimumFractionDigits: des, maximumFractionDigits: des }));
+          tn._anim = requestAnimationFrame(langkah);
+        } else { tn.nodeValue = asli; tn._anim = null; }
+      }
+      tn._anim = requestAnimationFrame(langkah);
+    });
+  }
+  window.Gerak = { hitungNaik: hitungNaik };
+
   function amatiHasil(wadah) {
     var lama, adaHasil;
     function kunci(kartu, i) {
@@ -255,6 +289,7 @@
           if (ada && !adaHasil) {
             wadah.classList.remove('hasil-baru'); void wadah.offsetWidth; wadah.classList.add('hasil-baru');
             clearTimeout(wadah._hb); wadah._hb = setTimeout(function () { wadah.classList.remove('hasil-baru'); }, 1800);
+            hitungNaik(wadah);
           } else if (ada) {
             Object.keys(baru).forEach(function (k) {
               if (lama[k] && lama[k].teks !== baru[k].teks) {
@@ -296,7 +331,7 @@
           var w = document.getElementById('hasil-praktikum');
           if (w) { tunggu.disconnect(); amatiHasil(w); }
         });
-        tunggu.observe(ap, { childList: true });
+        tunggu.observe(ap, { childList: true, subtree: true });
       }
     }
   }

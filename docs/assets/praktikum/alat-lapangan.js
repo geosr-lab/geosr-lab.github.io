@@ -42,7 +42,7 @@
     };
 
     Praktikum.pasang({
-      id: 'sondir', judulEkspor: 'Uji penetrasi konus / sondir (SNI 2827:2008)',
+      id: 'sondir', judulEkspor: 'Uji penetrasi konus / sondir (SNI 2827:2008)', lipat: true,
       nim: { ket: 'perlawanan penetrasi konus (PK) dan jumlah perlawanan (JP)', tabel: { bacaan: ['PK', 'JP'] } },
       parameter: [
         { id: 'MAT', label: 'Muka air tanah (MAT)', satuan: 'm', bantuan: 'Opsional, digambar di grafik.' },

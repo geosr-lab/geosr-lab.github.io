@@ -57,7 +57,7 @@
     { id: 'W3', label: 'Berat cawan', simbol: 'W<sub>3</sub>', satuan: 'gram' }];
 
   Praktikum.pasang({
-    id: 'konsolidasi-lab', judulEkspor: 'Uji konsolidasi (SNI 2812:2011)',
+    id: 'konsolidasi-lab', judulEkspor: 'Uji konsolidasi (SNI 2812:2011)', lipat: true,
     nim: { ket: 'semua pembacaan arloji di tabel bacaan waktu (termasuk bacaan 24 jam) dan bacaan akhir yang diisi manual. Bacaan awal sebelum beban pertama tidak ditambah, supaya tambahan ikut masuk ke perubahan tebal', tabel: { tahap: ['akhir'], bacaan: ['*dinamis'] } },
     parameter: [
       { id: 'Gs', label: 'Berat spesifik tanah, G<sub>s</sub>', dariAlat: { alat: 'berat-spesifik', nama: 'berat spesifik', ambil: function (h) { return h.G; }, d: 3 } },

@@ -64,7 +64,7 @@
     return REPO_ISSUE + '?template=salah-hitung.yml' +
       '&title=' + encodeURIComponent('Salah hitung: ' + judul) +
       '&alat=' + encodeURIComponent(namaAlat(location.pathname)) +
-      '&masukan=' + encodeURIComponent(location.href);
+      '&masukan=' + encodeURIComponent((window.Umum && window.Umum.tautanData && window.Umum.tautanData()) || location.href);
   }
   function pasangLaporan() {
     var main = document.querySelector('main');
@@ -81,7 +81,8 @@
     // Tautan dibuat saat diklik, supaya memuat data terakhir di formulir.
     a.addEventListener('click', function () { a.href = tautanLaporan(); });
     bagian.appendChild(h); bagian.appendChild(p); bagian.appendChild(a);
-    main.appendChild(bagian);
+    // Halaman praktikum bertab: kotak laporan masuk tab "Sumber dan catatan".
+    (document.getElementById('panel-sumber') || main).appendChild(bagian);
   }
   if (typeof document !== 'undefined' && document.addEventListener) {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pasangLaporan);
