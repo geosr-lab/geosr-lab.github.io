@@ -544,12 +544,10 @@ footer::before {
 .pilih-keadaan button[aria-pressed="true"] { background: var(--teks); color: var(--latar); }
 .pilih-keadaan button:focus-visible { outline-offset: -4px; }
 
-.anim-lapis { opacity: 0; transform: translateY(18px); }
-.mulai .anim-lapis { animation: endap .7s var(--mulus) forwards; }
-.anim-telat { opacity: 0; }
-.mulai .anim-telat { animation: muncul .5s ease forwards; }
-.anim-pondasi { opacity: 0; transform: translateY(-36px); }
-.mulai .anim-pondasi { animation: turun .6s cubic-bezier(.3, 1.4, .5, 1) forwards; }
+/* Keadaan akhir tampil lebih dulu; lapisan baru disembunyikan saat animasi benar-benar dimulai (.mulai). */
+.mulai .anim-lapis { opacity: 0; transform: translateY(18px); animation: endap .7s var(--mulus) forwards; }
+.mulai .anim-telat { opacity: 0; animation: muncul .5s ease forwards; }
+.mulai .anim-pondasi { opacity: 0; transform: translateY(-36px); animation: turun .6s cubic-bezier(.3, 1.4, .5, 1) forwards; }
 @keyframes endap { to { opacity: 1; transform: none; } }
 @keyframes muncul { to { opacity: 1; } }
 @keyframes turun { to { opacity: 1; transform: none; } }
@@ -942,6 +940,79 @@ details.lipat > summary:hover > h3 { color: var(--aksen); }
 #formulir-praktikum > details.lipat { margin-top: 1.4em; padding-top: 14px; border-top: 1px dashed var(--garis); }
 #formulir-praktikum > details.lipat[open] > summary { margin-bottom: 10px; }
 #formulir-praktikum details.lipat > summary > h3 { border: 0; padding: 0; margin: 0; }
+
+/* ------------------------------------------------------------------ sketsa alat (sketsa.js) */
+.sketsa { margin: 0; }
+.sketsa-bingkai {
+  display: block; width: 100%; padding: 10px 12px; border: 1px solid var(--garis); border-radius: var(--radius); cursor: pointer;
+  background:
+    linear-gradient(var(--kisi-halus) 1px, transparent 1px) 0 0 / 12px 12px,
+    linear-gradient(90deg, var(--kisi-halus) 1px, transparent 1px) 0 0 / 12px 12px,
+    var(--permukaan);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.sketsa-bingkai:hover { border-color: color-mix(in srgb, var(--lapis, var(--aksen)) 60%, var(--garis)); box-shadow: var(--bayangan-angkat); }
+.sketsa-bingkai:active { transform: scale(.995); }
+.sketsa figcaption { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-top: 10px; font-size: 14px; color: var(--teks-2); line-height: 1.5; }
+.sketsa figcaption .tombol { flex: none; }
+.sk { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; overflow: hidden;
+  --tanah: color-mix(in srgb, var(--lapis, var(--pasir)) 55%, var(--permukaan));
+  --tanah-2: color-mix(in srgb, var(--lapis, var(--pasir)) 28%, var(--permukaan));
+  --tanah-3: color-mix(in srgb, var(--lapis, var(--pasir)) 78%, var(--permukaan));
+}
+.sk .g { fill: none; stroke: var(--teks); stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+.sk .tipis { stroke-width: 1; }
+.sk .h { stroke-dasharray: 4 4; }
+.sk .t { fill: var(--tanah); }
+.sk .t2 { fill: var(--tanah-2); }
+.sk .td { fill: var(--tanah-3); }
+.sk .w { fill: color-mix(in srgb, var(--aksen) 24%, var(--permukaan)); }
+.sk .ps { fill: color-mix(in srgb, var(--pasir) 70%, var(--permukaan)); }
+.sk .bt { fill: color-mix(in srgb, var(--tiang) 55%, var(--permukaan)); }
+.sk .m { fill: var(--permukaan-2); }
+.sk .p { fill: var(--permukaan); }
+.sk .k { fill: none; stroke: var(--laterit); stroke-width: 1.8; stroke-linecap: round; }
+.sk .kf { fill: var(--laterit); }
+.sk .ga { fill: none; stroke: var(--teks-2); stroke-width: .8; }
+.sk text { font-family: var(--huruf-teks); font-size: 11px; font-weight: 600; fill: var(--teks-2); }
+.sk .sub { font-size: 8px; }
+.sk .a, .sk .getar { transform-box: var(--kotak, fill-box); transform-origin: var(--asal, 50% 50%); }
+.sketsa.main .a { animation: sk-dari var(--d, .8s) var(--e, var(--mulus)) var(--t, 0s) var(--n, 1) both; }
+.sketsa.main .getar { animation: sk-getar .16s linear var(--t, 0s) var(--n, 6); }
+.sketsa.main .garis { stroke-dasharray: 1; animation: sk-garis var(--d, 1s) ease var(--t, 0s) both; }
+@keyframes sk-dari {
+  from { transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(var(--r, 0deg)) scale(var(--sx, 1), var(--sy, 1)); opacity: var(--o, 1); }
+}
+@keyframes sk-getar { 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+@keyframes sk-garis { from { stroke-dashoffset: 1; } }
+
+/* Tab Pengantar: sketsa di kiri, tujuan dan alur di kanan (layar lebar) */
+#pengantar-isi.ada-sketsa { display: grid; gap: var(--j-5); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 900px) {
+  #pengantar-isi.ada-sketsa { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); align-items: start; }
+  #pengantar-isi.ada-sketsa .sketsa { position: sticky; top: 130px; }
+  #pengantar-isi.ada-sketsa .pengantar-mulai { grid-column: 2; }
+}
+#pengantar-isi.ada-sketsa .pengantar-mulai { margin-top: 0; }
+
+/* Halaman kalkulator: sketsa di kanan kepala halaman */
+.sketsa-kalk { margin-top: var(--j-5); max-width: 420px; }
+@media (min-width: 900px) {
+  .pahlawan:has(.sketsa-kalk) { display: grid; grid-template-columns: minmax(0, 1fr) 360px; column-gap: var(--j-6); align-items: start; }
+  .pahlawan:has(.sketsa-kalk) > * { grid-column: 1; }
+  .pahlawan:has(.sketsa-kalk) > .sketsa-kalk { grid-column: 2; grid-row: 1 / span 4; margin-top: 0; }
+}
+
+/* Kartu terangkat saat disorot; tombol menekan halus saat diklik */
+#alat-praktikum .ringkasan .kartu { transition: transform .2s var(--mulus), box-shadow .2s ease; }
+#alat-praktikum .ringkasan .kartu:hover { transform: translateY(-2px); box-shadow: var(--bayangan-angkat); }
+.tab-daftar [role="tab"]:active, .menu-ekspor-isi button:active { transform: translateY(1px); }
+
+@media print {
+  .sketsa-bingkai { border: 0; padding: 0; background: none; }
+  #pengantar-isi.ada-sketsa { display: block; }
+  .sketsa { max-width: 380px; margin-bottom: 12px; }
+}
 
 /* ------------------------------------------------------------------ pencarian, laporan */
 .hasil-cari li { padding: 14px 0; border-bottom: 1px solid var(--garis); }

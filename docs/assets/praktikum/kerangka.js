@@ -422,6 +422,9 @@
         var atas = document.getElementById('kepala-tab').getBoundingClientRect().top;
         if (atas < 0 || atas > innerHeight * 0.6) document.getElementById('kepala-tab').scrollIntoView({ block: 'start' });
       }
+      if (n === 'hasil' && root.Gerak && o.simpan !== false) root.Gerak.hitungNaik(document.getElementById('hasil-praktikum'));
+      // Sketsa alat diputar setiap tab Pengantar dibuka.
+      if (n === 'pengantar' && root.Sketsa) root.Sketsa.putar(document.getElementById('sketsa-alat'));
       if (n === 'grafik' && !gerakDikurangi()) {
         var g = document.getElementById('grafik-praktikum');
         g.classList.remove('hasil-baru'); void g.offsetWidth; g.classList.add('hasil-baru');
@@ -755,9 +758,12 @@
     var pPengantar = panel('pengantar', 'Pengantar'), pSumber = panel('sumber', 'Sumber dan catatan');
     var isiPengantar = document.getElementById('pengantar-isi');
     if (!isiPengantar) { isiPengantar = document.createElement('div'); isiPengantar.id = 'pengantar-isi'; pPengantar.appendChild(isiPengantar); }
-    isiPengantar.innerHTML = '<div id="pengantar-belajar" class="pengantar-belajar"></div>' +
+    var adaSketsa = !!(root.Sketsa && root.Sketsa.ada(def.id));
+    isiPengantar.innerHTML = (adaSketsa ? '<figure class="sketsa" id="sketsa-alat" data-sketsa="' + def.id + '"></figure>' : '') +
+      '<div id="pengantar-belajar" class="pengantar-belajar"></div>' +
       '<div class="pengantar-mulai tidak-cetak"><button type="button" class="tombol utama" data-ke-tab="data">Isi data</button>' +
       '<span class="kecil redup">atau klik <strong>Muat data contoh</strong> untuk melihat contoh pengolahan dari laporan praktikum.</span></div>';
+    if (adaSketsa) { root.Sketsa.isi(document.getElementById('sketsa-alat')); isiPengantar.classList.add('ada-sketsa'); }
     var isiSumber = document.getElementById('sumber-isi');
     if (!isiSumber) { isiSumber = document.createElement('div'); isiSumber.id = 'sumber-isi'; pSumber.insertBefore(isiSumber, pSumber.firstChild.nextSibling); }
     isiSumber.innerHTML = (def.sumber ? '<h3>Acuan</h3><ul class="daftar-bersih">' + def.sumber.map(function (s) { return '<li>' + s + '</li>'; }).join('') + '</ul>' : '') +

@@ -317,7 +317,7 @@ def halaman_alat_praktikum(alat, kelompok, status="", data=None, relasi=None):
     folder = f"praktikum/{alat['id']}/"
     awalan = "../../"
     skrip = "".join(f'\n  <script src="{awalan}assets/praktikum/{s}" defer></script>'
-                    for s in dict.fromkeys(["grafik.js", "ekspor.js", "kerangka.js"] + alat["skrip"]))
+                    for s in dict.fromkeys(["grafik.js", "ekspor.js", "sketsa.js", "kerangka.js"] + alat["skrip"]))
     urut = urutan_praktikum(data) if data else []
     ids = [a["id"] for a, _, _ in urut]
     i = ids.index(alat["id"]) if alat["id"] in ids else -1
