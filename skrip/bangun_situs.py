@@ -463,7 +463,8 @@ def halaman_induk_praktikum(data, status="", relasi=None):
             + rekap +
             "    </header>\n" + saring +
             "    <nav class=\"inti-bor\" aria-label=\"Kelompok pengujian\">" + "".join(inti) + "</nav>\n"
-            "    <p class=\"kosong-saring redup\" id=\"kosong-saring\" hidden>Tidak ada alat yang cocok. Coba kata lain, atau pilih <strong>Semua</strong>.</p>\n"
+            "    <p class=\"kosong-saring redup\" id=\"kosong-saring\" hidden>Tidak ada alat praktikum yang cocok. Coba kata lain, pilih <strong>Semua</strong>, "
+            "atau <a id=\"cari-situs\" href=\"../cari/\">cari di seluruh situs</a>.</p>\n"
             + "\n".join(bagian) + "\n" +
             "    <div class=\"cara-pakai\">\n"
             "      <div><h3>Isi seperti form lab</h3><p>Baris dan simbol mengikuti lembar data. Angka boleh diketik dengan koma, atau blok data di Excel lalu tempel sekaligus.</p></div>\n"

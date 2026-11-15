@@ -260,7 +260,11 @@
       sudah = true;
       gambar(0); sekarang = 0; tandai(0);
       fig.classList.add('mulai');
-      setTimeout(function () { tandai(1); lerp(0, 1, 2300); }, 1750);
+      setTimeout(function () {
+        tandai(1);
+        // Sesudah menurun, lapisan berdenyut sekali sebagai tanda bisa diklik.
+        lerp(0, 1, 2300, function () { svg.classList.add('ajak'); setTimeout(function () { svg.classList.remove('ajak'); }, 2200); });
+      }, 1750);
     }
     var r = fig.getBoundingClientRect();
     if (r.top < innerHeight * 0.8 && r.bottom > 0 && !document.hidden) mulai();

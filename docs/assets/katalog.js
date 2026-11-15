@@ -41,6 +41,8 @@
     var disaring = kata.length || kelompok;
     info.textContent = disaring ? n + ' alat cocok' : '';
     kosong.hidden = n > 0;
+    var keCari = document.getElementById('cari-situs');
+    if (keCari) keCari.href = '../cari/' + (input.value.trim() ? '?q=' + encodeURIComponent(input.value.trim()) : '');
     if (simpan) {
       var q = [];
       if (input.value.trim()) q.push('q=' + encodeURIComponent(input.value.trim()));
