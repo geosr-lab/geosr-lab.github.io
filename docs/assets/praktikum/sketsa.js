@@ -278,6 +278,9 @@
       '<path class="ga" d="M64 62v8"/>' + label(70, 68, 's') + label(160, 60, 'timbunan', 'middle') + label(300, 126, 'lempung', 'end') + label(300, 170, 'pasir', 'end') + label(300, 88, 'pasir', 'end')
   };
 
+  // Kalkulator korelasi N-SPT memakai gambar uji SPT yang sama.
+  S['korelasi-spt'] = { ket: S.spt.ket, svg: S.spt.svg };
+
   S['broms-lateral'] = {
     ket: 'Beban lateral P di atas muka tanah mendorong tiang. Tanah di depan tiang menahan dengan reaksi per satuan panjang; di lempung, reaksi di 1,5b teratas diabaikan.',
     svg: '<rect class="t2" x="0" y="60" width="320" height="120"/><path class="g" d="M0 60H144M160 60H320"/>' +

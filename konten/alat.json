@@ -10,6 +10,10 @@
       "judul": "Penurunan"
     },
     {
+      "id": "penyelidikan",
+      "judul": "Penyelidikan tanah"
+    },
+    {
       "id": "praktikum",
       "judul": "Praktikum Mekanika Tanah"
     },
@@ -249,6 +253,44 @@
       "uji": [
         "tests/verifikasi_latihan.py"
       ]
+    },
+    {
+      "id": "korelasi-spt",
+      "judul": "Korelasi parameter tanah dari N-SPT",
+      "judul_pendek": "Kalkulator Korelasi N-SPT",
+      "deskripsi": "Koreksi N-SPT ke N60 dan (N1)60, lalu perkiraan kepadatan relatif, sudut geser, modulus elastisitas pasir, kuat geser undrained lempung, dan kecepatan gelombang geser, dengan rujukan halaman.",
+      "kategori": "penyelidikan",
+      "lencana": "Penyelidikan tanah",
+      "halaman": "kalkulator/korelasi-spt.html",
+      "ringkas": "Koreksi N<sub>60</sub> dan (N<sub>1</sub>)<sub>60</sub>, lalu D<sub>r</sub>, φ, E, c<sub>u</sub>, dan v<sub>s</sub> dari korelasi empiris.",
+      "rincian": [
+        [
+          "Rujukan",
+          "Warman (2019), Kementerian PUPR, Bab 4"
+        ],
+        [
+          "Masukan",
+          "N<sub>M</sub>, E<sub>f</sub>, alat (bor, batang, tabung), kedalaman, γ, MAT, PI"
+        ],
+        [
+          "Keluaran",
+          "N<sub>60</sub>, (N<sub>1</sub>)<sub>60</sub>, D<sub>r</sub>, φ, E, c<sub>u</sub>, konsistensi, v<sub>s</sub>"
+        ]
+      ],
+      "skrip": [
+        "docs/assets/korelasi-spt-hitung.js",
+        "docs/assets/korelasi-spt-tampilan.js"
+      ],
+      "sumber": [
+        "Warman, H. (penyusun) (2019). Kumpulan korelasi parameter geoteknik dan fondasi. Kementerian PUPR. Bab 4, hlm. 43–50; Pa dari Daftar Konversi. Mengutip Bowles (1977, 1996), Meyerhof (1959), Hatanaka dan Uchida (1996), Kulhawy dan Mayne (1990), Stroud (1975), Terzaghi dan Peck (1967), Szechy dan Varga (1978), Imai (1977)."
+      ],
+      "status": "sekunder",
+      "tanggal_cek": "2026-11-15",
+      "uji": [
+        "tests/verifikasi_korelasi_spt.py"
+      ],
+      "judul_en": "Soil parameters from SPT N-values",
+      "ringkas_en": "N<sub>60</sub> and (N<sub>1</sub>)<sub>60</sub> corrections, then D<sub>r</sub>, φ, E, c<sub>u</sub>, and v<sub>s</sub> from empirical correlations."
     }
   ]
 }

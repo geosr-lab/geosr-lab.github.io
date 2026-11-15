@@ -24,6 +24,7 @@ Tabel ini dibangun otomatis dari [`konten/alat.json`](konten/alat.json). Kolom s
 | [Kalkulator Penurunan Konsolidasi](https://defsayurinda.github.io/kalkulator/konsolidasi.html) | Hitung penurunan konsolidasi primer satu dimensi untuk lempung NC dan OC beserta lajunya terhadap waktu, lengkap dengan diagram e–log σ' dan langkah hitungan. | Belum terverifikasi |
 | [Praktikum Mekanika Tanah](https://defsayurinda.github.io/praktikum/) | 18 alat pengolah data praktikum Mekanika Tanah: formulir seperti lembar data laboratorium, langkah hitungan, grafik, dan ekspor ke Word dan Excel. | Belum terverifikasi |
 | [Latihan Soal Geoteknik](https://defsayurinda.github.io/latihan/) | Latihan soal geoteknik dengan angka acak dan pembahasan langkah demi langkah: pondasi dangkal, konsolidasi, dan tiang bor. | Belum terverifikasi |
+| [Kalkulator Korelasi N-SPT](https://defsayurinda.github.io/kalkulator/korelasi-spt.html) | Koreksi N-SPT ke N60 dan (N1)60, lalu perkiraan kepadatan relatif, sudut geser, modulus elastisitas pasir, kuat geser undrained lempung, dan kecepatan gelombang geser, dengan rujukan halaman. | Sumber sekunder |
 <!-- ALAT:SELESAI -->
 
 ## Cara memakai

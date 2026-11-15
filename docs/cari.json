@@ -42,6 +42,13 @@
 "k": "Alat"
 },
 {
+"j": "Korelasi parameter tanah dari N-SPT",
+"d": "Koreksi N-SPT ke N60 dan (N1)60, lalu perkiraan kepadatan relatif, sudut geser, modulus elastisitas pasir, kuat geser undrained lempung, dan kecepatan gelombang geser, dengan rujukan halaman.",
+"h": "Warman (2019), Kementerian PUPR, Bab 4 NM, Ef, alat (bor, batang, tabung), kedalaman, γ, MAT, PI N60, (N1)60, Dr, φ, E, cu, konsistensi, vs",
+"u": "kalkulator/korelasi-spt.html",
+"k": "Alat"
+},
+{
 "j": "Kadar air",
 "d": "Kadar air tiap cawan dan rata-ratanya dari penimbangan basah dan kering.",
 "h": "Sifat fisik SNI 1965:2008",
