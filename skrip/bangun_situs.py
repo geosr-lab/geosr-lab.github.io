@@ -105,9 +105,20 @@ def menu(awalan, aktif):
                     for url, nama, kunci in MENU)
     return (f'<nav class="nav">\n    <div class="wadah">\n      <a class="merek" href="{awalan or "./"}" aria-label="{NAMA}, beranda">{TANDA_MEREK}'
             f'<span>{NAMA}<span class="merek-lengkap">{KEPANJANGAN}</span></span></a>\n'
+            f'      {TOMBOL_TEMA}\n'
             '      <button class="nav-tombol" type="button" aria-expanded="false" aria-controls="menu-utama">'
             '<span class="nav-garis" aria-hidden="true"></span><span class="sr-only">Menu</span></button>\n'
             f'      <ul id="menu-utama">{butir}</ul>\n    </div>\n  </nav>')
+
+
+# Tombol tema: ikut sistem → terang → gelap. Ikon digambar sendiri; yang tampil diatur CSS dari atribut data-tema.
+TOMBOL_TEMA = ('<button class="tema-tombol" type="button" aria-label="Tema: ikut sistem" title="Ganti tema">'
+               '<svg viewBox="0 0 20 20" aria-hidden="true">'
+               '<g class="ikon-otomatis"><circle cx="10" cy="10" r="6.5"/><path d="M10 3.5a6.5 6.5 0 0 0 0 13z" class="isi"/></g>'
+               '<g class="ikon-terang"><circle cx="10" cy="10" r="3.4"/><path d="M10 2v2.2M10 15.8V18M2 10h2.2M15.8 10H18'
+               'M4.3 4.3l1.6 1.6M14.1 14.1l1.6 1.6M4.3 15.7l1.6-1.6M14.1 5.9l1.6-1.6"/></g>'
+               '<g class="ikon-gelap"><path d="M16 12.6A6.6 6.6 0 0 1 7.4 4a6.6 6.6 0 1 0 8.6 8.6z"/></g>'
+               '</svg></button>')
 
 
 def skrip_sw(awalan):
@@ -188,6 +199,7 @@ def kepala(judul, ringkasan, awalan, url, tambahan=""):
   <meta name="theme-color" content="#f1f2ec" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#10181a" media="(prefers-color-scheme: dark)">
   <link rel="stylesheet" href="{awalan}assets/gaya.css">
+  <script src="{awalan}assets/tema.js"></script>
   <link rel="icon" href="{awalan}assets/ikon.svg" type="image/svg+xml">
   <link rel="manifest" href="{awalan}manifest.webmanifest">{tambahan}
 </head>"""
@@ -352,6 +364,24 @@ def halaman_alat_praktikum(alat, kelompok, status="", data=None, relasi=None):
 PANAH_ARUS = '<svg class="panah" viewBox="0 0 28 12" aria-hidden="true"><path d="M27 6H3m5-5L2 6l6 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>'
 
 
+# Ikon kelompok pengujian (lapis 1–6), digambar sendiri sebagai garis 24 × 24 supaya ikut warna teks:
+# 1 piknometer (sifat fisik), 2 susunan saringan (konsistensi dan gradasi), 3 penumbuk dan cetakan Proctor (kepadatan),
+# 4 tabung rembesan (permeabilitas), 5 benda uji ditekan (kekuatan dan konsolidasi), 6 konus sondir menembus lapisan (uji lapangan).
+IKON_KELOMPOK = {
+    1: '<path d="M10 3h4M10.6 3v5.4a6.2 6.2 0 1 0 2.8 0V3"/><path d="M6.4 15.2h11.2"/>',
+    2: '<path d="M4 4.5h16v3.6H4zM4.8 8.1h14.4v3.6H4.8zM5.6 11.7h12.8v3.6H5.6z"/><path d="M7 15.3l1 4.2h8l1-4.2"/>',
+    3: '<path d="M12 2.5v6M9.4 8.5h5.2v2.6H9.4z"/><path d="M6.5 13.5h11v7h-11zM6.5 16.2h11"/>',
+    4: '<path d="M9.5 2.5v6M14.5 2.5v6M6.5 8.5h11v9h-11z"/><path d="M8 12.4c1.3 1 2.7 1 4 0s2.7-1 4 0"/><path d="M12 19.5v2"/>',
+    5: '<path d="M8.5 8h7v8h-7z"/><path d="M12 2.5v3.5M10 4.3l2 1.9 2-1.9M12 21.5V18M10 19.7l2-1.9 2 1.9"/>',
+    6: '<path d="M3 8.5h7M14 8.5h7M3 13.5h7M14 13.5h7M3 18.5h18"/><path d="M12 2.5v11.5M10.4 14l1.6 3.8 1.6-3.8z"/>',
+}
+
+
+def ikon_kelompok(lapis):
+    isi = IKON_KELOMPOK.get(lapis, "")
+    return f'<svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true">{isi}</svg>' if isi else ""
+
+
 def halaman_induk_praktikum(data, status="", relasi=None):
     folder, awalan = "praktikum/", "../"
     relasi = relasi or {}
@@ -371,9 +401,9 @@ def halaman_induk_praktikum(data, status="", relasi=None):
                 butir.append(f'        <li><div class="menyusul kartu-menyusul">{isi}</div></li>')
         jumlah = len(k["alat"])
         bagian.append(f'    <section class="kelompok-uji" id="{slug(k["judul"])}" data-lapis="{lapis}">\n'
-                      f'      <h2>{html.escape(k["judul"])} <span class="jumlah">{jumlah} alat</span></h2>\n'
+                      f'      <h2>{ikon_kelompok(lapis)}{html.escape(k["judul"])} <span class="jumlah">{jumlah} alat</span></h2>\n'
                       '      <ol class="daftar-uji">\n' + "\n".join(butir) + "\n      </ol>\n    </section>")
-        inti.append(f'<a href="#{slug(k["judul"])}" data-lapis="{lapis}" style="--n:{jumlah}"><span class="nama">{html.escape(k["judul"])}</span>'
+        inti.append(f'<a href="#{slug(k["judul"])}" data-lapis="{lapis}" style="--n:{jumlah}">{ikon_kelompok(lapis)}<span class="nama">{html.escape(k["judul"])}</span>'
                     f'<span class="jumlah">{jumlah} alat</span></a>')
     arus = []
     for a, _, l in urut:
@@ -421,7 +451,7 @@ def kartu_beranda(data, praktikum=None):
     for a in data["alat"]:
         if a["id"] == "praktikum" and praktikum:
             baris = "".join(
-                f'<li><a href="{a["halaman"]}#{slug(k["judul"])}" data-lapis="{i % 6 + 1}"><span class="nama">{html.escape(k["judul"])}</span>'
+                f'<li><a href="{a["halaman"]}#{slug(k["judul"])}" data-lapis="{i % 6 + 1}">{ikon_kelompok(i % 6 + 1)}<span class="nama">{html.escape(k["judul"])}</span>'
                 f'<span class="jumlah">{len(k["alat"])} alat</span></a></li>' for i, k in enumerate(praktikum["kelompok"]))
             kartu.append(f'<div class="kartu-praktikum" data-kat="{a["kategori"]}">\n          <span class="lencana">{html.escape(a["lencana"])}</span>\n'
                          f'          <h3><a href="{a["halaman"]}">{html.escape(a["judul"])}</a></h3>\n          <p>{a["ringkas"]}</p>\n'
@@ -484,6 +514,10 @@ def seragamkan(berkas, teks):
         folder = rel.rsplit("/", 1)[0] + "/" if "/" in rel else ""
         awalan, aktif = "../" * kedalaman(folder), bagian_aktif(folder)
     teks = ganti_penanda(teks, "NAV", menu(awalan, aktif))
+    if "assets/tema.js" not in teks:
+        # Halaman tulis tangan: pasang skrip tema tepat setelah lembar gaya.
+        teks = re.sub(r'(<link rel="stylesheet" href="([^"]*)assets/gaya\.css">\n)',
+                      lambda m: m.group(1) + f'  <script src="{m.group(2)}assets/tema.js"></script>\n', teks, count=1)
     return ganti_penanda(teks, "FOOTER", footer(awalan), wajib=False)
 
 
@@ -534,7 +568,7 @@ def halaman_cari():
 
 # ---------------------------------------------------------------- mode offline
 
-INTI = ["assets/gaya.css", "assets/umum.js", "assets/daftar-sw.js", "assets/gerak.js", "assets/ikon.svg", "manifest.webmanifest",
+INTI = ["assets/gaya.css", "assets/tema.js", "assets/umum.js", "assets/daftar-sw.js", "assets/gerak.js", "assets/ikon.svg", "manifest.webmanifest",
         "assets/katex/katex.min.css", "assets/katex/katex.min.js",
         "assets/font/plus-jakarta-sans-latin-400-normal.woff2", "assets/font/plus-jakarta-sans-latin-600-normal.woff2",
         "assets/font/plus-jakarta-sans-latin-700-normal.woff2", "assets/font/plus-jakarta-sans-latin-800-normal.woff2",
