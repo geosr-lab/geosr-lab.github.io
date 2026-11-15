@@ -1054,6 +1054,37 @@ details.lipat > summary:hover > h3 { color: var(--aksen); }
 .legenda-broms i.titik { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--teks); background: var(--permukaan); }
 tr.baris-menentukan td { font-weight: 600; background: var(--permukaan-2); }
 
+/* Kamus notasi */
+.saring-notasi { margin-top: var(--j-5); max-width: 520px; }
+.saring-notasi input { width: 100%; }
+.isi-notasi ul { list-style: none; margin: var(--j-4) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 8px; }
+.isi-notasi a { display: inline-block; padding: 4px 10px; border: 1px solid var(--garis); border-radius: 999px; font-size: 13px; text-decoration: none; background: var(--permukaan); }
+.isi-notasi a:hover, .isi-notasi a:focus-visible { border-color: var(--aksen); }
+.kelompok-notasi { scroll-margin-top: 80px; }
+.tabel-notasi { width: 100%; }
+.tabel-notasi th.simbol { font-family: var(--huruf-judul); font-size: 17px; font-weight: 700; white-space: nowrap; color: var(--laterit); vertical-align: top; }
+.tabel-notasi td { vertical-align: top; }
+.tabel-notasi td .ket { display: block; margin-top: 2px; font-size: 14px; color: var(--teks-2); }
+.tabel-notasi td.satuan { white-space: nowrap; font-size: 14px; }
+.tabel-notasi td.pemakai { min-width: 180px; }
+.tabel-notasi td.pemakai .chip { display: inline-block; margin: 0 4px 4px 0; font-size: 12.5px; text-decoration: none; }
+@media (max-width: 720px) {
+  .tabel-notasi thead { display: none; }
+  .kelompok-notasi .tabel-gulir { overflow: visible; }
+  .tabel-notasi { min-width: 0 !important; }
+  .tabel-notasi, .tabel-notasi tbody, .tabel-notasi tr, .tabel-notasi th, .tabel-notasi td { display: block; width: 100%; box-sizing: border-box; white-space: normal !important; }
+  .tabel-notasi tr { padding: 10px 0; border-bottom: 1px solid var(--garis); }
+  .tabel-notasi th.simbol, .tabel-notasi td { border: 0; padding: 2px 12px; background: none; }
+  .tabel-notasi td.satuan::before { content: "Satuan: "; color: var(--teks-2); }
+  .tabel-notasi td.pemakai { min-width: 0; padding-top: 6px; }
+}
+.kisi-konversi { display: grid; gap: var(--j-4); grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
+.kisi-konversi .kartu h3 { margin-top: 0; font-size: 17px; }
+.daftar-konversi { margin: 0; }
+.daftar-konversi > div { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--garis); font-size: 14.5px; }
+.daftar-konversi dt { font-weight: 600; }
+.daftar-konversi dd { margin: 0; text-align: right; }
+
 /* Kalkulator korelasi N-SPT: ringkasan di kolom samping */
 .ringkas-spt { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--garis); border: 1px solid var(--garis); }
 .ringkas-spt > div { background: var(--permukaan); padding: 8px 12px 10px; min-width: 0; }

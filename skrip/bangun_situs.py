@@ -176,7 +176,8 @@ def footer(awalan, sumber=None, en=False):
             f'<div><dt>Pembuat</dt><dd><a href="{awalan}{PRIBADI}">Profil</a> · <a href="{awalan}{PRIBADI}catatan/">Catatan</a></dd></div>'
             f'<div><dt>Kode</dt><dd><a href="{REPO}">GitHub</a></dd></div>{sel_sumber}'
             f'<div><dt>Lisensi</dt><dd>Kode <a href="{REPO}/blob/main/LICENSE">MIT</a>, tulisan '
-            f'<a href="{REPO}/blob/main/LICENSE-TULISAN">CC BY 4.0</a> · <a href="{awalan}kredit/">Kredit aset</a></dd></div></dl>\n'
+            f'<a href="{REPO}/blob/main/LICENSE-TULISAN">CC BY 4.0</a> · <a href="{awalan}kredit/">Kredit aset</a></dd></div>'
+            f'<div><dt>Rujukan</dt><dd><a href="{awalan}notasi/">Kamus notasi</a></dd></div></dl>\n'
             '    </div>\n  </footer>' + skrip_sw(awalan))
 
 
@@ -661,6 +662,9 @@ def indeks_cari(peta, catatan, alat, praktikum):
         judul, ringkasan = judul_dan_ringkasan(teks)
         jenis = "Catatan pembuat" if folder.startswith(f"{PRIBADI}catatan/") else "Pembuat"
         butir.append({"j": judul, "d": ringkasan, "h": subjudul(teks), "u": folder, "k": jenis})
+    for k in data_notasi()["kelompok"]:
+        butir.append({"j": f"Kamus notasi: {k['judul']}", "d": ", ".join(re.sub(r"<[^>]+>", "", b[0]) for b in k["butir"]),
+                      "h": " ".join(b[1] for b in k["butir"]), "u": f"notasi/#{slug(k['judul'])}", "k": "Notasi"})
     for x in butir:
         x["h"] = re.sub(r"<[^>]+>", "", x["h"])
     return json.dumps(butir, ensure_ascii=False, indent=0) + "\n"
@@ -727,6 +731,66 @@ def halaman_kredit():
             "\n      </tbody>\n    </table></div>\n"
             f"    <h2>Gambar buatan sendiri</h2>\n    <p>{html.escape(data['buatan_sendiri'])}</p>\n  </main>\n\n"
             "  <!-- FOOTER:MULAI -->\n  " + footer(awalan) + "\n  <!-- FOOTER:SELESAI -->\n</body>\n</html>\n")
+
+
+def data_notasi():
+    return json.loads((KONTEN / "notasi.json").read_text(encoding="utf-8"))
+
+
+def url_pemakai(id_, alat, praktikum, awalan):
+    """Tautan dan judul alat yang memakai notasi: kalkulator dari alat.json, alat praktikum dari praktikum.json."""
+    for a in alat["alat"]:
+        if a["id"] == id_ and a["halaman"].startswith("kalkulator/"):
+            return f'{awalan}{a["halaman"]}', a.get("judul_pendek", a["judul"]).replace("Kalkulator ", "")
+    for k in praktikum["kelompok"]:
+        for a in k["alat"]:
+            if a["id"] == id_:
+                return f'{awalan}praktikum/{id_}/', a["judul"]
+    raise KeyError(f"notasi.json: id alat tidak dikenal: {id_}")
+
+
+def halaman_notasi(alat, praktikum):
+    folder, awalan = "notasi/", "../"
+    data = data_notasi()
+    daftar_isi = "".join(f'<li><a href="#{slug(k["judul"])}">{html.escape(k["judul"])}</a></li>' for k in data["kelompok"])
+    bagian = ""
+    for k in data["kelompok"]:
+        baris = ""
+        for simbol, nama, satuan, ket, pemakai in k["butir"]:
+            tautan = " ".join(f'<a class="chip" href="{u}">{html.escape(j)}</a>' for u, j in (url_pemakai(i, alat, praktikum, awalan) for i in pemakai))
+            cari = re.sub(r"<[^>]+>", "", f"{simbol} {nama} {ket}").lower()
+            baris += (f'\n          <tr data-cari="{html.escape(cari)}"><th scope="row" class="simbol">{simbol}</th>'
+                      f'<td><strong>{html.escape(nama)}</strong><span class="ket">{ket}</span></td>'
+                      f'<td class="satuan">{html.escape(satuan)}</td><td class="pemakai">{tautan}</td></tr>')
+        bagian += (f'\n    <section class="kelompok-notasi" id="{slug(k["judul"])}">\n      <h2>{html.escape(k["judul"])}</h2>\n'
+                   '      <div class="tabel-gulir"><table class="tabel-notasi">\n'
+                   '        <thead><tr><th scope="col">Simbol</th><th scope="col">Arti</th><th scope="col">Satuan</th><th scope="col">Dipakai di</th></tr></thead>\n'
+                   f'        <tbody>{baris}\n        </tbody>\n      </table></div>\n    </section>')
+    konversi = "".join(
+        f'\n      <div class="kartu"><h3>{html.escape(j)}</h3><dl class="daftar-konversi">'
+        + "".join(f'<div><dt>{html.escape(a)}</dt><dd>{html.escape(b)}</dd></div>' for a, b in isi) + "</dl></div>"
+        for j, isi in data["konversi"])
+    jumlah = sum(len(k["butir"]) for k in data["kelompok"])
+    return (kepala("Kamus notasi", f"Arti, satuan, dan pemakaian {jumlah} notasi mekanika tanah dan fondasi yang dipakai di {NAMA}, ditambah konversi satuan.", awalan, folder) +
+            "\n<body>\n  <!-- NAV:MULAI -->\n  " + menu(awalan, "") + "\n  <!-- NAV:SELESAI -->\n\n"
+            "  <main class=\"wadah\">\n    <header class=\"pahlawan\" style=\"padding-bottom:16px\">\n"
+            "      <h1>Kamus notasi</h1>\n"
+            f"      <p class=\"lead\">{jumlah} simbol yang dipakai di alat praktikum dan kalkulator {NAMA}: artinya, satuannya, dan alat mana yang memakainya. "
+            "Beberapa simbol punya arti berbeda di topik lain; bedanya ditulis di keterangan.</p>\n"
+            "      <form class=\"saring-notasi\" role=\"search\" onsubmit=\"return false\" hidden>\n"
+            "        <label for=\"cariNotasi\">Cari simbol atau istilah</label>\n"
+            "        <input id=\"cariNotasi\" type=\"search\" autocomplete=\"off\" placeholder=\"misalnya OCR, kadar air, φ\">\n"
+            "        <p id=\"infoNotasi\" class=\"kecil redup\" role=\"status\" aria-live=\"polite\"></p>\n"
+            "      </form>\n"
+            f"      <nav class=\"isi-notasi\" aria-label=\"Kelompok notasi\"><ul>{daftar_isi}<li><a href=\"#konversi-satuan\">Konversi satuan</a></li></ul></nav>\n"
+            f"    </header>{bagian}\n"
+            "    <section id=\"konversi-satuan\">\n      <h2>Konversi satuan</h2>\n"
+            "      <p>Faktor dihitung dari definisi satuan (g = 9,80665 m/s²). Daftar Konversi Warman (2019) dipakai sebagai pembanding.</p>\n"
+            f"      <div class=\"kisi-konversi\">{konversi}\n      </div>\n    </section>\n"
+            "    <p class=\"kecil redup\">Pembanding: Warman, H. (penyusun) (2019). <em>Kumpulan korelasi parameter geoteknik dan fondasi</em>, "
+            "Daftar Notasi dan Daftar Konversi. Kementerian PUPR. Arti di halaman ini ditulis sendiri.</p>\n  </main>\n\n"
+            "  <!-- FOOTER:MULAI -->\n  " + footer(awalan) + "\n  <!-- FOOTER:SELESAI -->\n"
+            f'  <script src="{awalan}assets/notasi.js" defer></script>\n</body>\n</html>\n')
 
 
 def halaman_cari():
@@ -838,6 +902,7 @@ def bangun():
     keluaran[DOCS / "cari.json"] = indeks_cari(peta, catatan, alat, praktikum)
     keluaran[DOCS / "cari/index.html"] = halaman_cari()
     keluaran[DOCS / "kredit/index.html"] = halaman_kredit()
+    keluaran[DOCS / "notasi/index.html"] = halaman_notasi(alat, praktikum)
     keluaran[DOCS / f"{EN}index.html"] = halaman_beranda_en(praktikum, alat)
     keluaran[DOCS / f"{EN}pembuat/index.html"] = halaman_konten(KONTEN / "en/tentang.md", f"{EN}pembuat/", peta, en=True)
     keluaran[DOCS / "index.html"] = ganti_penanda(keluaran[DOCS / "index.html"], "ALAT", kartu_beranda(alat, praktikum))
