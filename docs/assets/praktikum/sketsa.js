@@ -237,6 +237,16 @@
       tunjuk(148, 48, 104, 48, 98, 52, 'palu', 'end') + tunjuk(154, 156, 104, 156, 98, 160, 'tabung belah', 'end')
   };
 
+  S.latihan = {
+    ket: 'Soal dibangkitkan dengan angka acak, lalu jawaban dicek dan pembahasannya ditampilkan.',
+    svg: '<rect class="g p" x="70" y="18" width="130" height="150" rx="4"/><path class="g tipis" d="M86 46h70M86 64h98M86 82h86M86 112h60M86 130h80"/>' +
+      label(86, 36, 'Soal 3') +
+      '<g class="a" style="--r:-200deg;--o:0;--sx:.4;--sy:.4;--d:.7s;--e:cubic-bezier(.3,1.4,.5,1)"><rect class="g m" x="218" y="40" width="44" height="44" rx="8"/>' +
+      '<circle class="kf" cx="230" cy="52" r="3.4"/><circle class="kf" cx="240" cy="62" r="3.4"/><circle class="kf" cx="250" cy="72" r="3.4"/></g>' +
+      '<path class="k garis" pathLength="1" d="M214 128l14 14 30-36" style="--t:.8s;--d:.5s"/>' +
+      label(240, 100, 'angka acak', 'middle') + label(240, 164, 'dicek', 'middle')
+  };
+
   // Kalkulator
   S['tiang-bor'] = {
     ket: 'Beban tiang bor dipikul gesekan selimut sepanjang tiang dan tahanan ujung di dasarnya.',
