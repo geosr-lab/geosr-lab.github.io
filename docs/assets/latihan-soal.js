@@ -16,6 +16,9 @@
   var PD = node ? require('./pondasi-dangkal-hitung.js') : root.PondasiDangkal;
   var KO = node ? require('./konsolidasi-hitung.js') : root.Konsolidasi;
   var TB = node ? require('./tiang-bor-hitung.js') : root.TiangBor;
+  var BL = node ? require('./broms-lateral-hitung.js') : root.BromsLateral;
+  var KS = node ? require('./korelasi-spt-hitung.js') : root.KorelasiSPT;
+  var KC = node ? require('./korelasi-cpt-hitung.js') : root.KorelasiCPT;
 
   var TOLERANSI = 0.02; // jawaban dianggap benar bila selisihnya ≤ 2%
 
@@ -246,10 +249,74 @@
           }
         };
       }
+    },
+    {
+      id: 'broms-pasir-pendek', topik: 'tiang-lateral', judul: 'Broms: tiang pendek di pasir',
+      buat: function (rng, F) {
+        var b = acak(rng, 0.3, 0.8, 0.1), L = acak(rng, 2, 5, 0.5), e = acak(rng, 0, 1.5, 0.5);
+        var gamma = acak(rng, 16, 20, 0.5), phi = acak(rng, 28, 38, 1);
+        var m = { tanah: 'nonkohesif', kepala: 'bebas', b: b, L: L, e: e, gamma: gamma, phi: phi, My: 1e6, FS: 1 };
+        var k = BL.moda(m, L).kandidat.filter(function (x) { return x.moda === 'pendek'; })[0];
+        var Kp = BL.Kp(phi);
+        return {
+          teks: 'Tiang berdiameter ' + F.f(b, 1) + ' m tertanam ' + F.f(L, 1) + ' m di pasir (γ = ' + F.f(gamma, 1) + ' kN/m³, φ = ' + F.f(phi, 0) + '°). Beban lateral bekerja ' + F.f(e, 1) + ' m di atas muka tanah dan kepala tiang bebas berotasi.',
+          tanya: 'Anggap tiang berperilaku sebagai tiang pendek (tanah yang runtuh). Hitung beban lateral ultimit P<sub>ult</sub> metode Broms.',
+          jawaban: k.P, satuan: 'kN', desimal: 1, data: m,
+          langkah: function (F) {
+            return [
+              { judul: 'Koefisien tekanan pasif Rankine', tex: ['K_p = \\tan^2\\!\\left(45^\\circ + \\tfrac{' + F.t(phi, 0) + '^\\circ}{2}\\right) = ' + F.t(Kp, 3)] },
+              { judul: 'Momen terhadap ujung tiang (Reese, 1986, pers. 7.16)', teks: 'Reaksi tanah 3γbzK<sub>p</sub> berkembang dari muka tanah sampai titik putar.',
+                tex: ['P_{ult} = \\dfrac{\\gamma b L^3 K_p}{2(e + L)} = \\dfrac{' + F.t(gamma, 1) + '\\times' + F.t(b, 1) + '\\times' + F.t(L, 1) + '^3\\times' + F.t(Kp, 3) + '}{2(' + F.t(e, 1) + ' + ' + F.t(L, 1) + ')} = ' + F.t(k.P, 2) + '\\ \\text{kN}'] }
+            ];
+          }
+        };
+      }
+    },
+    {
+      id: 'spt-n160', topik: 'penyelidikan', judul: 'Koreksi N-SPT',
+      buat: function (rng, F) {
+        var NM = acak(rng, 6, 40, 1), Ef = pilih(rng, [45, 55, 60, 70, 80]), z = acak(rng, 2, 12, 0.5), gamma = acak(rng, 16, 19, 0.5);
+        var batang = z + 1;
+        var m = { tanah: 'pasir', NM: NM, Ef: Ef, bor: '65-115', batang: batang, CS: 1, z: z, gamma: gamma, adaMAT: false, dw: 0, gammaSat: 20, PI: 20 };
+        var r = KS.hitung(m);
+        return {
+          teks: 'Uji SPT di pasir pada kedalaman ' + F.f(z, 1) + ' m memberi N<sub>M</sub> = ' + F.f(NM, 0) + '. Efisiensi palu terukur ' + F.f(Ef, 0) + '%, lubang bor 100 mm, panjang batang ' + F.f(batang, 1) + ' m, tabung standar. Muka air tanah dalam, γ = ' + F.f(gamma, 1) + ' kN/m³.',
+          tanya: 'Hitung (N<sub>1</sub>)<sub>60</sub> (Warman, 2019, hlm. 43–44; P<sub>a</sub> = 101,3 kPa).',
+          jawaban: r.N160, satuan: '–', desimal: 1, data: m,
+          langkah: function (F) {
+            return [
+              { judul: 'Koreksi energi dan alat', teks: 'C<sub>B</sub> = 1,0 (65–115 mm); C<sub>R</sub> = ' + F.f(r.CR, 2) + ' (Tabel 4.1); C<sub>S</sub> = 1,0.',
+                tex: ['N_{60} = N_M\\,\\tfrac{E_f}{60}\\,C_B C_R C_S = ' + F.t(NM, 0) + '\\times\\tfrac{' + F.t(Ef, 0) + '}{60}\\times 1\\times' + F.t(r.CR, 2) + '\\times 1 = ' + F.t(r.N60, 2)] },
+              { judul: 'Koreksi tegangan efektif', tex: ['\\sigma\'_{vo} = \\gamma z = ' + F.t(gamma, 1) + '\\times' + F.t(z, 1) + ' = ' + F.t(r.sv, 1) + '\\ \\text{kPa}',
+                'C_N = \\dfrac{2{,}2}{1{,}2 + ' + F.t(r.sv, 1) + '/101{,}3} = ' + F.t(r.CN, 3) + (r.CNmentah > 1.7 ? '\\ (\\text{dibatasi } 1{,}70)' : ''),
+                '(N_1)_{60} = C_N N_{60} = ' + F.t(r.CN, 3) + '\\times' + F.t(r.N60, 2) + ' = ' + F.t(r.N160, 2)] }
+            ];
+          }
+        };
+      }
+    },
+    {
+      id: 'cpt-cu', topik: 'penyelidikan', judul: 'Kuat geser undrained dari sondir',
+      buat: function (rng, F) {
+        var qc = acak(rng, 6, 30, 1), z = acak(rng, 2, 10, 0.5), gamma = acak(rng, 15, 18, 0.5), Nc = pilih(rng, [14, 15, 16]);
+        var m = { tanah: 'lempung', qc: qc, fs: qc * 0.04, z: z, gamma: gamma, adaMAT: false, dw: 0, gammaSat: 18, Nc: Nc, Ns: 7.5, k: 0.33, beta: 0.6 };
+        var r = KC.hitung(m);
+        return {
+          teks: 'Sondir di lapisan lempung pada kedalaman ' + F.f(z, 1) + ' m memberi q<sub>c</sub> = ' + F.f(qc, 0) + ' kg/cm². Muka air tanah dalam, γ = ' + F.f(gamma, 1) + ' kN/m³.',
+          tanya: 'Hitung kuat geser undrained c<sub>u</sub> dengan faktor konus N<sub>c</sub> = ' + F.f(Nc, 0) + ' (Warman, 2019, hlm. 57; 1 kg/cm² = 98,0665 kPa).',
+          jawaban: r.cu, satuan: 'kPa', desimal: 1, data: m,
+          langkah: function (F) {
+            return [
+              { judul: 'Satuan dan tegangan total', tex: ['q_c = ' + F.t(qc, 0) + '\\times 98{,}0665 = ' + F.t(r.qcKPa, 1) + '\\ \\text{kPa}', '\\sigma_{vo} = \\gamma z = ' + F.t(gamma, 1) + '\\times' + F.t(z, 1) + ' = ' + F.t(r.sv, 1) + '\\ \\text{kPa}'] },
+              { judul: 'Kuat geser undrained', tex: ['c_u = \\dfrac{q_c - \\sigma_{vo}}{N_c} = \\dfrac{' + F.t(r.qcKPa, 1) + ' - ' + F.t(r.sv, 1) + '}{' + F.t(Nc, 0) + '} = ' + F.t(r.cu, 2) + '\\ \\text{kPa}'] }
+            ];
+          }
+        };
+      }
     }
   ];
 
-  var TOPIK = { 'pondasi-dangkal': 'Pondasi dangkal', konsolidasi: 'Konsolidasi', 'tiang-bor': 'Tiang bor' };
+  var TOPIK = { 'pondasi-dangkal': 'Pondasi dangkal', konsolidasi: 'Konsolidasi', 'tiang-bor': 'Tiang bor', 'tiang-lateral': 'Tiang lateral', penyelidikan: 'Penyelidikan tanah' };
 
   function buatSoal(idTemplat, seed, F) {
     var tp = TEMPLAT.filter(function (x) { return x.id === idTemplat; })[0];

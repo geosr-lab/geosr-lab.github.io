@@ -88,6 +88,16 @@ def kunci_python(tid, d):
     if tid == "meyerhof-selimut":
         N = d["lapisan"][0]["N"]
         return 100 * N / (100 if d["perpindahan"] == "kecil" else 50) * math.pi * d["d"] * d["L"]
+    if tid == "broms-pasir-pendek":  # Reese (1986) pers. 7.16
+        kp = math.tan(math.radians(45 + d["phi"] / 2)) ** 2
+        return d["gamma"] * d["b"] * d["L"] ** 3 * kp / (2 * (d["e"] + d["L"]))
+    if tid == "spt-n160":  # Warman (2019) hlm. 43–44, Tabel 4.1; bor 65–115 mm, tabung standar
+        b = d["batang"]
+        cr = 0.75 if b < 3 else 0.8 if b < 4 else 0.85 if b < 6 else 0.95 if b < 10 else 1.0
+        n60 = d["NM"] * d["Ef"] / 60 * cr
+        return min(2.2 / (1.2 + d["gamma"] * d["z"] / 101.3), 1.7) * n60
+    if tid == "cpt-cu":  # Warman (2019) hlm. 57
+        return (d["qc"] * 98.0665 - d["gamma"] * d["z"]) / d["Nc"]
     raise KeyError(tid)
 
 
