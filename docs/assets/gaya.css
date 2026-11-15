@@ -986,6 +986,13 @@ a.chip:hover { border-color: var(--lapis, var(--aksen)); background: color-mix(i
 }
 .tab-daftar { position: relative; display: flex; gap: 2px; flex: 1 0 auto; min-width: 0; overflow-x: auto; scrollbar-width: none; }
 .tab-daftar::-webkit-scrollbar { display: none; }
+.lbl-pendek { display: none; }
+.tab-daftar.meluap:not(.di-ujung) { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 36px), transparent); }
+@media (max-width: 420px) {
+  .tab-daftar [role="tab"] { padding-left: 7px !important; padding-right: 7px !important; font-size: 14px !important; gap: 5px; }
+  /* Nomor tab disembunyikan di layar sempit supaya lima tab muat; urutan tetap terbaca dari posisinya. */
+  .tab-daftar .tab-no { display: none; }
+}
 .tab-daftar [role="tab"] {
   display: inline-flex; align-items: center; gap: 7px; flex: none; padding: 10px 12px 12px; border: 0; background: none; cursor: pointer;
   font: inherit; font-size: 15px; font-weight: 600; color: var(--teks-2); border-radius: 6px 6px 0 0; transition: color .2s ease, background-color .2s ease;
@@ -1051,6 +1058,7 @@ a.chip:hover { border-color: var(--lapis, var(--aksen)); background: color-mix(i
   .bilah-aksi .menu-ekspor > .tombol { flex: 1; }
   .bilah-aksi .tombol { padding: 9px 8px; white-space: nowrap; }
   .lbl-panjang { display: none; }
+  .bilah-aksi .lbl-pendek { display: inline; }
   .menu-ekspor-isi { top: auto; bottom: calc(100% + 8px); right: auto; left: 50%; transform: translateX(-50%); animation: none; }
   .pesan-aksi { top: auto; bottom: calc(100% + 8px); left: 12px; right: 12px; width: auto; max-width: none; }
   body:has(.bilah-aksi) { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
