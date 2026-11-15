@@ -882,17 +882,21 @@ def daftar_penampang(lapisan, tag="section", judul="h3"):
 
 
 def penampang_beranda(alat, praktikum):
-    """Penampang mini di hero beranda (penanda PENAMPANG): kanvas, kartu, dan data tersembunyi."""
+    """Blok tanah 3D di dasbor beranda (penanda PENAMPANG): kanvas, tombol lapisan, panel alat, dan data tersembunyi."""
     lapisan = lapisan_penampang(alat, praktikum, awalan="")
     jumlah = sum(len(l["butir"]) for l in lapisan)
-    return ('<figure class="penampang-mini" data-penampang="mini">\n'
-            '        <div class="jelajah-panggung mini-panggung">\n'
-            '          <canvas class="pn-kanvas" aria-hidden="true"></canvas>\n'
-            '          <div class="jelajah-alat"><button type="button" class="tombol kecil" data-aksi="gerak" aria-pressed="true">Gerak otomatis</button></div>\n'
+    return ('<figure class="blok3d" data-blok3d>\n'
+            '        <div class="jelajah-panggung blok-panggung">\n'
+            '          <canvas class="b3-kanvas" aria-hidden="true"></canvas>\n'
+            '          <div class="jelajah-alat">'
+            '<button type="button" class="tombol kecil" data-aksi="urai" aria-pressed="false">Urai lapisan</button>'
+            '<button type="button" class="tombol kecil" data-aksi="putar" aria-pressed="true">Putar otomatis</button></div>\n'
             '          <div class="jelajah-kartu pn-kartu" aria-live="polite" hidden></div>\n'
             '        </div>\n'
-            f'        <figcaption><span>Penampang {NAMA}: {jumlah} alat sebagai butir di sepuluh lapisan tanah. Seret untuk menggeser, klik butir untuk membukanya, '
-            'klik permukaan tanah untuk uji bor.</span> <a href="penampang/">Buka penampang penuh</a></figcaption>\n'
+            '        <div class="b3-lapis" role="group" aria-label="Pilih lapisan"></div>\n'
+            '        <div class="b3-info" aria-live="polite"></div>\n'
+            f'        <figcaption>Blok tanah {NAMA}: {jumlah} alat di sepuluh lapisan. Seret untuk memutar, klik lempeng untuk menarik lapisannya. '
+            '<a href="penampang/">Buka penampang penuh</a></figcaption>\n'
             f'        <div class="pn-data" hidden>{daftar_penampang(lapisan, "div", "p")}\n        </div>\n'
             '      </figure>')
 
