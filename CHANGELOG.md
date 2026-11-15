@@ -18,6 +18,7 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 - `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1, terjemahan resmi), templat Issue dan PR, `CITATION.cff`, Dependabot untuk GitHub Actions.
 
 ### Diubah
+- Tombol tema di halaman bahasa Inggris (`/en/`, `/en/pembuat/`) memakai label Inggris ("Theme: follow system/light/dark") untuk pembaca layar dan tooltip.
 - Tabel isian yang lebih dari 15 baris (sondir, CBR, konsolidasi, dan lainnya) digulir di dalam kotaknya sendiri dengan kepala tabel menempel. Gambar pratinjau sosial (`assets/pratinjau.png`) dibuat ulang dengan nama GeoSR, alamat baru, dan penampang lapisan tanah. Versi cache 0.15.3.
 - Satu gaya tabel untuk alat dan tulisan (bingkai, latar, kepala, jarak); sketsa kecil di kartu Latihan; lapisan penampang beranda berdenyut sekali sesudah animasinya sebagai tanda bisa diklik; katalog kosong menautkan ke halaman Cari dengan kata yang sama. Versi cache 0.15.2.
 - Hasil audit ulang (fase 6): halaman Kredit aset (`/kredit/`, dari `docs/assets/kredit.json`) ditautkan dari kaki halaman; judul tab halaman Kalkulator; katalog praktikum lebih ringkas di ponsel; tabel formulir CBR, konsolidasi, dan sondir sesudah dua tabel pertama terlipat dulu. Versi cache 0.15.1.

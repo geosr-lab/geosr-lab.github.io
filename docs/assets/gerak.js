@@ -43,8 +43,13 @@
     if (!tombol) return;
     var akar = document.documentElement;
     var URUT = ['', 'terang', 'gelap'];
-    var NAMA = { '': 'ikut sistem', terang: 'terang', gelap: 'gelap' };
-    function label() { tombol.setAttribute('aria-label', 'Tema: ' + NAMA[akar.getAttribute('data-tema') || ''] + '. Klik untuk ganti.'); }
+    var en = /^en\b/i.test(akar.lang || '');
+    var NAMA = en ? { '': 'follow system', terang: 'light', gelap: 'dark' }
+                  : { '': 'ikut sistem', terang: 'terang', gelap: 'gelap' };
+    function label() {
+      var nama = NAMA[akar.getAttribute('data-tema') || ''];
+      tombol.setAttribute('aria-label', en ? 'Theme: ' + nama + '. Click to change.' : 'Tema: ' + nama + '. Klik untuk ganti.');
+    }
     label();
     tombol.addEventListener('click', function () {
       var kini = akar.getAttribute('data-tema') || '';
