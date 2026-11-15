@@ -392,7 +392,7 @@ def cara_uji(alat):
 
 
 # Alat praktikum yang punya model 3D (docs/assets/alat3d.js, objek ADEGAN) dan skrip 3D bersama (three.js lokal, MIT).
-ALAT_3D = {"pemadatan", "sondir"}
+ALAT_3D = {"pemadatan", "sondir", "cbr", "sand-cone", "geser-langsung", "tekan-bebas", "konsolidasi-lab"}
 SKRIP_3D = ["vendor/three/three.min.js", "vendor/three/OrbitControls.js", "adegan3d.js"]
 
 
