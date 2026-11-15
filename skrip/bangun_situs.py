@@ -563,7 +563,9 @@ def halaman_induk_praktikum(data, status="", relasi=None):
             f"    <div class=\"status-bawah\">{status}</div>\n  </main>\n\n"
             "  <!-- FOOTER:MULAI -->\n  " + footer(awalan) + "\n  <!-- FOOTER:SELESAI -->\n"
             f'  <script src="{awalan}assets/praktikum/sketsa.js" defer></script>\n'
-            f'  <script src="{awalan}assets/katalog.js" defer></script>\n</body>\n</html>\n')
+            f'  <script src="{awalan}assets/katalog.js" defer></script>'
+            + "".join(f'\n  <script src="{awalan}assets/{s}" defer></script>' for s in SKRIP_3D + ["alat3d.js", "sampul3d.js"])
+            + '\n</body>\n</html>\n')
 
 
 # ---------------------------------------------------------------- registri alat
