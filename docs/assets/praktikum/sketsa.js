@@ -7,8 +7,8 @@
  *   --dx, --dy (geser), --r (putar), --sx, --sy (skala), --o (kedap), --t (tunda), --d (lama),
  *   --n (ulangan), --e (kurva), --asal (titik pusat), --kotak (fill-box / view-box).
  * Kelas "getar" menggoyang ke kiri-kanan, kelas "garis" menggambar garis (perlu pathLength="1").
- * Animasi hanya jalan saat figure punya kelas "main"; tanpa itu (atau dengan prefers-reduced-motion)
- * yang tampil adalah keadaan akhir.
+ * Animasi hanya jalan saat figure punya kelas "main"; Sketsa.sapa menampilkan keadaan akhir
+ * dulu, lalu kelas "mundur" membawanya ke keadaan awal sebelum "main" dipasang; tanpa itu (atau dengan prefers-reduced-motion) yang tampil adalah keadaan akhir.
  *
  * Pemakaian: <figure class="sketsa" data-sketsa="kadar-air"></figure>, lalu Sketsa.isi(figure) atau
  * otomatis untuk semua [data-sketsa] saat halaman siap; Sketsa.putar(figure) memutar ulang.
@@ -311,15 +311,28 @@
     return true;
   }
   function gerakDikurangi() { return root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches; }
+  // putar: langsung dari keadaan awal (dipakai saat pengguna menekan sketsa atau "Putar ulang").
+  function henti(fig) { clearTimeout(fig._sapa1); clearTimeout(fig._sapa2); fig.classList.remove('main', 'mundur'); }
   function putar(fig) {
     if (!fig || gerakDikurangi()) return;
-    fig.classList.remove('main'); void fig.offsetWidth; fig.classList.add('main');
+    henti(fig); void fig.offsetWidth; fig.classList.add('main');
+  }
+  // sapa: gambar akhir tetap terlihat sebentar, lalu mundur cepat ke keadaan awal dan diputar.
+  // Dipakai untuk putaran otomatis (tab Pengantar dibuka, sketsa kalkulator terlihat) supaya
+  // sketsa tidak pernah tampil pudar atau kosong saat halaman baru dibuka.
+  function sapa(fig) {
+    if (!fig || gerakDikurangi()) return;
+    henti(fig);
+    fig._sapa1 = setTimeout(function () {
+      fig.classList.add('mundur');
+      fig._sapa2 = setTimeout(function () { fig.classList.remove('mundur'); fig.classList.add('main'); }, 300);
+    }, 600);
   }
   // Putar sekali saat sketsa pertama kali terlihat (halaman kalkulator dan tab Pengantar yang terbuka).
   function amati(fig) {
     if (!('IntersectionObserver' in root)) return;
     var io = new IntersectionObserver(function (e) {
-      if (e[0].isIntersecting && !document.hidden) { io.disconnect(); putar(fig); }
+      if (e[0].isIntersecting && !document.hidden) { io.disconnect(); sapa(fig); }
     }, { threshold: 0.5 });
     io.observe(fig);
   }
@@ -332,5 +345,5 @@
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pasangSemua); else pasangSemua();
   }
 
-  root.Sketsa = { ada: function (id) { return !!S[id]; }, isi: isi, putar: putar, daftar: function () { return Object.keys(S); } };
+  root.Sketsa = { ada: function (id) { return !!S[id]; }, isi: isi, putar: putar, sapa: sapa, daftar: function () { return Object.keys(S); } };
 })(this);

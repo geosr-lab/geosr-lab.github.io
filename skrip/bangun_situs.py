@@ -166,7 +166,8 @@ def footer(awalan, sumber=None, en=False):
                 f'<div><dt>Maker</dt><dd><a href="{awalan}{EN}pembuat/">About</a></dd></div>'
                 f'<div><dt>Code</dt><dd><a href="{REPO}">GitHub</a></dd></div>{sel}'
                 f'<div><dt>License</dt><dd>Code <a href="{REPO}/blob/main/LICENSE">MIT</a>, writing '
-                f'<a href="{REPO}/blob/main/LICENSE-TULISAN">CC BY 4.0</a> · <a href="{awalan}kredit/">Asset credits</a></dd></div></dl>\n'
+                f'<a href="{REPO}/blob/main/LICENSE-TULISAN">CC BY 4.0</a> · <a href="{awalan}kredit/">Asset credits</a></dd></div>'
+                f'<div><dt>Reference</dt><dd><a href="{awalan}notasi/" hreflang="id">Notation glossary (Indonesian)</a></dd></div></dl>\n'
                 '    </div>\n  </footer>' + skrip_sw(awalan))
     sel_sumber = (f'<div><dt>Halaman ini</dt><dd><a href="{REPO}/blob/main/{sumber}">Sumber tulisan</a></dd></div>'
                   if sumber else "")

@@ -425,8 +425,8 @@
         if (atas < 0 || atas > innerHeight * 0.6) document.getElementById('kepala-tab').scrollIntoView({ block: 'start' });
       }
       if (n === 'hasil' && root.Gerak && o.simpan !== false) root.Gerak.hitungNaik(document.getElementById('hasil-praktikum'));
-      // Sketsa alat diputar setiap tab Pengantar dibuka.
-      if (n === 'pengantar' && root.Sketsa) root.Sketsa.putar(document.getElementById('sketsa-alat'));
+      // Sketsa alat diputar setiap tab Pengantar dibuka, mulai dari gambar akhir yang sudah terlihat.
+      if (n === 'pengantar' && root.Sketsa) root.Sketsa[root.Sketsa.sapa ? 'sapa' : 'putar'](document.getElementById('sketsa-alat'));
       if (n === 'grafik' && !gerakDikurangi()) {
         var g = document.getElementById('grafik-praktikum');
         g.classList.remove('hasil-baru'); void g.offsetWidth; g.classList.add('hasil-baru');

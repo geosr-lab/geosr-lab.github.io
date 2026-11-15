@@ -84,9 +84,81 @@
     // Halaman praktikum bertab: kotak laporan masuk tab "Sumber dan catatan".
     (document.getElementById('panel-sumber') || main).appendChild(bagian);
   }
+  // Daftar lompat di halaman kalkulator: Ringkasan · Langkah · Hasil · Grafik · Catatan · Sumber.
+  // Dibangun ulang setiap #hasil digambar ulang. Tautan tidak mengubah location.hash, karena hash
+  // dipakai untuk menyimpan masukan (simpanKeHash).
+  function pasangLompat() {
+    var hasil = document.getElementById('hasil');
+    if (!hasil || !/kalkulator\//.test(location.pathname)) return;
+    var nav = document.createElement('nav');
+    nav.className = 'lompat tidak-cetak'; nav.setAttribute('aria-label', 'Lompat ke bagian hasil'); nav.hidden = true;
+    hasil.parentNode.insertBefore(nav, hasil);
+    var amat = null;
+    function judul(pola, akar) {
+      var h = (akar || hasil).querySelectorAll('h2');
+      for (var i = 0; i < h.length; i++) if (pola.test(h[i].textContent)) return h[i];
+      return null;
+    }
+    function tandai(el, id) { if (el && !el.id) el.id = id; return el; }
+    function bangun() {
+      var ringkas = document.getElementById('ringkas');
+      // Grafik = figure pertama, atau SVG gambar (role="img") yang lebar; ikon kecil diabaikan.
+      var grafik = null;
+      Array.prototype.some.call(hasil.querySelectorAll('figure, svg[role="img"]'), function (el) {
+        var vb = el.viewBox && el.viewBox.baseVal;
+        if (el.tagName === 'FIGURE' || (vb && vb.width >= 300)) { grafik = el.closest('figure') || el; return true; }
+        return false;
+      });
+      var sumber = null, main = hasil.closest('main');
+      if (main) Array.prototype.some.call(main.querySelectorAll('h2'), function (h) { return /^Sumber/.test(h.textContent) && (sumber = h); });
+      var isi = [
+        ['Ringkasan', tandai(judul(/^Ringkasan/) || (ringkas && (ringkas.closest('aside, .kartu') || ringkas)), 'b-ringkasan')],
+        ['Langkah', tandai(judul(/^1\./), 'b-langkah')],
+        ['Hasil', tandai(judul(/^4\./), 'b-hasil')],
+        ['Grafik', tandai(grafik, 'b-grafik')],
+        ['Catatan', tandai(judul(/^5\./), 'b-catatan')],
+        ['Sumber', tandai(sumber, 'b-sumber')]
+      ].filter(function (x) { return x[1]; });
+      // Tanpa langkah hitungan (masukan belum lengkap) daftar disembunyikan.
+      nav.hidden = !judul(/^1\./);
+      if (nav.hidden) { nav.innerHTML = ''; return; }
+      nav.innerHTML = '<span class="lompat-label">Lompat</span>' + isi.map(function (x) {
+        return '<a href="#' + x[1].id + '" data-ke="' + x[1].id + '">' + x[0] + '</a>';
+      }).join('');
+      if (amat) amat.disconnect();
+      if ('IntersectionObserver' in window) {
+        var terlihat = {};
+        amat = new IntersectionObserver(function (e) {
+          e.forEach(function (x) { terlihat[x.target.id] = x.isIntersecting; });
+          var aktif = null;
+          isi.forEach(function (x) { if (terlihat[x[1].id] && !aktif) aktif = x[1].id; });
+          if (!aktif) return;
+          Array.prototype.forEach.call(nav.querySelectorAll('a'), function (a) {
+            if (a.getAttribute('data-ke') === aktif) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+          });
+        }, { rootMargin: '-130px 0px -55% 0px' });
+        isi.forEach(function (x) { amat.observe(x[1]); });
+      }
+    }
+    nav.addEventListener('click', function (e) {
+      var a = e.target.closest('a[data-ke]');
+      if (!a) return;
+      e.preventDefault();
+      var el = document.getElementById(a.getAttribute('data-ke'));
+      if (!el) return;
+      var halus = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+      el.scrollIntoView({ behavior: halus ? 'smooth' : 'auto', block: 'start' });
+    });
+    var tunda = 0;
+    if ('MutationObserver' in window) {
+      new MutationObserver(function () { clearTimeout(tunda); tunda = setTimeout(bangun, 30); }).observe(hasil, { childList: true });
+    }
+    bangun();
+  }
+  function pasangSemua() { pasangLaporan(); pasangLompat(); }
   if (typeof document !== 'undefined' && document.addEventListener) {
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pasangLaporan);
-    else pasangLaporan();
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pasangSemua);
+    else pasangSemua();
   }
 
   window.Umum = {
