@@ -469,6 +469,22 @@ th + th, td + td { border-left: 0; }
 @media (max-width: 880px) { .tata-kalk { grid-template-columns: minmax(0, 1fr); } .tata-kalk aside { position: static !important; } }
 .profil-svg { width: 100%; height: auto; display: block; }
 
+/* Daftar lompat di atas hasil kalkulator; menempel di bawah menu pada layar lebar. */
+.lompat { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: var(--j-5) 0 0; padding: 8px 0; scrollbar-width: none;
+  border-bottom: 1px solid var(--garis); background: color-mix(in srgb, var(--latar) 92%, transparent); }
+.lompat::-webkit-scrollbar { display: none; }
+.lompat[hidden] { display: none; }
+.lompat-label { flex: none; margin-right: 4px; font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--teks-2); }
+.lompat a { flex: none; padding: 5px 11px; border: 1px solid var(--garis); border-radius: 999px; font-size: 14px; font-weight: 600;
+  color: var(--teks); text-decoration: none; background: var(--permukaan); transition: background .2s, border-color .2s, color .2s; }
+.lompat a:hover { border-color: color-mix(in srgb, var(--aksen) 55%, var(--garis)); }
+.lompat a[aria-current="true"] { background: var(--teks); border-color: var(--teks); color: var(--latar); }
+@media (min-width: 900px) {
+  .lompat { flex-wrap: nowrap; overflow-x: auto; position: sticky; top: 62px; z-index: 11; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+}
+main:has(> .lompat) #hasil h2, main:has(> .lompat) #hasil figure, #b-sumber, #b-ringkasan { scroll-margin-top: 124px; }
+@media print { .lompat { display: none !important; } }
+
 .ringkasan { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); margin: 18px 0; }
 .ringkasan .kartu {
   padding: 16px 18px 15px; border-radius: 4px 4px var(--radius) var(--radius);
@@ -1121,6 +1137,14 @@ details.lipat > summary:hover > h3 { color: var(--aksen); }
 .sketsa.main .a { animation: sk-dari var(--d, .8s) var(--e, var(--mulus)) var(--t, 0s) var(--n, 1) both; }
 .sketsa.main .getar { animation: sk-getar .16s linear var(--t, 0s) var(--n, 6); }
 .sketsa.main .garis { stroke-dasharray: 1; animation: sk-garis var(--d, 1s) ease var(--t, 0s) both; }
+/* Putaran otomatis (Sketsa.sapa): gambar akhir terlihat dulu, lalu kelas "mundur" membawa elemen ke keadaan
+   awal dalam 0,3 s, lalu kelas "main" memutar animasi biasa dari keadaan itu. */
+.sketsa.mundur .a { animation: sk-ke .3s ease-in both; }
+.sketsa.mundur .garis { stroke-dasharray: 1; animation: sk-garis-ke .3s ease-in both; }
+@keyframes sk-ke {
+  to { transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(var(--r, 0deg)) scale(var(--sx, 1), var(--sy, 1)); opacity: var(--o, 1); }
+}
+@keyframes sk-garis-ke { to { stroke-dashoffset: 1; } }
 @keyframes sk-dari {
   from { transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(var(--r, 0deg)) scale(var(--sx, 1), var(--sy, 1)); opacity: var(--o, 1); }
 }

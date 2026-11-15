@@ -5,6 +5,9 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 ## [Belum dirilis]
 
 ### Ditambahkan
+- Daftar lompat di halaman kalkulator ("Ringkasan · Langkah · Hasil · Grafik · Catatan · Sumber"), dibangun dari hasil yang sedang tampil, menempel di bawah menu pada layar ≥ 900 px dan menandai bagian yang sedang dibaca. Tautan tidak mengubah alamat, jadi masukan yang tersimpan di tautan tetap utuh.
+- Tautan "Notation glossary (Indonesian)" di kaki halaman bahasa Inggris.
+
 - Latihan soal: topik baru "Tiang lateral" (Broms tiang pendek di pasir) dan "Penyelidikan tanah" ((N<sub>1</sub>)<sub>60</sub> dari N-SPT, c<sub>u</sub> dari sondir); bank soal menjadi 12 jenis. Kunci dihitung modul kalkulator yang sudah teruji dan dicocokkan dengan hitungan Python di `tests/verifikasi_latihan.py` (300 soal per templat).
 - Palet cari di semua halaman (`docs/assets/palet.js`): Ctrl+K (⌘K), atau "/" di halaman yang tidak punya kotak cari sendiri, membuka kotak cari cepat dari `cari.json`; saat kosong menampilkan alat yang terakhir dibuka dan tujuan utama; panah, Enter, Esc, klik di luar untuk menutup. Tautan "Cari" di menu membuka palet (Ctrl/Shift+klik tetap ke halaman Cari).
 - Kamus notasi (`/notasi/`): 96 simbol mekanika tanah dan fondasi yang dipakai di situs, dikelompokkan per topik, dengan arti, satuan, catatan simbol yang artinya berbeda antartopik, tautan ke alat yang memakainya, kotak cari (tersimpan di `?q=`), dan tabel konversi satuan. Data di `konten/notasi.json`; tautan "Kamus notasi" di kaki semua halaman; setiap kelompok masuk pencarian situs.
@@ -25,6 +28,7 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 - `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1, terjemahan resmi), templat Issue dan PR, `CITATION.cff`, Dependabot untuk GitHub Actions.
 
 ### Diubah
+- Sketsa alat praktikum dan kalkulator tidak lagi mulai dari keadaan pudar: gambar akhir tampil dulu, lalu animasi mundur sebentar ke awal dan diputar. Tombol "Putar ulang" tetap memutar langsung. Versi cache 0.25.0.
 - Beranda menjadi dasbor (hasil audit pengguna baru): kotak cari langsung dari `cari.json` (panah, Enter, Esc, tombol `/`), aksi cepat, bagian "Lanjutkan" berisi alat yang terakhir dibuka (riwayat di localStorage browser pengguna, bisa dihapus), kisi tiga petak setinggi sama (Praktikum dengan tautan langsung ke alat, Kalkulator per topik, Belajar dengan angka ringkas), dan bagian "Dari lembar lab ke laporan" dengan animasi alur (garis mengalir, langkah menyala bergiliran, kurva tergambar; hanya jalan saat terlihat dan mati bila pengguna memilih kurangi gerakan). Penampang tanah tidak lagi kosong di awal: gambar tampil langsung lalu berubah bentuk ke keadaan sesudah konsolidasi.
 - Tombol tema di halaman bahasa Inggris (`/en/`, `/en/pembuat/`) memakai label Inggris ("Theme: follow system/light/dark") untuk pembaca layar dan tooltip.
 - Tabel isian yang lebih dari 15 baris (sondir, CBR, konsolidasi, dan lainnya) digulir di dalam kotaknya sendiri dengan kepala tabel menempel. Gambar pratinjau sosial (`assets/pratinjau.png`) dibuat ulang dengan nama GeoSR, alamat baru, dan penampang lapisan tanah. Versi cache 0.15.3.
