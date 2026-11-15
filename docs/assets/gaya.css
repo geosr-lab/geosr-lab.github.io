@@ -1902,4 +1902,5 @@ a.kartu::before, .kolom-inti a::before, .inti-bor a::before, .daftar-uji a::befo
 .sketsa-mini { position: relative; }
 .sketsa-mini > canvas.sampul-3d { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
 .sketsa-mini.ada-sampul > :not(canvas) { visibility: hidden; }
+.sketsa-mini.ada-sampul { background: transparent !important; }
 @media print { .sketsa-mini > canvas.sampul-3d { display: none; } .sketsa-mini.ada-sampul > :not(canvas) { visibility: visible; } }

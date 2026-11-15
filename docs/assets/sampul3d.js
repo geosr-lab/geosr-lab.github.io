@@ -32,6 +32,11 @@
       var model = def.buat(B, { textContent: '' });
       if (model.akhir) model.akhir();
       A.lantai.position.y = def.lantai || 0;
+      // lantai dan kabut memakai warna permukaan kartu supaya sampul menyatu dengan kartunya (terutama tema gelap)
+      var muka = A.warnaThree(A.warna.permukaan || [251, 251, 248]);
+      A.lantai.material.color.copy(muka);
+      A.lantai.material.toneMapped = false; A.lantai.material.needsUpdate = true;
+      if (A.scene.fog) A.scene.fog.color.copy(muka);
       A.camera.aspect = LB / TG; A.camera.fov = 34; A.camera.updateProjectionMatrix();
       A.camera.position.fromArray(def.kamera); A.controls.target.fromArray(def.sasaran);
       A.camera.position.lerp(A.controls.target, 0.12);   // sampul sedikit lebih dekat
