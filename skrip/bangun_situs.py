@@ -152,7 +152,8 @@ def tombol_tema(en=False):
 
 def skrip_sw(awalan):
     return (f'\n  <script src="{awalan}assets/daftar-sw.js" defer></script>'
-            f'\n  <script src="{awalan}assets/gerak.js" defer></script>')
+            f'\n  <script src="{awalan}assets/gerak.js" defer></script>'
+            f'\n  <script src="{awalan}assets/palet.js" defer></script>')
 
 
 def footer(awalan, sumber=None, en=False):
