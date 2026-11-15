@@ -224,17 +224,17 @@
       "id": "latihan",
       "judul": "Bank soal geoteknik",
       "judul_pendek": "Latihan Soal Geoteknik",
-      "deskripsi": "Latihan soal geoteknik dengan angka acak dan pembahasan langkah demi langkah: pondasi dangkal, konsolidasi, tiang bor, tiang lateral, dan penyelidikan tanah.",
+      "deskripsi": "Latihan soal geoteknik dengan angka acak dan pembahasan langkah demi langkah: sifat fisik tanah, batas Atterberg, pondasi dangkal, konsolidasi, tiang bor, tiang lateral, dan penyelidikan tanah.",
       "kategori": "latihan",
       "lencana": "Latihan",
       "halaman": "latihan/",
-      "ringkas": "Dua belas jenis soal dengan angka acak, dicek otomatis, lengkap dengan pembahasan.",
+      "ringkas": "Tujuh belas jenis soal dengan angka acak, dicek otomatis, lengkap dengan pembahasan.",
       "judul_rincian": "Latihan soal geoteknik",
       "lencana_rincian": "Bank soal",
       "rincian": [
         [
           "Topik",
-          "Pondasi dangkal, konsolidasi, tiang bor, tiang lateral, penyelidikan tanah (12 jenis soal)"
+          "Sifat fisik, batas Atterberg, pondasi dangkal, konsolidasi, tiang bor, tiang lateral, penyelidikan tanah (17 jenis soal)"
         ],
         [
           "Cara kerja",
@@ -246,7 +246,7 @@
         "docs/assets/latihan-tampilan.js"
       ],
       "sumber": [
-        "Kunci dihitung modul kalkulator; sumber mengikuti kalkulator masing-masing."
+        "Kunci dihitung modul kalkulator dan alat praktikum; sumber mengikuti kalkulator atau alat masing-masing."
       ],
       "status": "belum",
       "tanggal_cek": "2026-09-26",

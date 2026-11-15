@@ -98,7 +98,24 @@ def kunci_python(tid, d):
         return min(2.2 / (1.2 + d["gamma"] * d["z"] / 101.3), 1.7) * n60
     if tid == "cpt-cu":  # Warman (2019) hlm. 57
         return (d["qc"] * 98.0665 - d["gamma"] * d["z"]) / d["Nc"]
+    if tid == "kadar-air-cawan":  # SNI 1965:2008: w = (W1 − W2)/(W2 − W3) × 100%
+        return sum(kadar_air(c) for c in d["cawan"]) / len(d["cawan"])
+    if tid in ("fase-berat-isi", "fase-cincin"):  # Das, hubungan berat–volume, γw = 1 g/cm³
+        gamma = d["M"] / d["V"] if tid == "fase-cincin" else d["gamma"]
+        gd = gamma / (1 + d["w"] / 100)
+        if tid == "fase-cincin":
+            return gd
+        e = d["Gs"] / gd - 1
+        return {"e": e, "Sr": d["w"] / 100 * d["Gs"] / e * 100, "n": e / (1 + e) * 100}[d["jenis"]]
+    if tid == "ll-satu-titik":  # ASTM D4318 metode B: LL = w_N (N/25)^0,121
+        return kadar_air(d) * (d["N"] / 25) ** 0.121
+    if tid == "indeks-plastisitas":  # SNI 1966:2008: IP = LL − PL, PL rata-rata kadar air benang tanah
+        return d["LL"] - sum(kadar_air(c) for c in d["cawan"]) / len(d["cawan"])
     raise KeyError(tid)
+
+
+def kadar_air(c):
+    return (c["W1"] - c["W2"]) / (c["W2"] - c["W3"]) * 100
 
 
 def main():
