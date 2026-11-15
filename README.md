@@ -25,6 +25,7 @@ Tabel ini dibangun otomatis dari [`konten/alat.json`](konten/alat.json). Kolom s
 | [Praktikum Mekanika Tanah](https://defsayurinda.github.io/praktikum/) | 18 alat pengolah data praktikum Mekanika Tanah: formulir seperti lembar data laboratorium, langkah hitungan, grafik, dan ekspor ke Word dan Excel. | Belum terverifikasi |
 | [Latihan Soal Geoteknik](https://defsayurinda.github.io/latihan/) | Latihan soal geoteknik dengan angka acak dan pembahasan langkah demi langkah: pondasi dangkal, konsolidasi, dan tiang bor. | Belum terverifikasi |
 | [Kalkulator Korelasi N-SPT](https://defsayurinda.github.io/kalkulator/korelasi-spt.html) | Koreksi N-SPT ke N60 dan (N1)60, lalu perkiraan kepadatan relatif, sudut geser, modulus elastisitas pasir, kuat geser undrained lempung, dan kecepatan gelombang geser, dengan rujukan halaman. | Sumber sekunder |
+| [Kalkulator Korelasi Sondir](https://defsayurinda.github.io/kalkulator/korelasi-cpt.html) | Dari qc dan fs sondir, perkiraan kepadatan relatif dan sudut geser pasir, serta kuat geser undrained, sensitivitas, OCR, rasio kompresi, dan kecepatan gelombang geser lempung, dengan rujukan halaman. | Sumber sekunder |
 <!-- ALAT:SELESAI -->
 
 ## Cara memakai
