@@ -316,7 +316,8 @@
       var isi = htmlIsiTabel(tb);
       if (def.tabel.length < 2) return '<h3>' + tb.judul + '</h3>' + isi;
       // Beberapa tabel: tiap tabel bisa dilipat; keadaan lipatan bertahan saat formulir digambar ulang.
-      var buka = lipatData[tb.id] !== undefined ? lipatData[tb.id] : true;
+      // Alat panjang (def.lipat: CBR, konsolidasi, sondir): tabel sesudah dua tabel pertama terlipat dulu, judulnya tetap terlihat.
+      var buka = lipatData[tb.id] !== undefined ? lipatData[tb.id] : !(def.lipat && def.tabel.indexOf(tb) > 1);
       return '<details class="lipat" data-lipat-data="' + tb.id + '"' + (buka ? ' open' : '') + '><summary><h3>' + tb.judul + '</h3></summary>' + isi + '</details>';
     }
     function htmlIsiTabel(tb) {

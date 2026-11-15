@@ -1073,8 +1073,16 @@ details.lipat > summary:hover > h3 { color: var(--aksen); }
 .daftar-uji .ringkas { grid-area: ringkas; margin-top: 8px; font-size: 14px; line-height: 1.5; }
 .daftar-uji a:hover .judul { color: var(--aksen); }
 @media (max-width: 560px) {
-  .daftar-uji a, .daftar-uji .menyusul { grid-template-columns: 30px minmax(0, 1fr); }
-  .daftar-uji .acuan { grid-area: acuan; }
+  /* Ponsel: sketsa jadi gambar kecil di kiri, ringkasan dua baris, supaya katalog tidak terlalu panjang. */
+  .daftar-uji { gap: 10px; }
+  .daftar-uji a, .daftar-uji .menyusul {
+    grid-template-columns: 96px 24px minmax(0, 1fr); grid-template-areas: "sk no judul" "sk no acuan" "sk ringkas ringkas";
+    gap: 2px 8px; padding: 10px 12px 10px 10px;
+  }
+  .daftar-uji .sketsa-mini { margin: 0; align-self: center; }
+  .daftar-uji .no { font-size: 18px; }
+  .daftar-uji .judul { font-size: 15.5px; }
+  .daftar-uji .ringkas { margin-top: 4px; font-size: 13.5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 }
 
 /* Sketsa kecil di kartu kalkulator */

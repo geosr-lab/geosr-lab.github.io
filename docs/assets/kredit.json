@@ -1,0 +1,30 @@
+{
+  "keterangan": "Aset dari luar yang dipakai situs. Semua disimpan lokal di docs/assets/ (tanpa CDN). skrip/bangun_situs.py membuat halaman kredit/ dari berkas ini.",
+  "aset": [
+    {
+      "nama": "Archivo (huruf judul dan angka)",
+      "pembuat": "The Archivo Project Authors (Omnibus-Type)",
+      "sumber": "https://github.com/Omnibus-Type/Archivo",
+      "distribusi": "Fontsource",
+      "lisensi": "SIL Open Font License 1.1",
+      "berkas_lisensi": "assets/font/LICENSE-archivo.txt"
+    },
+    {
+      "nama": "Plus Jakarta Sans (huruf teks)",
+      "pembuat": "The Plus Jakarta Sans Project Authors (Tokotype)",
+      "sumber": "https://github.com/tokotype/PlusJakartaSans",
+      "distribusi": "Fontsource",
+      "lisensi": "SIL Open Font License 1.1",
+      "berkas_lisensi": "assets/font/LICENSE-plus-jakarta-sans.txt"
+    },
+    {
+      "nama": "KaTeX 0.16.11 (penulisan rumus)",
+      "pembuat": "Khan Academy dan kontributor",
+      "sumber": "https://github.com/KaTeX/KaTeX",
+      "distribusi": "paket npm katex",
+      "lisensi": "MIT",
+      "berkas_lisensi": "assets/katex/LICENSE"
+    }
+  ],
+  "buatan_sendiri": "Sketsa alat uji, ikon kelompok pengujian, logo lapisan tanah, ilustrasi penampang beranda, dan grafik digambar sendiri sebagai SVG di kode situs ini, bukan gambar buatan AI. Gambarnya ikut lisensi tulisan dan gambar situs (CC BY 4.0); kodenya ikut lisensi kode (MIT)."
+}

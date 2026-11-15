@@ -136,7 +136,7 @@ def footer(awalan, sumber=None):
             f'<div><dt>Pembuat</dt><dd><a href="{awalan}{PRIBADI}">Profil</a> · <a href="{awalan}{PRIBADI}catatan/">Catatan</a></dd></div>'
             f'<div><dt>Kode</dt><dd><a href="{REPO}">GitHub</a></dd></div>{sel_sumber}'
             f'<div><dt>Lisensi</dt><dd>Kode <a href="{REPO}/blob/main/LICENSE">MIT</a>, tulisan '
-            f'<a href="{REPO}/blob/main/LICENSE-TULISAN">CC BY 4.0</a></dd></div></dl>\n'
+            f'<a href="{REPO}/blob/main/LICENSE-TULISAN">CC BY 4.0</a> · <a href="{awalan}kredit/">Kredit aset</a></dd></div></dl>\n'
             '    </div>\n  </footer>' + skrip_sw(awalan))
 
 
@@ -590,6 +590,25 @@ def indeks_cari(peta, catatan, alat, praktikum):
     return json.dumps(butir, ensure_ascii=False, indent=0) + "\n"
 
 
+def halaman_kredit():
+    folder, awalan = "kredit/", "../"
+    data = json.loads((DOCS / "assets/kredit.json").read_text(encoding="utf-8"))
+    baris = "\n".join(
+        f'        <tr><td>{html.escape(a["nama"])}</td><td>{html.escape(a["pembuat"])}<br><a href="{html.escape(a["sumber"])}">sumber</a>'
+        f' · {html.escape(a["distribusi"])}</td><td><a href="{awalan}{html.escape(a["berkas_lisensi"])}">{html.escape(a["lisensi"])}</a></td></tr>'
+        for a in data["aset"])
+    return (kepala("Kredit aset", f"Huruf, pustaka, dan gambar yang dipakai {NAMA} beserta pembuat dan lisensinya.", awalan, folder) +
+            "\n<body>\n  <!-- NAV:MULAI -->\n  " + menu(awalan, "") + "\n  <!-- NAV:SELESAI -->\n\n"
+            "  <main class=\"wadah\">\n    <header class=\"pahlawan\" style=\"padding-bottom:16px\">\n"
+            "      <h1>Kredit aset</h1>\n"
+            f"      <p class=\"lead\">Aset dari luar yang dipakai {NAMA}. Semuanya disimpan di situs ini sendiri, tanpa CDN, dan lisensinya membolehkan dipakai dan disebarkan ulang.</p>\n"
+            "    </header>\n    <div class=\"tabel-gulir\"><table>\n"
+            "      <thead><tr><th>Aset</th><th>Pembuat</th><th>Lisensi</th></tr></thead>\n      <tbody>\n" + baris +
+            "\n      </tbody>\n    </table></div>\n"
+            f"    <h2>Gambar buatan sendiri</h2>\n    <p>{html.escape(data['buatan_sendiri'])}</p>\n  </main>\n\n"
+            "  <!-- FOOTER:MULAI -->\n  " + footer(awalan) + "\n  <!-- FOOTER:SELESAI -->\n</body>\n</html>\n")
+
+
 def halaman_cari():
     folder, awalan = "cari/", "../"
     return (kepala("Cari", f"Cari alat praktikum, kalkulator, dan latihan di {NAMA}.", awalan, folder) +
@@ -698,6 +717,7 @@ def bangun():
             keluaran[target] = ganti_penanda(keluaran[target], "STATUS", lencana_status(a), wajib=False)
     keluaran[DOCS / "cari.json"] = indeks_cari(peta, catatan, alat, praktikum)
     keluaran[DOCS / "cari/index.html"] = halaman_cari()
+    keluaran[DOCS / "kredit/index.html"] = halaman_kredit()
     keluaran[DOCS / "index.html"] = ganti_penanda(keluaran[DOCS / "index.html"], "ALAT", kartu_beranda(alat, praktikum))
     keluaran[DOCS / "alat/index.html"] = ganti_penanda(keluaran[DOCS / "alat/index.html"], "DAFTAR-ALAT", daftar_halaman_alat(alat))
     readme = AKAR / "README.md"
