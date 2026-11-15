@@ -296,7 +296,7 @@
           var w = document.getElementById('hasil-praktikum');
           if (w) { tunggu.disconnect(); amatiHasil(w); }
         });
-        tunggu.observe(ap, { childList: true });
+        tunggu.observe(ap, { childList: true, subtree: true });
       }
     }
   }

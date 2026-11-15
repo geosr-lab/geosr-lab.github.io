@@ -66,7 +66,7 @@
   }
 
   Praktikum.pasang({
-    id: 'cbr', judulEkspor: 'Pemeriksaan CBR (SNI 1744:2012)',
+    id: 'cbr', judulEkspor: 'Pemeriksaan CBR (SNI 1744:2012)', lipat: true,
     nim: { ket: 'pembacaan arloji beban penetrasi, berat tanah + cetakan, tanah basah + cawan, dan tanah kering + cawan', tabel: nimTabel },
     parameter: [
       { id: 'jenis', label: 'Standard/modified', pilihan: [['standard', 'Standard'], ['modified', 'Modified']] },

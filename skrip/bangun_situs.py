@@ -338,7 +338,7 @@ def halaman_alat_praktikum(alat, kelompok, status="", data=None, relasi=None):
         if dipakai:
             isi += ('<div><span class="lbl">Hasilnya dipakai di</span>'
                     + "".join(chip(a, f"../{a['id']}/", l) for a, l in dipakai) + "</div>")
-        baris_relasi = f'\n      <div class="relasi tidak-cetak">{isi}</div>'
+        baris_relasi = f'\n        <div class="relasi tidak-cetak">{isi}</div>'
     alur = ""
     if i >= 0:
         seb = urut[i - 1] if i > 0 else None
@@ -353,9 +353,15 @@ def halaman_alat_praktikum(alat, kelompok, status="", data=None, relasi=None):
             f"      <p class=\"remah\"><a href=\"{awalan}praktikum/\">Praktikum Mekanika Tanah</a>"
             f"<span class=\"pemisah\" aria-hidden=\"true\">/</span><a href=\"{awalan}praktikum/#{slug(kelompok)}\">{html.escape(kelompok)}</a></p>\n"
             f"      <h1>{html.escape(alat['judul'])}</h1>\n      <p class=\"lead\">{html.escape(alat['deskripsi'])}</p>\n"
-            f"      {etiket}{baris_relasi}\n    </header>\n"
-            f"    <div id=\"alat-praktikum\" data-alat=\"{alat['id']}\"></div>{alur}\n"
-            f"    <div class=\"status-bawah\">{status}</div>\n  </main>\n\n"
+            f"      <p class=\"acuan-alat\"><span class=\"chip\" data-lapis=\"{lapis}\">{html.escape(alat['standar'])}</span></p>\n    </header>\n"
+            # Panel Pengantar dan Sumber ditulis di halaman; kerangka.js menambah panel Data, Hasil, Grafik dan tab di atasnya.
+            f"    <div id=\"alat-praktikum\" data-alat=\"{alat['id']}\">\n"
+            f"      <section class=\"panel-alat\" id=\"panel-pengantar\" data-panel=\"pengantar\">\n"
+            f"        <h2 class=\"judul-panel\">Pengantar</h2>\n        <div id=\"pengantar-isi\"></div>\n"
+            f"        {etiket}{baris_relasi}\n      </section>\n"
+            f"      <section class=\"panel-alat\" id=\"panel-sumber\" data-panel=\"sumber\">\n"
+            f"        <h2 class=\"judul-panel\">Sumber dan catatan</h2>\n        <div id=\"sumber-isi\"></div>\n"
+            f"        <div class=\"status-bawah\">{status}</div>\n      </section>\n    </div>{alur}\n  </main>\n\n"
             "  <!-- FOOTER:MULAI -->\n  " + footer(awalan) + "\n  <!-- FOOTER:SELESAI -->\n"
             f'  <script src="{awalan}assets/katex/katex.min.js" defer></script>\n'
             f'  <script src="{awalan}assets/umum.js" defer></script>{skrip}\n</body>\n</html>\n')
