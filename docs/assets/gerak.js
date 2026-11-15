@@ -5,7 +5,8 @@
  *    konsolidasi" memindahkan bentuk di antara dua keadaan.
  * 2. Halaman alat: kartu hasil yang angkanya berubah diberi kilat singkat; hasil yang baru muncul
  *    tampil bertahap dan garis grafik tergambar.
- * 3. Menu lipat di layar sempit (tombol menu, tutup dengan Esc, klik tautan, atau klik di luar).
+ * 3. Tombol tema (ikut sistem, terang, gelap), tersimpan di localStorage; tema.js memasangnya sebelum halaman tergambar.
+ * 4. Menu lipat di layar sempit (tombol menu, tutup dengan Esc, klik tautan, atau klik di luar).
  * Semua gerak dimatikan bila pengguna memilih prefers-reduced-motion.
  */
 (function () {
@@ -34,6 +35,24 @@
       var tutup = function (m) { if (m.matches) atur(false); };
       if (lebar.addEventListener) lebar.addEventListener('change', tutup); else if (lebar.addListener) lebar.addListener(tutup);
     }
+  })();
+
+  // ------------------------------------------------------------ tombol tema
+  (function () {
+    var tombol = document.querySelector('.tema-tombol');
+    if (!tombol) return;
+    var akar = document.documentElement;
+    var URUT = ['', 'terang', 'gelap'];
+    var NAMA = { '': 'ikut sistem', terang: 'terang', gelap: 'gelap' };
+    function label() { tombol.setAttribute('aria-label', 'Tema: ' + NAMA[akar.getAttribute('data-tema') || ''] + '. Klik untuk ganti.'); }
+    label();
+    tombol.addEventListener('click', function () {
+      var kini = akar.getAttribute('data-tema') || '';
+      var lanjut = URUT[(URUT.indexOf(kini) + 1) % URUT.length];
+      if (lanjut) akar.setAttribute('data-tema', lanjut); else akar.removeAttribute('data-tema');
+      try { if (lanjut) localStorage.setItem('tema', lanjut); else localStorage.removeItem('tema'); } catch (e) { /* tidak tersimpan */ }
+      label();
+    });
   })();
 
   // ------------------------------------------------------------ penampang beranda

@@ -16,6 +16,7 @@
   <meta name="theme-color" content="#f1f2ec" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#10181a" media="(prefers-color-scheme: dark)">
   <link rel="stylesheet" href="../assets/gaya.css">
+  <script src="../assets/tema.js"></script>
   <link rel="icon" href="../assets/ikon.svg" type="image/svg+xml">
   <link rel="manifest" href="../manifest.webmanifest">
 </head>
@@ -24,6 +25,7 @@
   <nav class="nav">
     <div class="wadah">
       <a class="merek" href="../" aria-label="GeoSR, beranda"><svg class="merek-tanda" viewBox="0 0 22 26" aria-hidden="true"><rect x="0" y="0" width="22" height="26" rx="2" style="fill:none"/><rect x="0" y="0" width="22" height="6" rx="1" style="fill:var(--lapis-3)"/><rect x="0" y="7.5" width="22" height="7" rx="1" style="fill:var(--lapis-2)"/><rect x="0" y="16" width="22" height="4" rx="1" style="fill:var(--lapis-4)"/><rect x="0" y="21.5" width="22" height="4.5" rx="1" style="fill:var(--lapis-5)"/></svg><span>GeoSR<span class="merek-lengkap">Geotechnical Soil Report</span></span></a>
+      <button class="tema-tombol" type="button" aria-label="Tema: ikut sistem" title="Ganti tema"><svg viewBox="0 0 20 20" aria-hidden="true"><g class="ikon-otomatis"><circle cx="10" cy="10" r="6.5"/><path d="M10 3.5a6.5 6.5 0 0 0 0 13z" class="isi"/></g><g class="ikon-terang"><circle cx="10" cy="10" r="3.4"/><path d="M10 2v2.2M10 15.8V18M2 10h2.2M15.8 10H18M4.3 4.3l1.6 1.6M14.1 14.1l1.6 1.6M4.3 15.7l1.6-1.6M14.1 5.9l1.6-1.6"/></g><g class="ikon-gelap"><path d="M16 12.6A6.6 6.6 0 0 1 7.4 4a6.6 6.6 0 1 0 8.6 8.6z"/></g></svg></button>
       <button class="nav-tombol" type="button" aria-expanded="false" aria-controls="menu-utama"><span class="nav-garis" aria-hidden="true"></span><span class="sr-only">Menu</span></button>
       <ul id="menu-utama"><li><a href="../praktikum/" aria-current="page">Praktikum</a></li><li><a href="../alat/">Kalkulator</a></li><li><a href="../latihan/">Latihan</a></li><li><a href="../cari/">Cari</a></li></ul>
     </div>
@@ -34,7 +36,7 @@
     <header class="pahlawan">
       <h1>Praktikum Mekanika Tanah</h1>
       <p class="lead">Pengolah data praktikum dengan formulir seperti lembar data laboratorium. Semua 18 alat sudah tersedia, dari sifat fisik sampai uji lapangan.</p>
-      <nav class="inti-bor" aria-label="Kelompok pengujian"><a href="#sifat-fisik" data-lapis="1" style="--n:3"><span class="nama">Sifat fisik</span><span class="jumlah">3 alat</span></a><a href="#konsistensi-dan-gradasi" data-lapis="2" style="--n:5"><span class="nama">Konsistensi dan gradasi</span><span class="jumlah">5 alat</span></a><a href="#kepadatan" data-lapis="3" style="--n:3"><span class="nama">Kepadatan</span><span class="jumlah">3 alat</span></a><a href="#permeabilitas" data-lapis="4" style="--n:2"><span class="nama">Permeabilitas</span><span class="jumlah">2 alat</span></a><a href="#kekuatan-dan-konsolidasi" data-lapis="5" style="--n:3"><span class="nama">Kekuatan dan konsolidasi</span><span class="jumlah">3 alat</span></a><a href="#uji-lapangan" data-lapis="6" style="--n:2"><span class="nama">Uji lapangan</span><span class="jumlah">2 alat</span></a></nav>
+      <nav class="inti-bor" aria-label="Kelompok pengujian"><a href="#sifat-fisik" data-lapis="1" style="--n:3"><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3h4M10.6 3v5.4a6.2 6.2 0 1 0 2.8 0V3"/><path d="M6.4 15.2h11.2"/></svg><span class="nama">Sifat fisik</span><span class="jumlah">3 alat</span></a><a href="#konsistensi-dan-gradasi" data-lapis="2" style="--n:5"><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h16v3.6H4zM4.8 8.1h14.4v3.6H4.8zM5.6 11.7h12.8v3.6H5.6z"/><path d="M7 15.3l1 4.2h8l1-4.2"/></svg><span class="nama">Konsistensi dan gradasi</span><span class="jumlah">5 alat</span></a><a href="#kepadatan" data-lapis="3" style="--n:3"><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5v6M9.4 8.5h5.2v2.6H9.4z"/><path d="M6.5 13.5h11v7h-11zM6.5 16.2h11"/></svg><span class="nama">Kepadatan</span><span class="jumlah">3 alat</span></a><a href="#permeabilitas" data-lapis="4" style="--n:2"><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 2.5v6M14.5 2.5v6M6.5 8.5h11v9h-11z"/><path d="M8 12.4c1.3 1 2.7 1 4 0s2.7-1 4 0"/><path d="M12 19.5v2"/></svg><span class="nama">Permeabilitas</span><span class="jumlah">2 alat</span></a><a href="#kekuatan-dan-konsolidasi" data-lapis="5" style="--n:3"><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 8h7v8h-7z"/><path d="M12 2.5v3.5M10 4.3l2 1.9 2-1.9M12 21.5V18M10 19.7l2-1.9 2 1.9"/></svg><span class="nama">Kekuatan dan konsolidasi</span><span class="jumlah">3 alat</span></a><a href="#uji-lapangan" data-lapis="6" style="--n:2"><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8.5h7M14 8.5h7M3 13.5h7M14 13.5h7M3 18.5h18"/><path d="M12 2.5v11.5M10.4 14l1.6 3.8 1.6-3.8z"/></svg><span class="nama">Uji lapangan</span><span class="jumlah">2 alat</span></a></nav>
     </header>
     <div class="cara-pakai">
       <div><h3>Isi seperti form lab</h3><p>Baris dan simbol mengikuti lembar data. Angka boleh diketik dengan koma, atau blok data di Excel lalu tempel sekaligus.</p></div>
@@ -43,7 +45,7 @@
       <div><h3>Siap untuk laporan</h3><p>Unduh Word dengan Times New Roman dan tabel tanpa garis vertikal, grafik PNG, salin ke Excel, atau cetak dengan kop identitas contoh.</p></div>
     </div>
     <section class="kelompok-uji" id="sifat-fisik" data-lapis="1">
-      <h2>Sifat fisik <span class="jumlah">3 alat</span></h2>
+      <h2><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3h4M10.6 3v5.4a6.2 6.2 0 1 0 2.8 0V3"/><path d="M6.4 15.2h11.2"/></svg>Sifat fisik <span class="jumlah">3 alat</span></h2>
       <ol class="daftar-uji">
         <li><a href="kadar-air/"><span class="no">1</span><span class="judul">Kadar air</span><span class="acuan">SNI 1965:2008</span><span class="ringkas">Kadar air tiap cawan dan rata-ratanya dari penimbangan basah dan kering.</span></a></li>
         <li><a href="berat-spesifik/"><span class="no">2</span><span class="judul">Berat spesifik (piknometer)</span><span class="acuan">SNI 1964:2008</span><span class="ringkas">Gs tiap piknometer dengan koreksi suhu massa jenis air, dan rata-ratanya.</span></a></li>
@@ -51,7 +53,7 @@
       </ol>
     </section>
     <section class="kelompok-uji" id="konsistensi-dan-gradasi" data-lapis="2">
-      <h2>Konsistensi dan gradasi <span class="jumlah">5 alat</span></h2>
+      <h2><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h16v3.6H4zM4.8 8.1h14.4v3.6H4.8zM5.6 11.7h12.8v3.6H5.6z"/><path d="M7 15.3l1 4.2h8l1-4.2"/></svg>Konsistensi dan gradasi <span class="jumlah">5 alat</span></h2>
       <ol class="daftar-uji">
         <li><a href="atterberg/"><span class="no">4</span><span class="judul">Batas Atterberg</span><span class="acuan">SNI 1967:2008 · SNI 1966:2008</span><span class="ringkas">Batas cair (kurva aliran atau satu titik), batas plastis, indeks plastisitas, dan posisi di bagan plastisitas.</span></a></li>
         <li><a href="batas-susut/"><span class="no">5</span><span class="judul">Batas susut</span><span class="acuan">SNI 3422:2008</span><span class="ringkas">Batas susut dan rasio susut dari volume tanah basah dan kering, dengan volume langsung atau air raksa.</span></a></li>
@@ -61,7 +63,7 @@
       </ol>
     </section>
     <section class="kelompok-uji" id="kepadatan" data-lapis="3">
-      <h2>Kepadatan <span class="jumlah">3 alat</span></h2>
+      <h2><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5v6M9.4 8.5h5.2v2.6H9.4z"/><path d="M6.5 13.5h11v7h-11zM6.5 16.2h11"/></svg>Kepadatan <span class="jumlah">3 alat</span></h2>
       <ol class="daftar-uji">
         <li><a href="pemadatan/"><span class="no">9</span><span class="judul">Pemadatan (Proctor)</span><span class="acuan">SNI 1742:2008 · SNI 1743:2008</span><span class="ringkas">Kurva pemadatan orde 2 atau 3, kadar air optimum, kepadatan kering maksimum, dan garis ZAV.</span></a></li>
         <li><a href="sand-cone/"><span class="no">10</span><span class="judul">Kerucut pasir (sand cone)</span><span class="acuan">SNI 2828:2011</span><span class="ringkas">Kalibrasi pasir, volume lubang, berat isi kering lapangan, dan derajat kepadatan.</span></a></li>
@@ -69,14 +71,14 @@
       </ol>
     </section>
     <section class="kelompok-uji" id="permeabilitas" data-lapis="4">
-      <h2>Permeabilitas <span class="jumlah">2 alat</span></h2>
+      <h2><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 2.5v6M14.5 2.5v6M6.5 8.5h11v9h-11z"/><path d="M8 12.4c1.3 1 2.7 1 4 0s2.7-1 4 0"/><path d="M12 19.5v2"/></svg>Permeabilitas <span class="jumlah">2 alat</span></h2>
       <ol class="daftar-uji">
         <li><a href="permeabilitas-tetap/"><span class="no">12</span><span class="judul">Permeabilitas tinggi tekan tetap (constant head)</span><span class="acuan">ASTM D2434</span><span class="ringkas">Debit, gradien hidrolik, dan koefisien permeabilitas k tiap percobaan beserta rata-ratanya, mengikuti form constant head.</span></a></li>
         <li><a href="permeabilitas-turun/"><span class="no">13</span><span class="judul">Permeabilitas tinggi tekan turun (falling head)</span><span class="acuan">ASTM D5084</span><span class="ringkas">Luas buret dan benda uji, koefisien permeabilitas k dari penurunan muka air h1 ke h2, dan rata-rata tiga percobaan.</span></a></li>
       </ol>
     </section>
     <section class="kelompok-uji" id="kekuatan-dan-konsolidasi" data-lapis="5">
-      <h2>Kekuatan dan konsolidasi <span class="jumlah">3 alat</span></h2>
+      <h2><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 8h7v8h-7z"/><path d="M12 2.5v3.5M10 4.3l2 1.9 2-1.9M12 21.5V18M10 19.7l2-1.9 2 1.9"/></svg>Kekuatan dan konsolidasi <span class="jumlah">3 alat</span></h2>
       <ol class="daftar-uji">
         <li><a href="geser-langsung/"><span class="no">14</span><span class="judul">Kuat geser langsung</span><span class="acuan">SNI 3420:2016</span><span class="ringkas">Tegangan geser tiap benda uji, koreksi luas opsional, garis keruntuhan Mohr–Coulomb, c dan φ.</span></a></li>
         <li><a href="tekan-bebas/"><span class="no">15</span><span class="judul">Kuat tekan bebas (UCS)</span><span class="acuan">SNI 3638:2012</span><span class="ringkas">Kurva tegangan–regangan dengan koreksi luas, qu (puncak atau pada regangan 15%), cu, E50, dan sensitivitas.</span></a></li>
@@ -84,7 +86,7 @@
       </ol>
     </section>
     <section class="kelompok-uji" id="uji-lapangan" data-lapis="6">
-      <h2>Uji lapangan <span class="jumlah">2 alat</span></h2>
+      <h2><svg class="ikon-uji" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8.5h7M14 8.5h7M3 13.5h7M14 13.5h7M3 18.5h18"/><path d="M12 2.5v11.5M10.4 14l1.6 3.8 1.6-3.8z"/></svg>Uji lapangan <span class="jumlah">2 alat</span></h2>
       <ol class="daftar-uji">
         <li><a href="sondir/"><span class="no">17</span><span class="judul">Sondir</span><span class="acuan">SNI 2827:2008</span><span class="ringkas">PK, JP, hambatan lekat, JHL, hambatan setempat, rasio gesekan, dan grafik terhadap kedalaman seperti form lab.</span></a></li>
         <li><a href="spt/"><span class="no">18</span><span class="judul">SPT dan log bor</span><span class="acuan">SNI 4153:2008</span><span class="ringkas">Nilai N dan N60, kepadatan atau konsistensi menurut N, dan log bor berpola lapisan dengan grafik N terhadap kedalaman.</span></a></li>

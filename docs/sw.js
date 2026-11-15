@@ -2,10 +2,11 @@
  * Versi cache mengikuti versi di CITATION.cff. Aset inti disimpan saat pemasangan; halaman dan
  * aset lain disimpan saat pertama dibuka. Halaman: jaringan dulu, cadangan dari cache. Aset: cache dulu.
  */
-const VERSI = "defsa-0.11.0";
+const VERSI = "defsa-0.12.0";
 const INTI = [
   "/",
   "/assets/gaya.css",
+  "/assets/tema.js",
   "/assets/umum.js",
   "/assets/daftar-sw.js",
   "/assets/gerak.js",
