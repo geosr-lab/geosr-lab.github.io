@@ -5,6 +5,7 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 ## [Belum dirilis]
 
 ### Ditambahkan
+- Tab Pengantar 16 alat praktikum memuat "Alat dan langkah praktikum": daftar alat, bahan, dan langkah kerja dari laporan praktikum Mekanika Tanah kelompok 3 (teks dirapikan, dengan rujukan halaman), dari kolom `cara_uji` di `konten/praktikum.json`. Batas Atterberg memuat batas cair dan batas plastis; SPT memuat juga pengeboran dan pengambilan sampel.
 - Versi bahasa Inggris sederhana: beranda `/en/` dan profil pembuat `/en/pembuat/` (dari `konten/en/tentang.md`), tautan bahasa di menu halaman berpadanan, `hreflang` dan `og:locale en_US`, serta `README.en.md`. Alatnya tetap berbahasa Indonesia. Versi cache 0.16.0.
 - Kalkulator tiang bor N-SPT, pondasi dangkal, dan penurunan konsolidasi dengan langkah hitungan.
 - Bank soal latihan geoteknik dengan angka acak dan pembahasan.

@@ -365,6 +365,29 @@ def chip(a, href, lapis):
     return f'<a class="chip" data-lapis="{lapis}" href="{href}">{html.escape(a["judul"])}</a>'
 
 
+SUMBER_CARA_UJI = "Laporan Praktikum Mekanika Tanah Kelompok 3"
+
+
+def cara_uji(alat):
+    """Blok "Alat dan langkah praktikum" di panel Pengantar, dari kolom cara_uji di praktikum.json."""
+    blok = alat.get("cara_uji") or []
+    if not blok:
+        return ""
+    e = html.escape
+    isi = ""
+    for b in blok:
+        daftar = lambda judul, butir, tag: (f'<h4>{judul}</h4><{tag}>' + "".join(f"<li>{e(x)}</li>" for x in butir) + f"</{tag}>") if butir else ""
+        hal_alat, hal_langkah = b["halaman"]
+        isi += ('\n          <div class="cara-blok">'
+                + (f'<h4 class="cara-judul">{e(b["judul"])}</h4>' if b.get("judul") else "")
+                + '<div class="cara-kolom"><div class="cara-alat">' + daftar("Alat", b["alat"], "ul") + daftar("Bahan", b.get("bahan"), "ul")
+                + '</div><div class="cara-langkah">' + daftar("Langkah", b["langkah"], "ol") + "</div></div>"
+                + f'<p class="cara-sumber">Sumber: {e(SUMBER_CARA_UJI)}, bagian Peralatan hlm. {hal_alat} dan Prosedur percobaan hlm. {hal_langkah}.</p>'
+                + "</div>")
+    return (f'\n        <section class="cara-uji" aria-labelledby="cara-uji-judul">\n'
+            f'          <h3 id="cara-uji-judul">Alat dan langkah praktikum</h3>{isi}\n        </section>')
+
+
 def halaman_alat_praktikum(alat, kelompok, status="", data=None, relasi=None):
     folder = f"praktikum/{alat['id']}/"
     awalan = "../../"
@@ -409,7 +432,7 @@ def halaman_alat_praktikum(alat, kelompok, status="", data=None, relasi=None):
             # Panel Pengantar dan Sumber ditulis di halaman; kerangka.js menambah panel Data, Hasil, Grafik dan tab di atasnya.
             f"    <div id=\"alat-praktikum\" data-alat=\"{alat['id']}\">\n"
             f"      <section class=\"panel-alat\" id=\"panel-pengantar\" data-panel=\"pengantar\">\n"
-            f"        <h2 class=\"judul-panel\">Pengantar</h2>\n        <div id=\"pengantar-isi\"></div>\n"
+            f"        <h2 class=\"judul-panel\">Pengantar</h2>\n        <div id=\"pengantar-isi\"></div>{cara_uji(alat)}\n"
             f"        {etiket}{baris_relasi}\n      </section>\n"
             f"      <section class=\"panel-alat\" id=\"panel-sumber\" data-panel=\"sumber\">\n"
             f"        <h2 class=\"judul-panel\">Sumber dan catatan</h2>\n        <div id=\"sumber-isi\"></div>\n"

@@ -1011,6 +1011,40 @@ details.lipat > summary:hover > h3 { color: var(--aksen); }
 }
 #pengantar-isi.ada-sketsa .pengantar-mulai { margin-top: 0; }
 
+/* Tab Pengantar: alat, bahan, dan langkah praktikum dari laporan (kolom cara_uji di praktikum.json) */
+.cara-uji { margin-top: var(--j-6); padding-top: var(--j-5); border-top: 1px solid var(--garis); }
+.cara-uji > h3 { margin: 0 0 var(--j-4); }
+.cara-blok + .cara-blok { margin-top: var(--j-6); }
+.cara-judul { margin: 0 0 var(--j-3); font-size: 18px; }
+.cara-kolom { display: grid; gap: var(--j-5); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 760px) { .cara-kolom { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); align-items: start; } }
+.cara-kolom h4 {
+  margin: 0 0 var(--j-2); font-family: var(--huruf-judul); font-stretch: 90%; font-size: 13px; font-weight: 600;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--teks-2);
+}
+.cara-alat ul + h4 { margin-top: var(--j-4); }
+.cara-alat ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--garis); }
+.cara-alat li { padding: 7px 0 7px 18px; border-bottom: 1px solid var(--garis); position: relative; line-height: 1.45; }
+@media (min-width: 480px) and (max-width: 759px) {
+  .cara-alat ul { columns: 2; column-gap: var(--j-5); }
+  .cara-alat li { break-inside: avoid; }
+}
+.cara-alat li::before { content: ""; position: absolute; left: 2px; top: 15px; width: 7px; height: 7px; border: 1.5px solid currentColor; opacity: .55; }
+.cara-langkah ol { list-style: none; margin: 0; padding: 0; counter-reset: langkah; }
+.cara-langkah li { counter-increment: langkah; position: relative; padding: 0 0 var(--j-3) 40px; line-height: 1.55; }
+.cara-langkah li::before {
+  content: counter(langkah); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%;
+  display: grid; place-items: center; font-family: var(--huruf-judul); font-size: 13px; font-weight: 600;
+  border: 1.5px solid var(--garis); background: var(--permukaan);
+}
+.cara-langkah li:not(:last-child)::after { content: ""; position: absolute; left: 12.5px; top: 28px; bottom: 2px; border-left: 1.5px solid var(--garis); }
+.cara-sumber { margin: var(--j-3) 0 0; font-size: 13px; color: var(--teks-2); }
+@media print {
+  .cara-kolom { display: block; }
+  .cara-langkah { margin-top: 10px; }
+  .cara-blok { break-inside: avoid-page; }
+}
+
 /* Halaman kalkulator: sketsa di kanan kepala halaman */
 .sketsa-kalk { margin-top: var(--j-5); max-width: 420px; }
 @media (min-width: 900px) {

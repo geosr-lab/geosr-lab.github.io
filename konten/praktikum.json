@@ -14,6 +14,30 @@
             "hitung-dasar.js",
             "hitung-sifat-fisik.js",
             "alat-sifat-fisik.js"
+          ],
+          "cara_uji": [
+            {
+              "alat": [
+                "Oven dengan pengatur suhu sampai (110 ± 5) °C",
+                "Cawan kedap udara dan tidak berkarat",
+                "Timbangan"
+              ],
+              "bahan": [
+                "Tanah terganggu",
+                "Tanah tak terganggu"
+              ],
+              "langkah": [
+                "Siapkan contoh tanah terganggu dan tak terganggu, masing-masing untuk dua cawan.",
+                "Beri label setiap cawan, lalu timbang cawan kosong.",
+                "Masukkan tanah ke dalam cawan, lalu timbang cawan berisi tanah basah.",
+                "Keringkan cawan berisi tanah di oven pada suhu sekitar 110 °C selama 24 jam atau sampai beratnya tetap.",
+                "Timbang cawan berisi tanah kering dan catat hasilnya."
+              ],
+              "halaman": [
+                48,
+                49
+              ]
+            }
           ]
         },
         {
@@ -26,6 +50,39 @@
             "hitung-dasar.js",
             "hitung-sifat-fisik.js",
             "alat-sifat-fisik.js"
+          ],
+          "cara_uji": [
+            {
+              "alat": [
+                "Piknometer",
+                "Saringan No. 10",
+                "Timbangan",
+                "Oven",
+                "Hot plate",
+                "Botol semprot (wash bottle)",
+                "Termometer"
+              ],
+              "bahan": [
+                "Air suling",
+                "Sampel tanah terganggu ±100 gram"
+              ],
+              "langkah": [
+                "Ambil sampel tanah yang lolos saringan No. 10.",
+                "Keringkan sampel di oven selama 24 jam, lalu dinginkan.",
+                "Cuci piknometer, keringkan, lalu timbang.",
+                "Masukkan 10 gram tanah ke dalam piknometer, lalu timbang.",
+                "Tambahkan air suling sampai sekitar 2/3 tinggi piknometer.",
+                "Panaskan piknometer sekitar 10 menit, lalu dinginkan.",
+                "Isi piknometer dengan air suling sampai penuh, lalu tutup.",
+                "Rendam piknometer di wadah perendam sampai suhunya tetap.",
+                "Keringkan bagian luar piknometer, timbang, lalu ukur suhu isinya dengan termometer.",
+                "Kosongkan dan bersihkan piknometer, isi air suling sampai penuh, lalu timbang lagi."
+              ],
+              "halaman": [
+                58,
+                59
+              ]
+            }
           ]
         },
         {
@@ -55,6 +112,67 @@
             "hitung-dasar.js",
             "hitung-atterberg.js",
             "alat-atterberg.js"
+          ],
+          "cara_uji": [
+            {
+              "judul": "Batas cair",
+              "alat": [
+                "Alat batas cair Casagrande",
+                "Alat pembuat alur (grooving tool)",
+                "Spatula",
+                "Cawan",
+                "Saringan No. 40",
+                "Pelat kaca",
+                "Oven",
+                "Timbangan"
+              ],
+              "bahan": [
+                "Air suling",
+                "Tanah terganggu ±100 gram"
+              ],
+              "langkah": [
+                "Ambil ±100 gram tanah terganggu kering yang lolos saringan No. 40.",
+                "Letakkan tanah di atas pelat kaca, tambahkan air suling sedikit demi sedikit, lalu aduk sampai rata.",
+                "Masukkan tanah ke mangkuk Casagrande dan ratakan permukaannya.",
+                "Buat alur di tengah tanah dengan grooving tool sampai tanah terbelah dua.",
+                "Putar engkol mangkuk dengan kecepatan tetap, dua ketukan per detik, sampai alur merapat sekitar 13 mm. Catat jumlah ketukannya.",
+                "Ketukan sampel pertama tidak boleh lebih dari 30. Bila sudah 30 ketukan dan alur belum merapat, tambahkan air lalu ulangi dari langkah 3. Sampel kedua sampai keempat harus merapat dengan ketukan lebih sedikit dari sampel sebelumnya.",
+                "Ambil tanah dari bagian alur yang merapat dan masukkan ke cawan yang sudah ditimbang.",
+                "Timbang cawan berisi tanah, lalu keringkan di oven selama 24 jam.",
+                "Timbang tanah kering beserta cawan untuk menghitung kadar air."
+              ],
+              "halaman": [
+                69,
+                71
+              ]
+            },
+            {
+              "judul": "Batas plastis",
+              "alat": [
+                "Pelat kaca",
+                "Saringan No. 40",
+                "Cawan",
+                "Oven",
+                "Timbangan",
+                "Spatula"
+              ],
+              "bahan": [
+                "Air suling",
+                "Tanah terganggu"
+              ],
+              "langkah": [
+                "Ambil ±100 gram tanah terganggu kering yang lolos saringan No. 40.",
+                "Letakkan tanah di atas pelat kaca dan tambahkan air suling.",
+                "Gulung campuran tanah di atas pelat kaca sampai muncul retak halus.",
+                "Masukkan gulungan yang retak halus ke cawan yang sudah ditimbang sampai sekitar 15 gram, lalu timbang.",
+                "Keringkan cawan di oven selama 24 jam.",
+                "Timbang lagi cawan berisi tanah kering untuk menghitung kadar air."
+              ],
+              "halaman": [
+                80,
+                82
+              ]
+            }
           ]
         },
         {
@@ -67,6 +185,39 @@
             "hitung-dasar.js",
             "hitung-atterberg.js",
             "alat-atterberg.js"
+          ],
+          "cara_uji": [
+            {
+              "alat": [
+                "Cawan porselin",
+                "Spatula",
+                "Cawan gelas",
+                "Gelas ukur",
+                "Timbangan",
+                "Oven",
+                "Pelat kaca"
+              ],
+              "bahan": [
+                "Air raksa",
+                "Tanah lolos saringan No. 40 ±30 gram"
+              ],
+              "langkah": [
+                "Campur contoh tanah dengan air suling di cawan pencampur sampai menjadi pasta jenuh tanpa gelembung udara. Kadar airnya sama dengan atau sedikit di atas batas cair.",
+                "Olesi dinding cawan susut dengan vaselin agar tanah tidak menempel.",
+                "Isi cawan dengan pasta dalam tiga tahap, masing-masing sekitar 1/3 volume cawan, dan ketuk-ketuk perlahan setiap tahap sampai tanah mengisi seluruh cawan.",
+                "Ratakan kelebihan tanah dengan mistar baja dan bersihkan tanah yang menempel di tepi cawan.",
+                "Timbang dan catat berat cawan berisi tanah basah.",
+                "Biarkan tanah di suhu ruang sampai warnanya berubah dari gelap menjadi lebih terang, lalu keringkan di oven pada (110 ± 5) °C minimal 16 jam atau sampai beratnya tetap.",
+                "Timbang cawan berisi tanah kering, lalu keluarkan tanah dari cawan.",
+                "Ukur volume cawan (V): isi cawan dengan air raksa sampai penuh rata, lalu tuang air raksa itu ke gelas ukur.",
+                "Ukur volume tanah kering (V₀): letakkan cawan gelas (diameter 50 mm, tinggi 25 mm) di dalam cawan penguap (diameter 150 mm), isi penuh dengan air raksa, celupkan tanah kering perlahan, tutup dengan pelat transparan dan tekan. Air raksa yang tumpah dituang ke gelas ukur, atau ditimbang sampai 0,1 gram terdekat.",
+                "Hitung kadar air, batas susut, faktor susut, perubahan volume, dan susut linier."
+              ],
+              "halaman": [
+                89,
+                90
+              ]
+            }
           ]
         },
         {
@@ -78,6 +229,32 @@
           "skrip": [
             "hitung-saringan.js",
             "alat-saringan.js"
+          ],
+          "cara_uji": [
+            {
+              "alat": [
+                "Satu set saringan No. 4, 10, 40, 200, dan pan",
+                "Oven",
+                "Kuas",
+                "Palu karet"
+              ],
+              "bahan": [
+                "Air",
+                "Sampel tanah"
+              ],
+              "langkah": [
+                "Ambil 500 gram contoh tanah terganggu yang sudah dikeringkan 24 jam. Pecah gumpalan dengan palu karet.",
+                "Cuci tanah di atas saringan No. 200 sampai air yang lewat menjadi bening.",
+                "Keringkan butiran yang tertahan di saringan No. 200 di dalam oven.",
+                "Ayak tanah kering dengan susunan saringan No. 4, 10, 40, 200, dan pan.",
+                "Timbang butiran yang tertahan di setiap saringan.",
+                "Ulangi langkah 1–5 untuk tanah tak terganggu."
+              ],
+              "halaman": [
+                94,
+                95
+              ]
+            }
           ]
         },
         {
@@ -92,6 +269,40 @@
             "hitung-saringan.js",
             "hitung-hidrometer.js",
             "alat-hidrometer.js"
+          ],
+          "cara_uji": [
+            {
+              "alat": [
+                "Gelas ukur",
+                "Hidrometer",
+                "Piring wadah",
+                "Saringan No. 10",
+                "Timbangan",
+                "Waterbath",
+                "Stopwatch"
+              ],
+              "bahan": [
+                "Tanah terganggu",
+                "Air suling dan Na₂SO₄"
+              ],
+              "langkah": [
+                "Ambil contoh tanah terganggu yang sudah dikeringkan di oven selama 24 jam.",
+                "Saring tanah dengan saringan No. 10 dan ambil 50 gram.",
+                "Masukkan tanah ke wadah, tambahkan air suling dan 100 ml Na₂SO₄, lalu aduk perlahan.",
+                "Tutup wadah dan diamkan selama 24 jam.",
+                "Masukkan larutan ke waterbath, tambahkan air suling, dan tunggu 15 menit.",
+                "Tuang campuran ke gelas ukur, bilas sisa tanah di wadah, lalu tambahkan air suling sampai 1000 ml.",
+                "Tutup gelas ukur rapat dengan telapak tangan, lalu jungkir balikkan perlahan sampai campuran merata.",
+                "Masukkan hidrometer ke gelas ukur perlahan dan baca pada waktu-waktu yang ditentukan di formulir.",
+                "Setelah 24 jam, saring larutan dengan saringan No. 200 perlahan agar butiran halus tidak ikut terbuang.",
+                "Masukkan tanah yang tertahan ke cawan yang sudah ditimbang, lalu keringkan di oven selama 24 jam.",
+                "Timbang tanah kering beserta cawan dan catat hasilnya."
+              ],
+              "halaman": [
+                110,
+                113
+              ]
+            }
           ]
         },
         {
@@ -122,6 +333,36 @@
             "hitung-dasar.js",
             "hitung-kepadatan.js",
             "alat-kepadatan.js"
+          ],
+          "cara_uji": [
+            {
+              "alat": [
+                "Mould dan alat pengikatnya",
+                "Pisau perata",
+                "Kertas label",
+                "Cawan",
+                "Oven",
+                "Timbangan"
+              ],
+              "bahan": [
+                "Sampel tanah terganggu",
+                "Air",
+                "Oli"
+              ],
+              "langkah": [
+                "Siapkan alat dan bahan, lalu timbang mould.",
+                "Olesi mould dengan oli dan lapisi dasarnya dengan kertas yang sudah diolesi oli.",
+                "Campur tanah dengan air sebanyak yang sudah ditentukan.",
+                "Masukkan campuran ke mould dalam 3 lapis. Tumbuk setiap lapis 25 kali sesuai pola.",
+                "Buka pengikat mould dan ratakan permukaan tanah dengan pisau perata.",
+                "Ambil sedikit tanah dari mould, masukkan ke cawan yang sudah ditimbang, lalu timbang.",
+                "Keringkan cawan berisi tanah di oven selama 24 jam, lalu timbang lagi untuk mendapatkan kadar air."
+              ],
+              "halaman": [
+                131,
+                132
+              ]
+            }
           ]
         },
         {
@@ -134,6 +375,34 @@
             "hitung-dasar.js",
             "hitung-kepadatan.js",
             "alat-kepadatan.js"
+          ],
+          "cara_uji": [
+            {
+              "alat": [
+                "Botol dan corong",
+                "Pelat corong diameter 16,51 cm",
+                "Timbangan ketelitian 0,1 g",
+                "Timbangan ketelitian 0,01 g",
+                "Cawan",
+                "Oven"
+              ],
+              "bahan": [
+                "Pasir bersih dan kering yang lolos saringan No. 20 dan tertahan saringan No. 40"
+              ],
+              "langkah": [
+                "Timbang botol berisi pasir beserta corongnya.",
+                "Letakkan pelat di permukaan tanah yang akan diuji.",
+                "Gali tanah sedalam 10 cm, masukkan semua tanah galian ke plastik, lalu timbang.",
+                "Letakkan botol berisi pasir di atas pelat dengan posisi terbalik sampai pasir memenuhi lubang.",
+                "Angkat botol dan corong, lalu timbang sisa pasirnya.",
+                "Timbang cawan kosong, masukkan sedikit tanah galian, lalu timbang lagi.",
+                "Keringkan cawan di oven selama 24 jam, dinginkan, lalu timbang dan catat hasilnya."
+              ],
+              "halaman": [
+                28,
+                29
+              ]
+            }
           ]
         },
         {
@@ -146,6 +415,44 @@
             "hitung-dasar.js",
             "hitung-cbr.js",
             "alat-cbr.js"
+          ],
+          "cara_uji": [
+            {
+              "alat": [
+                "CBR test set kapasitas minimal 5 ton",
+                "Mould",
+                "Penumbuk (hammer)",
+                "Arloji pengukur penetrasi dan torak penetrasi",
+                "Timbangan",
+                "Stopwatch",
+                "Cawan",
+                "Kantong plastik 5 kg",
+                "Kertas label",
+                "Alat perata",
+                "Gelas ukur",
+                "Dongkrak"
+              ],
+              "bahan": [
+                "Tanah terganggu",
+                "Air"
+              ],
+              "langkah": [
+                "Ukur tinggi dan diameter mould, timbang mould, lalu hitung volumenya.",
+                "Olesi mould dengan oli. Pasang cetakan pada keping alas, lalu beri piringan pemisah dan kertas.",
+                "Campur satu kantong tanah dengan air sebanyak yang sudah dihitung sampai rata.",
+                "Masukkan campuran ke mould dalam 3 lapis dan tumbuk setiap lapis: 10 kali untuk benda uji 1, 30 kali untuk benda uji 2, dan 65 kali untuk benda uji 3.",
+                "Lepas piringan pemisah dan ratakan kelebihan tanah. Ambil sedikit tanah ke cawan yang sudah ditimbang, timbang, lalu keringkan di oven 24 jam.",
+                "Timbang mould berisi tanah padat dan catat hasilnya.",
+                "Pasang benda uji di alat CBR, lalu nolkan arloji beban dan arloji penetrasi.",
+                "Beri beban dengan kecepatan penetrasi tetap dan catat bacaan beban pada setiap penetrasi dan waktu di formulir, sampai sekitar 10 menit.",
+                "Keluarkan benda uji dari mould dengan dongkrak. Ambil tanah dari bagian tengah ke cawan yang sudah ditimbang, timbang, lalu keringkan di oven 24 jam.",
+                "Ulangi untuk ketiga benda uji."
+              ],
+              "halaman": [
+                140,
+                142
+              ]
+            }
           ]
         }
       ]
@@ -162,6 +469,44 @@
           "skrip": [
             "hitung-permeabilitas.js",
             "alat-permeabilitas.js"
+          ],
+          "cara_uji": [
+            {
+              "alat": [
+                "Alat permeabilitas (permeameter)",
+                "Batu pori",
+                "Buret dengan pemegangnya",
+                "Stopwatch",
+                "Termometer",
+                "Kertas saring",
+                "Lem kayu",
+                "Corong",
+                "Penggaris",
+                "Timbangan"
+              ],
+              "bahan": [
+                "Sampel tanah",
+                "Air"
+              ],
+              "langkah": [
+                "Ukur dan catat diameter dalam buret dan permeameter.",
+                "Timbang permeameter beserta batu pori dan kertas saring sampai ketelitian 0,1 gram.",
+                "Masukkan sampel tanah ke permeameter, dengan batu pori berlapis kertas saring di atas dan bawah sampel.",
+                "Timbang lagi permeameter berisi tanah, batu pori, dan kertas saring.",
+                "Oleskan lem kayu pada celah antara sampel dan permeameter agar air tidak bocor lewat celah.",
+                "Pasang permeameter di posisi uji dan hubungkan dengan buret.",
+                "Tutup keran buret dan isi buret dengan air sampai penuh.",
+                "Buka keran untuk menjenuhkan tanah sampai air keluar dari bagian bawah permeameter.",
+                "Isi lagi buret sampai ketinggian tertentu dan ukur tinggi muka air dari ujung bawah sampel sebagai h.",
+                "Alirkan air, jalankan stopwatch, dan catat waktu air mengalir melewati sampel.",
+                "Ukur dan catat suhu air di buret.",
+                "Ulangi dua kali dengan h yang sama."
+              ],
+              "halaman": [
+                194,
+                196
+              ]
+            }
           ]
         },
         {
@@ -173,6 +518,41 @@
           "skrip": [
             "hitung-permeabilitas.js",
             "alat-permeabilitas.js"
+          ],
+          "cara_uji": [
+            {
+              "alat": [
+                "Alat permeabilitas (permeameter)",
+                "Batu pori",
+                "Buret dengan pemegangnya",
+                "Stopwatch",
+                "Termometer",
+                "Kertas saring",
+                "Lem kayu",
+                "Corong",
+                "Penggaris",
+                "Timbangan"
+              ],
+              "bahan": [
+                "Sampel tanah",
+                "Air"
+              ],
+              "langkah": [
+                "Masukkan sampel tanah ke permeameter, dengan batu pori berlapis kertas saring di atas dan bawah sampel.",
+                "Timbang permeameter berisi tanah, batu pori, dan kertas saring.",
+                "Tutup celah antara tanah dan permeameter dengan lem kayu agar air tidak bocor.",
+                "Tutup keran buret dan isi buret dengan air sampai penuh.",
+                "Buka keran untuk menjenuhkan sampel sampai air mengalir melewatinya, lalu tutup lagi keran.",
+                "Isi buret sampai ketinggian tertentu dan ukur tinggi muka air dari ujung bawah sampel sebagai h₁.",
+                "Buka keran dan jalankan stopwatch. Biarkan air turun sampai ketinggian tertentu.",
+                "Hentikan stopwatch dan catat ketinggian air di buret sebagai h₂.",
+                "Isi lagi buret dan ulangi dua kali dengan h₁ dan h₂ yang sama."
+              ],
+              "halaman": [
+                194,
+                196
+              ]
+            }
           ]
         }
       ]
@@ -190,6 +570,35 @@
             "hitung-dasar.js",
             "hitung-kekuatan.js",
             "alat-kekuatan.js"
+          ],
+          "cara_uji": [
+            {
+              "alat": [
+                "Extruder",
+                "Pisau pemotong",
+                "Timbangan",
+                "Arloji ukur",
+                "Stopwatch",
+                "Alat uji geser"
+              ],
+              "bahan": [
+                "Sampel tanah tak terganggu dari tabung contoh",
+                "Air suling"
+              ],
+              "langkah": [
+                "Keluarkan sampel tanah tak terganggu dari tabung dengan extruder.",
+                "Masukkan sampel ke cincin, lalu pasang batu pori di bagian atas dan bawah cincin.",
+                "Siapkan alat uji geser dan kalibrasi arloji.",
+                "Masukkan sampel ke alat uji geser dan tambahkan air untuk membasahi sampel.",
+                "Diamkan 5 menit, lalu putar engkol berlawanan arah jarum jam.",
+                "Lanjutkan pemutaran dan baca arloji pada interval yang ditentukan di formulir.",
+                "Keluarkan sampel setelah pengujian selesai."
+              ],
+              "halaman": [
+                180,
+                181
+              ]
+            }
           ]
         },
         {
@@ -202,6 +611,31 @@
             "hitung-dasar.js",
             "hitung-kekuatan.js",
             "alat-kekuatan.js"
+          ],
+          "cara_uji": [
+            {
+              "alat": [
+                "Pesawat tekan bebas (unconfined compression machine)",
+                "Mesin extruder",
+                "Cetakan silinder",
+                "Pisau pemotong",
+                "Timbangan"
+              ],
+              "bahan": [
+                "Sampel tanah tak terganggu"
+              ],
+              "langkah": [
+                "Keluarkan sampel tanah tak terganggu dari tabung dengan extruder.",
+                "Siapkan pesawat tekan bebas.",
+                "Letakkan sampel tanah di pesawat tekan bebas.",
+                "Beri beban dan baca arloji setiap 30 detik sampai sampel runtuh.",
+                "Catat semua bacaan."
+              ],
+              "halaman": [
+                173,
+                174
+              ]
+            }
           ]
         },
         {
@@ -214,6 +648,38 @@
             "hitung-dasar.js",
             "hitung-konsolidasi-lab.js",
             "alat-konsolidasi-lab.js"
+          ],
+          "cara_uji": [
+            {
+              "alat": [
+                "Konsolidometer",
+                "Batu pori atas dan bawah",
+                "Arloji pengukur perubahan tebal tanah",
+                "Perlengkapan pembebanan",
+                "Alat potong dan extruder",
+                "Perlengkapan pemeriksaan kadar air",
+                "Stopwatch",
+                "Tabung air"
+              ],
+              "bahan": [
+                "Tanah tak terganggu",
+                "Air suling"
+              ],
+              "langkah": [
+                "Keluarkan sampel tanah tak terganggu dengan extruder, cetak dengan cincin cetak, lalu pindahkan ke cincin uji.",
+                "Timbang cincin sebelum dan sesudah diisi sampel, lalu ukur tinggi dan diameter sampel.",
+                "Masukkan cincin berisi sampel ke konsolidometer dan letakkan batu pori di atasnya.",
+                "Letakkan sel konsolidometer pada rangkaian pembebanan dan atur sekrup penahan lengan beban.",
+                "Pasang beban pertama sesuai ketentuan, isi konsolidometer dengan air suling pada menit ke-1, lalu baca arloji pada waktu-waktu yang ditentukan.",
+                "Setelah 24 jam, tambahkan beban berikutnya, tambahkan lagi air suling pada menit ke-1, dan baca arloji.",
+                "Setelah 6 hari penambahan beban bertahap, kurangi beban sesuai ketentuan dan baca arloji.",
+                "Catat semua hasil pembacaan."
+              ],
+              "halaman": [
+                154,
+                156
+              ]
+            }
           ]
         }
       ]
@@ -230,6 +696,36 @@
           "skrip": [
             "hitung-lapangan.js",
             "alat-lapangan.js"
+          ],
+          "cara_uji": [
+            {
+              "alat": [
+                "Mesin sondir manual kapasitas 2,5 ton",
+                "Manometer",
+                "Satu set batang sondir (minimal 20 buah) dengan stang dalam, masing-masing 1 m",
+                "Konus ganda (bikonus)",
+                "Satu set angker (minimal 4 buah) dengan kunci angker",
+                "Besi kanal 4 buah (2 pendek, 2 panjang)",
+                "Kunci T dan tongkat besi pemutar angker",
+                "Kunci pipa 2 buah",
+                "Minyak hidrolik"
+              ],
+              "langkah": [
+                "Bersihkan dan ratakan permukaan tanah yang akan diuji.",
+                "Pasang dua angker di kiri dan kanan titik uji dengan kunci T, dengan jarak yang disesuaikan dengan mesin sondir.",
+                "Letakkan mesin sondir di antara kedua angker sehingga konus tepat di tengah.",
+                "Kunci mesin dengan dua besi kanal, dan kunci angker pada besi kanal pendek.",
+                "Pasang manometer pada mesin sondir.",
+                "Masukkan batang sondir dan konus ke mesin sondir.",
+                "Putar engkol searah jarum jam dengan kecepatan tetap. Tekan konus setiap 20 cm kedalaman.",
+                "Baca manometer dan catat datanya.",
+                "Ulangi langkah 6–8 untuk kedalaman berikutnya."
+              ],
+              "halaman": [
+                8,
+                9
+              ]
+            }
           ]
         },
         {
@@ -241,9 +737,67 @@
           "skrip": [
             "hitung-lapangan.js",
             "alat-lapangan.js"
+          ],
+          "cara_uji": [
+            {
+              "judul": "Standard penetration test",
+              "alat": [
+                "Batang bor (drill rod)",
+                "Tabung sampel belah (split barrel), diameter luar 50 mm dan diameter dalam 38 mm",
+                "Palu (hammer) 63,5 ± 1 kg",
+                "Pemandu palu: batang peluncur dan landasan (anvil), tinggi jatuh bebas 76 cm",
+                "Kaki tiga (tripod)",
+                "Katrol",
+                "Tali tambang"
+              ],
+              "langkah": [
+                "Lakukan pengujian pada setiap perubahan lapisan tanah, atau setiap 1,50–2,00 m, atau sesuai keperluan.",
+                "Tarik tali pengikat palu sampai tanda tinggi jatuh yang sudah dibuat, lalu lepaskan sehingga palu jatuh bebas menimpa landasan.",
+                "Ulangi sampai tabung masuk 15 cm, dan hitung jumlah pukulannya.",
+                "Lakukan untuk tiga kali penetrasi 15 cm, lalu catat N₁, N₂, dan N₃.",
+                "Nilai N adalah N₂ + N₃. N₁ tidak dihitung karena tanah di dasar lubang masih kotor bekas pengeboran.",
+                "Bila N lebih dari 50 pukulan, hentikan pengujian.",
+                "Untuk lapisan batuan, catat jumlah pukulan setiap penetrasi 5 cm."
+              ],
+              "halaman": [
+                20,
+                21
+              ]
+            },
+            {
+              "judul": "Pengeboran dan pengambilan sampel",
+              "alat": [
+                "Mata bor dan pipa bor panjang 1 m yang bisa disambung",
+                "Tabung silinder sampel diameter 6,8 cm, panjang 40 cm",
+                "Stang bor",
+                "Kunci pipa",
+                "Kunci T",
+                "Linggis",
+                "Alat pemukul (hammer)"
+              ],
+              "bahan": [
+                "Kantong plastik",
+                "Stiker label"
+              ],
+              "langkah": [
+                "Pasang mata bor pada stang bor, masukkan ke lubang, lalu putar searah jarum jam.",
+                "Bila mata bor penuh tanah, angkat stang bor.",
+                "Ulangi langkah 1–2 sampai menemukan jenis tanah yang berbeda dan mencapai kedalaman 2 m.",
+                "Siapkan tabung silinder untuk mengambil sampel tanah tak terganggu.",
+                "Masukkan tabung ke dalam lubang dengan stang bor.",
+                "Silangkan besi sebagai penahan, lalu pukul ujung besi dengan palu agar tabung masuk.",
+                "Setelah tabung penuh tanah, angkat tabung ke permukaan.",
+                "Lepas tabung dari stang bor, masukkan ke kantong plastik, dan beri label."
+              ],
+              "halaman": [
+                39,
+                40
+              ]
+            }
           ]
         }
       ]
     }
-  ]
+  ],
+  "keterangan_cara_uji": "cara_uji: alat, bahan, dan langkah praktikum dari Laporan Praktikum Mekanika Tanah Kelompok 3 (halaman = [bagian Peralatan, bagian Prosedur percobaan]); teks dirapikan tanpa mengubah isi."
 }
