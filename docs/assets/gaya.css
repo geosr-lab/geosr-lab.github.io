@@ -1857,3 +1857,35 @@ a.kartu::before, .kolom-inti a::before, .inti-bor a::before, .daftar-uji a::befo
 .blok3d figcaption a { font-weight: 700; white-space: nowrap; }
 @media (max-width: 820px) { .blok-panggung { height: 340px; } }
 @media (max-width: 560px) { .b3-no { flex: 1 1 0; min-width: 0; padding: 0; height: 30px; font-size: 12px; } .b3-lapis { gap: 4px; flex-wrap: nowrap; } }
+
+/* ---------------------------------------------------------------- Adegan 3D three.js (adegan3d.js, blok3d.js, alat3d.js) */
+.kanvas-3d { display: block; width: 100%; height: 100%; cursor: grab; }
+.kanvas-3d:active { cursor: grabbing; }
+.blok-panggung { position: relative; }
+.tanpa-3d .blok-panggung { display: none; }
+.b3-label, .b3-label-lapis {
+  position: absolute; left: 0; top: 0; z-index: 2; pointer-events: auto; white-space: nowrap; will-change: transform;
+  font: 600 12.5px/1.2 var(--huruf-teks); color: var(--teks); padding: 4px 8px; border-radius: 5px; cursor: pointer;
+  border: 1px solid var(--garis); background: var(--kaca); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  box-shadow: 0 6px 16px -10px rgba(0, 0, 0, .55);
+}
+.b3-label[hidden] { display: none; }
+.b3-label.aktif { border-color: var(--aksen); color: var(--aksen); font-weight: 700; }
+.b3-label-lapis { pointer-events: none; padding: 2px 6px; font: 700 12px/1.2 var(--huruf-judul); font-variant-numeric: tabular-nums; color: var(--teks-2); }
+@media (max-width: 560px) { .b3-label-lapis { display: none; } }
+.blok-panggung .jelajah-alat { top: auto; bottom: 10px; }
+/* Model 3D alat praktikum (alat3d.js) */
+.alat3d { margin: 0 0 12px; }
+.alat3d-panggung {
+  position: relative; height: clamp(320px, 46vh, 460px); border: 1px solid var(--garis); border-radius: var(--radius); overflow: hidden;
+  background: radial-gradient(70% 60% at 18% 8%, color-mix(in srgb, var(--laterit) 12%, transparent), transparent 70%), linear-gradient(180deg, var(--permukaan), var(--latar));
+  box-shadow: inset 0 1px 0 var(--cahaya-atas), var(--bayang-dalam);
+}
+.alat3d-hud {
+  position: absolute; left: 10px; top: 10px; z-index: 2; margin: 0; padding: 5px 10px; border: 1px solid var(--garis); border-radius: 6px;
+  font: 600 13px/1.3 var(--huruf-teks); font-variant-numeric: tabular-nums; color: var(--teks); background: var(--kaca);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); max-width: calc(100% - 20px);
+}
+.alat3d figcaption { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 8px 12px; margin-top: 10px; font-size: 14px; color: var(--teks-2); line-height: 1.5; }
+.alat3d-tombol { display: flex; flex-wrap: wrap; gap: 6px; }
+@media print { .alat3d { display: none !important; } .sketsa-cadangan[hidden] { display: block !important; } }

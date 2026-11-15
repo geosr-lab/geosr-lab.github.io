@@ -391,11 +391,18 @@ def cara_uji(alat):
             f'          <h3 id="cara-uji-judul">Alat dan langkah praktikum</h3>{isi}\n        </section>')
 
 
+# Alat praktikum yang punya model 3D (docs/assets/alat3d.js, objek ADEGAN) dan skrip 3D bersama (three.js lokal, MIT).
+ALAT_3D = {"pemadatan", "sondir"}
+SKRIP_3D = ["vendor/three/three.min.js", "vendor/three/OrbitControls.js", "adegan3d.js"]
+
+
 def halaman_alat_praktikum(alat, kelompok, status="", data=None, relasi=None):
     folder = f"praktikum/{alat['id']}/"
     awalan = "../../"
     skrip = "".join(f'\n  <script src="{awalan}assets/praktikum/{s}" defer></script>'
                     for s in dict.fromkeys(["grafik.js", "ekspor.js", "sketsa.js", "kerangka.js"] + alat["skrip"]))
+    if alat["id"] in ALAT_3D:
+        skrip += "".join(f'\n  <script src="{awalan}assets/{s}" defer></script>' for s in SKRIP_3D + ["alat3d.js"])
     urut = urutan_praktikum(data) if data else []
     ids = [a["id"] for a, _, _ in urut]
     i = ids.index(alat["id"]) if alat["id"] in ids else -1
@@ -887,7 +894,6 @@ def penampang_beranda(alat, praktikum):
     jumlah = sum(len(l["butir"]) for l in lapisan)
     return ('<figure class="blok3d" data-blok3d>\n'
             '        <div class="jelajah-panggung blok-panggung">\n'
-            '          <canvas class="b3-kanvas" aria-hidden="true"></canvas>\n'
             '          <div class="jelajah-alat">'
             '<button type="button" class="tombol kecil" data-aksi="urai" aria-pressed="false">Urai lapisan</button>'
             '<button type="button" class="tombol kecil" data-aksi="putar" aria-pressed="true">Putar otomatis</button></div>\n'
