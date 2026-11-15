@@ -632,7 +632,7 @@ def daftar_halaman_alat(data):
                          f'          <h3>{html.escape(a.get("judul_rincian", a["judul"]))}</h3>\n'
                          f'          <dl class="rincian">{rincian}\n          </dl>\n        </a>')
         if kartu:
-            bagian.append(f'<section>\n      <h2>{html.escape(k["judul"])}</h2>\n      <div class="kisi">\n' + "\n".join(kartu) + "\n      </div>\n    </section>")
+            bagian.append(f'<section>\n      <h2>{html.escape(k["judul"])}</h2>\n      <div class="kisi kisi-katalog">\n' + "\n".join(kartu) + "\n      </div>\n    </section>")
     return "\n\n    ".join(bagian)
 
 

@@ -30,6 +30,9 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 - `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1, terjemahan resmi), templat Issue dan PR, `CITATION.cff`, Dependabot untuk GitHub Actions.
 
 ### Diubah
+- Katalog kalkulator (`/alat/`): kolom kisi tetap sehingga kartu sama besar di semua kategori; kategori dengan satu kartu (Penurunan, Latihan) ditata mendatar dengan sketsa di kiri, bukan kartu selebar halaman dengan sketsa raksasa.
+- Panjang baris teks bacaan (paragraf, daftar, catatan, langkah hasil) dibatasi ±80 karakter; sebelumnya sampai ±130 karakter di halaman kalkulator.
+- Daftar lompat kalkulator menandai bagian aktif dari posisi gulir (judul terakhir yang melewati bilah), sehingga tetap benar saat menggulir ke atas. Versi cache 0.27.1.
 - Sketsa alat praktikum dan kalkulator tidak lagi mulai dari keadaan pudar: gambar akhir tampil dulu, lalu animasi mundur sebentar ke awal dan diputar. Tombol "Putar ulang" tetap memutar langsung. Versi cache 0.25.0.
 - Beranda menjadi dasbor (hasil audit pengguna baru): kotak cari langsung dari `cari.json` (panah, Enter, Esc, tombol `/`), aksi cepat, bagian "Lanjutkan" berisi alat yang terakhir dibuka (riwayat di localStorage browser pengguna, bisa dihapus), kisi tiga petak setinggi sama (Praktikum dengan tautan langsung ke alat, Kalkulator per topik, Belajar dengan angka ringkas), dan bagian "Dari lembar lab ke laporan" dengan animasi alur (garis mengalir, langkah menyala bergiliran, kurva tergambar; hanya jalan saat terlihat dan mati bila pengguna memilih kurangi gerakan). Penampang tanah tidak lagi kosong di awal: gambar tampil langsung lalu berubah bentuk ke keadaan sesudah konsolidasi.
 - Tombol tema di halaman bahasa Inggris (`/en/`, `/en/pembuat/`) memakai label Inggris ("Theme: follow system/light/dark") untuk pembaca layar dan tooltip.

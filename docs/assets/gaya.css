@@ -353,6 +353,19 @@ sub, sup { line-height: 0; }
 /* ------------------------------------------------------------------ kartu */
 .kisi { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
 .kisi-2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); }
+/* Kartu tunggal di satu kategori: jangan melebar dengan sketsa raksasa; sketsa di kiri, keterangan di kanan. */
+@media (min-width: 760px) {
+  .kisi > a.kartu:only-child:has(> .sketsa-mini) { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); column-gap: var(--j-6); align-content: start; }
+  .kisi > a.kartu:only-child:has(> .sketsa-mini) > * { grid-column: 2; justify-self: start; }
+  .kisi > a.kartu:only-child:has(> .sketsa-mini) > h3, .kisi > a.kartu:only-child:has(> .sketsa-mini) > dl { justify-self: stretch; max-width: 62ch; }
+  .kisi > a.kartu:only-child > .sketsa-mini { grid-column: 1; grid-row: 1 / span 4; margin: 0; align-self: center; }
+  .kisi > a.kartu:only-child:not(:has(> .sketsa-mini)) { grid-column: 1 / -1; }
+  .kisi > a.kartu:only-child:not(:has(> .sketsa-mini)) > * { max-width: 75ch; }
+}
+/* Katalog kalkulator: kolom tetap supaya kartu sama besar di semua kategori, berapa pun isinya. */
+.kisi-katalog { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+/* Panjang baris teks bacaan paling banyak ±80 karakter. */
+main > p, main section > p, main section > ul > li, main section > ol > li, main .catatan, #hasil p, #hasil li { max-width: 42em; }
 .kartu {
   position: relative; background: var(--permukaan); border: 1px solid var(--garis); border-radius: var(--radius); padding: var(--j-5);
 }
