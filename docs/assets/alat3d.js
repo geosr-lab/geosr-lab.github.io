@@ -481,6 +481,296 @@
     return { mulai: function () { if (A.hemat) akhir(); else mulai(); }, langkah: langkah, keadaan: k, akhir: akhir };
   }
 
+  // tulisan kecil yang selalu menghadap kamera (sprite), untuk nama bagian di dalam model
+  function tulisan(A, teks, tinggi) {
+    var THREE = A.THREE, c = document.createElement('canvas'), g = c.getContext('2d');
+    g.font = '700 40px "Plus Jakarta Sans", sans-serif';
+    var lb = Math.ceil(g.measureText(teks).width) + 28;
+    c.width = lb; c.height = 60;
+    g.font = '700 40px "Plus Jakarta Sans", sans-serif';
+    g.fillStyle = 'rgba(251,251,248,.92)'; g.strokeStyle = 'rgba(28,36,39,.35)'; g.lineWidth = 3;
+    g.beginPath(); if (g.roundRect) g.roundRect(2, 2, lb - 4, 56, 10); else g.rect(2, 2, lb - 4, 56); g.fill(); g.stroke();
+    g.fillStyle = '#1c2427'; g.textBaseline = 'middle'; g.fillText(teks, 14, 31);
+    var t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding;
+    var s = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, depthTest: false, transparent: true }));
+    var h = tinggi || 1.6; s.scale.set(h * lb / 60, h, 1); s.renderOrder = 10;
+    return s;
+  }
+  function lathe(A, titik, bahan, seg) {
+    var THREE = A.THREE, m = new THREE.Mesh(new THREE.LatheGeometry(titik.map(function (p) { return new THREE.Vector2(p[0], p[1]); }), seg || 48), bahan);
+    m.castShadow = true; m.receiveShadow = true;
+    return m;
+  }
+
+  // ---------------------------------------------------------------- Batas cair Casagrande (1 = 1 cm)
+  function atterberg(A, hud) {
+    var THREE = A.THREE, s = A.scene;
+    var karet = A.bahan('plastik', [52, 56, 60], { roughness: 0.85 }), kuningan = A.bahan('logam', [184, 150, 88]), baja = A.bahan('logam', [150, 156, 160]);
+    var alas = kotak(THREE, 15, 4, 12.5, karet); alas.position.y = 2; s.add(alas);
+    var tiang = kotak(THREE, 3, 7, 2.4, baja); tiang.position.set(0, 7.5, -5); s.add(tiang);
+    var mangkuk = new THREE.Group(); mangkuk.position.set(0, 4.6, -4.4); s.add(mangkuk);   // berengsel di belakang
+    var isi = new THREE.Group(); isi.position.z = 4.4; mangkuk.add(isi);
+    var cup = lathe(A, [[0.01, 0.2], [2.5, 0.3], [4.3, 1.1], [5.4, 2.6], [5.5, 2.8], [5.3, 2.7], [4.1, 1.3], [2.4, 0.55], [0.01, 0.45]], A.bahan('logam', [184, 150, 88], { side: THREE.DoubleSide }));
+    isi.add(cup);
+    var tanahB = A.bahan('tanah', [150, 122, 92], { tekstur: 'lempung' });
+    var kiri = new THREE.Mesh(new THREE.CylinderGeometry(4.2, 4.6, 1.1, 32, 1, false, 0, PI), tanahB), kanan = new THREE.Mesh(new THREE.CylinderGeometry(4.2, 4.6, 1.1, 32, 1, false, PI, PI), tanahB);
+    [kiri, kanan].forEach(function (m) { m.position.y = 1.3; m.castShadow = true; isi.add(m); });
+    var engsel = silinder(THREE, 0.6, 0.6, 3.4, baja, 16); engsel.rotation.z = PI / 2; engsel.position.set(0, 0.4, 0); mangkuk.add(engsel);
+    var engkol = new THREE.Group(); engkol.position.set(8.2, 8, -5); s.add(engkol);
+    var poros = silinder(THREE, 0.5, 0.5, 3, baja, 12); poros.rotation.z = PI / 2; engkol.add(poros);
+    var lengan = kotak(THREE, 0.5, 4, 0.5, baja); lengan.position.set(1.4, 2, 0); engkol.add(lengan);
+    var pegangan = silinder(THREE, 0.45, 0.45, 2, A.bahan('plastik', [40, 44, 48]), 12); pegangan.rotation.z = PI / 2; pegangan.position.set(2, 3.8, 0); engkol.add(pegangan);
+    // pelat kaca dengan adonan tanah, pembuat alur, spatula, cawan
+    var kaca = kotak(THREE, 14, 0.4, 14, A.bahan('kaca', [200, 220, 226], { opacity: 0.45 })); kaca.position.set(-17, 0.2, 4); s.add(kaca);
+    var adonan = new THREE.Mesh(new THREE.SphereGeometry(3.4, 24, 12, 0, PI * 2, 0, PI / 2), tanahB); adonan.scale.y = 0.35; adonan.position.set(-17, 0.4, 4); adonan.castShadow = true; s.add(adonan);
+    var alur = kotak(THREE, 1.2, 0.3, 9, baja); alur.position.set(-12, 0.15, -6); alur.rotation.y = 0.5; s.add(alur);
+    var spatula = kotak(THREE, 2, 0.15, 11, baja); spatula.position.set(-20, 0.6, -5); spatula.rotation.y = -0.3; s.add(spatula);
+    [[14, 6], [17, 1]].forEach(function (p) { var c = silinder(THREE, 2.4, 2, 1.6, A.bahan('logam', [200, 204, 206])); c.position.set(p[0], 0.8, p[1]); s.add(c); });
+    var k = { t: 0, jeda: false, n: 0 }, N = 25;
+    function atur(angkat) {
+      mangkuk.rotation.x = -angkat * 0.17;   // cam mengangkat mangkuk lalu menjatuhkannya ke alas
+      var celah = 0.55 * Math.max(0, 1 - k.n / N);
+      kiri.position.x = -celah / 2; kanan.position.x = celah / 2;
+      hud.textContent = k.n < N ? 'Ketukan ' + k.n + ': engkol diputar dua ketukan per detik' : 'Alur merapat (±13 mm): jumlah ketukan dicatat';
+    }
+    function mulai() { k.t = 0; k.n = 0; atur(0); }
+    function akhir() { k.n = N; atur(0); }
+    function langkah(dt) {
+      if (k.jeda) return;
+      k.t += dt;
+      if (k.n < N) {
+        engkol.rotation.x -= dt * PI * 2 * 2;            // dua putaran per detik = dua ketukan per detik
+        var fase = (k.t * 2) % 1, angkat = fase < 0.8 ? fase / 0.8 : 0;
+        if (k.t * 2 >= k.n + 1) k.n++;
+        atur(angkat);
+      } else { atur(0); if (k.t > N / 2 + 3) mulai(); }
+    }
+    langkah.aktif = function () { return !A.hemat && !k.jeda; };
+    return { mulai: function () { if (A.hemat) akhir(); else mulai(); }, langkah: langkah, keadaan: k, akhir: akhir };
+  }
+
+  // ---------------------------------------------------------------- Analisa saringan (1 = 1 cm)
+  function saringan(A, hud) {
+    var THREE = A.THREE, s = A.scene;
+    var kuningan = A.bahan('logam', [190, 156, 92]), baja = A.bahan('logam', [150, 156, 160]);
+    var mesin = kotak(THREE, 30, 6, 30, A.bahan('plastik', [64, 104, 120], { roughness: 0.45 })); mesin.position.y = 3; s.add(mesin);
+    var susun = new THREE.Group(); susun.position.y = 6; s.add(susun);
+    var NAMA = ['Tutup', 'No. 4', 'No. 10', 'No. 40', 'No. 200', 'Pan'], TINGGI = 5, R = 10.2;
+    var tanahB = A.bahan('tanah', [158, 128, 92], { tekstur: 'pasir' });
+    var tumpukan = [];
+    NAMA.forEach(function (nm, i) {
+      var y = (NAMA.length - 1 - i) * TINGGI;
+      if (nm === 'Tutup') { var tp = silinder(THREE, R + 0.4, R + 0.4, 1, kuningan); tp.position.y = y + 0.5; susun.add(tp); return; }
+      var w = dinding(THREE, R, R + 0.4, TINGGI, kuningan, 0.6); w.position.y = y; susun.add(w);
+      if (nm !== 'Pan') {
+        var kasa = new THREE.Mesh(new THREE.CircleGeometry(R, 40), A.bahan('logam', [170, 172, 170], { transparent: true, opacity: 0.55, side: THREE.DoubleSide }));
+        kasa.rotation.x = -PI / 2; kasa.position.y = y + 0.4; susun.add(kasa);
+      } else { var dasar = silinder(THREE, R, R, 0.4, kuningan); dasar.position.y = y + 0.2; susun.add(dasar); }
+      // butir tertahan: gundukan makin kecil ke bawah (gambar)
+      var g = new THREE.Mesh(new THREE.SphereGeometry(R * 0.8, 24, 10, 0, PI * 2, 0, PI / 2), tanahB);
+      g.position.y = y + 0.45; g.castShadow = true; susun.add(g); tumpukan.push(g);
+      var lb = tulisan(A, nm, 1.7); lb.position.set(R + 6, y + TINGGI / 2, 0); susun.add(lb);
+    });
+    // butir jatuh melewati kasa
+    var butir = [];
+    for (var i = 0; i < 26; i++) {
+      var b = new THREE.Mesh(new THREE.SphereGeometry(0.18 + Math.random() * 0.22, 8, 6), tanahB);
+      b.userData = { x: (Math.random() - 0.5) * 12, z: -Math.random() * 5, y: Math.random() * 24, v: 3 + Math.random() * 4 }; susun.add(b); butir.push(b);
+    }
+    var k = { t: 0, jeda: false };
+    var AKHIR = [0.42, 0.55, 0.62, 0.48, 0.3];
+    function atur(p) {
+      tumpukan.forEach(function (g, j) { var h = 0.04 + AKHIR[j] * p; g.scale.set(Math.max(0.15, p), h, Math.max(0.15, p)); });
+      hud.textContent = 'Susunan saringan No. 4, 10, 40, 200 dan pan diayak; butir tertahan ditimbang per saringan';
+    }
+    function mulai() { k.t = 0; atur(0.05); }
+    function akhir() { atur(1); butir.forEach(function (b) { b.visible = false; }); }
+    function langkah(dt) {
+      if (k.jeda) return;
+      k.t += dt;
+      var p = Math.min(1, k.t / 8);
+      susun.position.x = Math.sin(k.t * 40) * 0.25; susun.rotation.y = Math.sin(k.t * 23) * 0.02;
+      butir.forEach(function (b) {
+        var u = b.userData; b.visible = p < 1;
+        u.y -= u.v * dt; if (u.y < 0.6) u.y = 24;
+        b.position.set(u.x * (0.4 + (u.y / 24) * 0.6), u.y, u.z);
+      });
+      atur(p);
+      if (k.t > 11) mulai();
+    }
+    langkah.aktif = function () { return !A.hemat && !k.jeda; };
+    return { mulai: function () { if (A.hemat) akhir(); else mulai(); }, langkah: langkah, keadaan: k, akhir: akhir };
+  }
+
+  // ---------------------------------------------------------------- Berat spesifik (piknometer) (1 = 1 cm)
+  function piknometer(A, hud) {
+    var THREE = A.THREE, s = A.scene;
+    var labu = [[0.01, 0], [3.2, 0.1], [4.6, 1.4], [5, 3.4], [4.4, 5.6], [2.6, 7.2], [1.3, 8.2], [1.2, 13], [1.35, 13.2]];
+    var gelas = lathe(A, labu, A.bahan('kaca', [210, 226, 232], { opacity: 0.28 }), 48); gelas.castShadow = false; s.add(gelas);
+    var tutup = silinder(THREE, 1.25, 1.1, 1.6, A.bahan('kaca', [200, 216, 222], { opacity: 0.5 })); tutup.position.y = 13.8; s.add(tutup);
+    var tanahB = A.bahan('tanah', [128, 100, 72], { tekstur: 'pasir' });
+    var endapan = lathe(A, [[0.01, 0.1], [3.1, 0.15], [4, 0.9], [0.01, 1.3]], tanahB, 40); s.add(endapan);
+    var airB = A.bahan('kaca', [110, 170, 205], { opacity: 0.45 });
+    var air = new THREE.Group(); s.add(air);
+    // air: potongan labu yang dipotong pada ketinggian h (dibangun ulang saat tinggi berubah)
+    function profilAir(h) {
+      var p = [];
+      labu.forEach(function (q) { if (q[1] <= h) p.push([Math.max(0.01, q[0] - 0.15), q[1]]); });
+      for (var i = 1; i < labu.length; i++) if (labu[i - 1][1] < h && labu[i][1] > h) { var a = labu[i - 1], b = labu[i], u = (h - a[1]) / (b[1] - a[1]); p.push([a[0] + (b[0] - a[0]) * u - 0.15, h]); break; }
+      p.push([0.01, h]);
+      return p;
+    }
+    var mAir = null, hAir = -1;
+    function isiAir(h) {
+      if (Math.abs(h - hAir) < 0.05) return; hAir = h;
+      if (mAir) { air.remove(mAir); mAir.geometry.dispose(); }
+      if (h < 0.3) { mAir = null; return; }
+      mAir = lathe(A, profilAir(h), airB, 40); mAir.castShadow = false; air.add(mAir);
+    }
+    // pelat pemanas, termometer, botol semprot, timbangan
+    var pemanas = kotak(THREE, 14, 3, 14, A.bahan('plastik', [214, 218, 220])); pemanas.position.y = -1.5; s.add(pemanas);
+    var lempeng = silinder(THREE, 5.5, 5.5, 0.4, A.bahan('logam', [90, 94, 96], { emissive: new THREE.Color(0, 0, 0) })); lempeng.position.y = 0.05; s.add(lempeng);
+    var termo = new THREE.Group(); termo.position.set(1.2, 6, 0.2); termo.rotation.z = -0.12; s.add(termo);
+    var batangT = silinder(THREE, 0.18, 0.18, 14, A.bahan('kaca', [230, 236, 240], { opacity: 0.6 }), 10); termo.add(batangT);
+    var raksa = silinder(THREE, 0.08, 0.08, 1, A.bahan('plastik', [200, 40, 30], { roughness: 0.3 }), 8); termo.add(raksa);
+    var semprot = lathe(A, [[0.01, 0], [3, 0], [3.2, 6], [2.4, 8.2], [0.8, 9], [0.01, 9]], A.bahan('plastik', [236, 240, 242], { roughness: 0.35 })); semprot.position.set(-14, -3, 6); s.add(semprot);
+    var corot = silinder(THREE, 0.2, 0.2, 7, A.bahan('plastik', [236, 240, 242]), 8); corot.rotation.z = 1.1; corot.position.set(-11.5, 7.6, 6); s.add(corot);
+    var gelembung = [];
+    for (var i = 0; i < 14; i++) { var g = new THREE.Mesh(new THREE.SphereGeometry(0.15 + Math.random() * 0.15, 8, 6), A.bahan('kaca', [235, 245, 250], { opacity: 0.7 })); g.userData = { x: (Math.random() - 0.5) * 6, z: (Math.random() - 0.5) * 6, y: Math.random() * 5 }; g.visible = false; s.add(g); gelembung.push(g); }
+    var LANGKAH = [['Air suling ditambahkan sampai sekitar 2/3 tinggi piknometer', 3], ['Piknometer dipanaskan sekitar 10 menit untuk mengeluarkan udara', 4], ['Didinginkan, lalu diisi air suling sampai penuh dan ditutup', 3], ['Ditimbang dan suhu isinya diukur dengan termometer', 3]];
+    var k = { t: 0, jeda: false };
+    function fase() { var t = k.t, i = 0; while (i < LANGKAH.length - 1 && t > LANGKAH[i][1]) { t -= LANGKAH[i][1]; i++; } return { i: i, u: Math.min(1, t / LANGKAH[i][1]) }; }
+    function atur() {
+      var f = fase(), h = f.i === 0 ? 8.6 * f.u : f.i === 1 ? 8.6 : f.i === 2 ? 8.6 + (12.8 - 8.6) * f.u : 12.8;
+      isiAir(h);
+      tutup.visible = f.i >= 2 && f.u > 0.6 || f.i > 2;
+      var panas = f.i === 1 ? Math.sin(f.u * PI) : 0;
+      lempeng.material.emissive.setRGB(0.6 * panas, 0.12 * panas, 0.02 * panas);
+      gelembung.forEach(function (g) { g.visible = panas > 0.2; });
+      var tinggiRaksa = 2 + 4 * panas + (f.i === 3 ? 0.5 : 0); raksa.scale.y = tinggiRaksa; raksa.position.y = -7 + tinggiRaksa / 2;
+      hud.textContent = LANGKAH[f.i][0];
+    }
+    function mulai() { k.t = 0; atur(); }
+    function akhir() { k.t = 99; atur(); }
+    function langkah(dt) {
+      if (k.jeda) return;
+      k.t += dt;
+      gelembung.forEach(function (g) { var u = g.userData; u.y += dt * 4; if (u.y > 8) u.y = 0.8; g.position.set(u.x * (1 - u.y / 12), u.y, u.z * (1 - u.y / 12)); });
+      atur();
+      if (k.t > 16) mulai();
+    }
+    langkah.aktif = function () { return !A.hemat && !k.jeda; };
+    return { mulai: function () { if (A.hemat) akhir(); else mulai(); }, langkah: langkah, keadaan: k, akhir: akhir };
+  }
+
+  // ---------------------------------------------------------------- Permeabilitas tinggi tekan tetap / turun (1 = 1 cm)
+  function permeabilitas(turun) {
+    return function (A, hud) {
+      var THREE = A.THREE, s = A.scene;
+      var baja = A.bahan('logam', [150, 156, 160]), kacaB = A.bahan('kaca', [210, 226, 232], { opacity: 0.3 }), airB = A.bahan('kaca', [110, 170, 205], { opacity: 0.5 });
+      var alas = kotak(THREE, 30, 2, 18, A.bahan('plastik', [64, 104, 120], { roughness: 0.45 })); alas.position.y = 1; s.add(alas);
+      var tiang = silinder(THREE, 0.6, 0.6, 70, baja, 12); tiang.position.set(-10, 37, -4); s.add(tiang);
+      var penjepit = kotak(THREE, 6, 1.2, 1.2, baja); penjepit.position.set(-8, 50, -3); s.add(penjepit);
+      // buret dengan skala, keran
+      var buret = silinder(THREE, 0.9, 0.9, 50, kacaB, 20); buret.castShadow = false; buret.position.set(-5, 42, -2); s.add(buret);
+      var airBuret = silinder(THREE, 0.75, 0.75, 1, airB, 16); s.add(airBuret);
+      for (var y = 20; y <= 66; y += 2) { var tk = kotak(THREE, y % 10 ? 0.6 : 1.2, 0.08, 0.05, A.bahan('plastik', [30, 30, 30])); tk.castShadow = false; tk.position.set(-5 + 0.95, y, -2 + 0.3); s.add(tk); }
+      var keran = kotak(THREE, 2.4, 0.8, 0.8, A.bahan('plastik', [40, 44, 48])); keran.position.set(-5, 16.5, -2); s.add(keran);
+      // selang dari buret ke permeameter
+      var kurva = new THREE.CatmullRomCurve3([new THREE.Vector3(-5, 16, -2), new THREE.Vector3(-5, 13, -2), new THREE.Vector3(2, 26, 0), new THREE.Vector3(6, 23.5, 0)]);
+      var selang = new THREE.Mesh(new THREE.TubeGeometry(kurva, 40, 0.35, 10, false), A.bahan('kaca', [210, 230, 236], { opacity: 0.55 })); s.add(selang);
+      // permeameter: tabung kaca, batu pori atas-bawah, sampel tanah
+      var tabung = silinder(THREE, 3.6, 3.6, 18, kacaB, 32); tabung.castShadow = false; tabung.position.set(6, 13, 0); s.add(tabung);
+      [5.2, 20.8].forEach(function (yy) { var bp = silinder(THREE, 3.4, 3.4, 1.2, A.bahan('tanah', [200, 196, 186], { tekstur: 'batu' })); bp.position.set(6, yy, 0); s.add(bp); });
+      var sampel = silinder(THREE, 3.4, 3.4, 14.4, A.bahan('tanah', [196, 170, 116], { tekstur: 'pasir' }), 32); sampel.position.set(6, 13, 0); s.add(sampel);
+      var tutupA = silinder(THREE, 3.9, 3.9, 1, baja); tutupA.position.set(6, 22.5, 0); s.add(tutupA);
+      var tutupB = silinder(THREE, 3.9, 3.9, 1, baja); tutupB.position.set(6, 3.5, 0); s.add(tutupB);
+      var keluar = silinder(THREE, 0.3, 0.3, 6, baja, 8); keluar.rotation.z = PI / 2; keluar.position.set(9.5, 3.5, 0); s.add(keluar);
+      // gelas ukur menampung air yang keluar
+      var gelasUkur = silinder(THREE, 2.6, 2.6, 12, kacaB, 28); gelasUkur.castShadow = false; gelasUkur.position.set(14, 8, 0); s.add(gelasUkur);
+      var airGelas = silinder(THREE, 2.4, 2.4, 1, airB, 24); s.add(airGelas);
+      var tetes = new THREE.Mesh(new THREE.SphereGeometry(0.28, 10, 8), airB); s.add(tetes);
+      var k = { t: 0, jeda: false };
+      var H1 = 64, H2 = 34;
+      function atur() {
+        var u = Math.min(1, k.t / 9);
+        var muka = turun ? H1 - (H1 - H2) * (1 - Math.exp(-u * 1.6)) / (1 - Math.exp(-1.6)) : H1;
+        var bawah = 17;
+        airBuret.scale.y = muka - bawah; airBuret.position.set(-5, (muka + bawah) / 2, -2);
+        var vol = turun ? (H1 - muka) / (H1 - H2) : u;
+        airGelas.scale.y = 0.3 + 9 * vol; airGelas.position.set(14, 2.3 + airGelas.scale.y / 2, 0);
+        tetes.position.set(12.6, 3.3 - ((k.t * 2.2) % 1) * 1.2, 0); tetes.visible = u < 1;
+        hud.textContent = turun ? (u < 1 ? 'Keran dibuka, stopwatch berjalan: muka air di buret turun dari h₁ ke h₂' : 'Stopwatch dihentikan; tinggi h₂ dan waktu dicatat')
+          : 'Muka air di buret dijaga tetap; air yang keluar ditampung gelas ukur selama waktu tertentu';
+      }
+      function mulai() { k.t = 0; atur(); }
+      function akhir() { k.t = 9; atur(); }
+      function langkah(dt) { if (k.jeda) return; k.t += dt; atur(); if (k.t > 12) mulai(); }
+      langkah.aktif = function () { return !A.hemat && !k.jeda; };
+      return { mulai: function () { if (A.hemat) akhir(); else mulai(); }, langkah: langkah, keadaan: k, akhir: akhir };
+    };
+  }
+
+  // ---------------------------------------------------------------- SPT (1 = 5 cm)
+  function spt(A, hud) {
+    var THREE = A.THREE, s = A.scene;
+    var baja = A.bahan('logam', [112, 120, 126]), bajaGelap = A.bahan('logam', [58, 64, 68]), cat = A.bahan('plastik', [196, 92, 52], { roughness: 0.45 });
+    // tanah terpotong L seperti sondir, lubang bor di sudut potongan
+    [[0, 12, [150, 126, 94], 'tanah'], [12, 26, [118, 128, 118], 'lempung'], [26, 44, [190, 162, 104], 'pasir']].forEach(function (l) {
+      var bhn = A.bahan('tanah', l[2], { tekstur: l[3] }), h = l[1] - l[0];
+      var a = kotak(THREE, 70, h, 35, bhn); a.position.set(0, -(l[0] + l[1]) / 2, -17.5); s.add(a);
+      var b = kotak(THREE, 35, h, 35, bhn); b.position.set(-17.5, -(l[0] + l[1]) / 2, 17.5); s.add(b);
+    });
+    var rumput = A.bahan('tanah', [124, 146, 92], { tekstur: 'tanah' });
+    var r1 = kotak(THREE, 70, 0.5, 35, rumput); r1.position.set(0, 0.25, -17.5); s.add(r1);
+    var r2 = kotak(THREE, 35, 0.5, 35, rumput); r2.position.set(-17.5, 0.25, 17.5); s.add(r2);
+    // kaki tiga, katrol, tali
+    var PUNCAK = new THREE.Vector3(0, 46, 0);
+    [[-16, -10], [16, -10], [0, 18]].forEach(function (p) {
+      var bawah = new THREE.Vector3(p[0], 0, p[1]), arah = new THREE.Vector3().subVectors(PUNCAK, bawah), pj = arah.length();
+      var kaki = silinder(THREE, 0.7, 0.7, pj, cat, 12); kaki.position.copy(bawah).addScaledVector(arah, 0.5);
+      kaki.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), arah.normalize()); s.add(kaki);
+    });
+    var katrol = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.4, 10, 24), bajaGelap); katrol.position.copy(PUNCAK).add(new THREE.Vector3(0, -1.6, 0)); s.add(katrol);
+    var tali = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineBasicMaterial({ color: 0x8a6a3a })); s.add(tali);
+    // batang bor, landasan, batang peluncur, palu; tabung belah di ujung bawah
+    var batang = silinder(THREE, 0.5, 0.5, 1, baja, 12); s.add(batang);
+    var landasan = silinder(THREE, 1.6, 1.6, 1.2, bajaGelap); s.add(landasan);
+    var peluncur = silinder(THREE, 0.35, 0.35, 20, baja, 10); s.add(peluncur);
+    var palu = silinder(THREE, 2.2, 2.2, 3.6, cat); s.add(palu);
+    var tabungBelah = silinder(THREE, 0.75, 0.75, 4, A.bahan('logam', [176, 150, 92]), 16); s.add(tabungBelah);
+    var ujung = new THREE.Mesh(new THREE.ConeGeometry(0.75, 1, 16), A.bahan('logam', [176, 150, 92])); ujung.rotation.x = PI; s.add(ujung);
+    var JATUH = 76 / 5;   // tinggi jatuh 76 cm dalam satuan adegan
+    var TIAP = 6;          // jumlah pukulan per 15 cm pada ilustrasi ini
+    var k = { t: 0, jeda: false, pukul: 0 };
+    function atur(angkat) {
+      var masuk = Math.min(9, k.pukul * (3 / TIAP));   // 15 cm = 3 satuan; tiga penetrasi = 9 satuan
+      var dasar = -30 - masuk, atasBatang = 9 - masuk;
+      tabungBelah.position.y = dasar + 2; ujung.position.y = dasar - 0.5;
+      batang.scale.y = atasBatang - (dasar + 4); batang.position.y = (atasBatang + dasar + 4) / 2;
+      landasan.position.y = atasBatang + 0.6; peluncur.position.y = atasBatang + 11;
+      palu.position.y = atasBatang + 3 + JATUH * angkat;
+      tali.geometry.setFromPoints([new THREE.Vector3(0, palu.position.y + 1.8, 0), katrol.position.clone(), new THREE.Vector3(6, 6, 10)]);
+      var ke = Math.min(3, Math.floor(k.pukul / TIAP) + 1), dalam = k.pukul % TIAP;
+      hud.textContent = k.pukul >= TIAP * 3 ? 'Tiga penetrasi 15 cm selesai: N = N₂ + N₃ (pukulan di sini ilustrasi)' :
+        'Palu 63,5 kg dijatuhkan bebas 76 cm; penetrasi 15 cm ke-' + ke + ', pukulan ' + dalam;
+    }
+    function mulai() { k.t = 0; k.pukul = 0; atur(0); }
+    function akhir() { k.pukul = TIAP * 3; atur(0); }
+    function langkah(dt) {
+      if (k.jeda) return;
+      k.t += dt;
+      if (k.pukul < TIAP * 3) {
+        var siklus = 1.1, u = (k.t % siklus) / siklus;
+        var angkat = u < 0.7 ? u / 0.7 : 1 - Math.pow((u - 0.7) / 0.3, 2);
+        if (k.t >= (k.pukul + 1) * siklus) k.pukul++;
+        atur(Math.max(0, angkat));
+      } else { atur(0); if (k.t > TIAP * 3 * 1.1 + 3) mulai(); }
+    }
+    langkah.aktif = function () { return !A.hemat && !k.jeda; };
+    return { mulai: function () { if (A.hemat) akhir(); else mulai(); }, langkah: langkah, keadaan: k, akhir: akhir };
+  }
+
   var ADEGAN = {
     pemadatan: { buat: proctor, ukuran: 40, lantai: 0, kamera: [66, 58, 92], sasaran: [0, 17, 0], judul: 'Model 3D mould Proctor, penumbuk, timbangan, dan wadah tanah' },
     sondir: { buat: sondir, ukuran: 60, lantai: -52.5, kamera: [118, 58, 150], sasaran: [0, -10, 0], judul: 'Model 3D mesin sondir dengan angker, manometer, dan konus di dalam tanah' },
@@ -488,7 +778,13 @@
     'sand-cone': { buat: sandCone, ukuran: 45, lantai: -22.2, kamera: [62, 48, 80], sasaran: [0, 4, 0], judul: 'Model 3D kerucut pasir: botol terbalik, corong, pelat, dan lubang galian di tanah terpotong' },
     'geser-langsung': { buat: geserLangsung, ukuran: 45, lantai: 0, kamera: [62, 56, 88], sasaran: [-2, 20, 0], judul: 'Model 3D alat geser langsung: kotak geser terbelah, beban normal, engkol, dan arloji' },
     'tekan-bebas': { buat: tekanBebas, ukuran: 40, lantai: 0, kamera: [70, 54, 102], sasaran: [0, 27, 0], judul: 'Model 3D alat tekan bebas: rangka beban, cincin uji, dan sampel silinder' },
-    'konsolidasi-lab': { buat: konsolidasi, ukuran: 50, lantai: 0, kamera: [58, 46, 84], sasaran: [2, 14, 0], judul: 'Model 3D konsolidometer: sel berisi air, cincin dan batu pori, serta lengan beban' }
+    'konsolidasi-lab': { buat: konsolidasi, ukuran: 50, lantai: 0, kamera: [58, 46, 84], sasaran: [2, 14, 0], judul: 'Model 3D konsolidometer: sel berisi air, cincin dan batu pori, serta lengan beban' },
+    atterberg: { buat: atterberg, ukuran: 30, lantai: 0, kamera: [22, 21, 30], sasaran: [-1, 4, 0], judul: 'Model 3D alat batas cair Casagrande dengan engkol, mangkuk berisi tanah beralur, pelat kaca, dan pembuat alur' },
+    saringan: { buat: saringan, ukuran: 45, lantai: 0, kamera: [52, 44, 70], sasaran: [3, 18, 0], judul: 'Model 3D susunan saringan No. 4, 10, 40, 200 dan pan di atas mesin pengayak' },
+    'berat-spesifik': { buat: piknometer, ukuran: 30, lantai: -3, kamera: [22, 17, 30], sasaran: [-2, 6, 0], judul: 'Model 3D piknometer di atas pelat pemanas, dengan termometer dan botol semprot' },
+    'permeabilitas-tetap': { buat: permeabilitas(false), ukuran: 50, lantai: 0, kamera: [74, 56, 108], sasaran: [3, 33, 0], judul: 'Model 3D permeameter tinggi tekan tetap: buret, permeameter berisi tanah, dan gelas ukur' },
+    'permeabilitas-turun': { buat: permeabilitas(true), ukuran: 50, lantai: 0, kamera: [74, 56, 108], sasaran: [3, 33, 0], judul: 'Model 3D permeameter tinggi tekan turun: buret, permeameter berisi tanah, dan gelas ukur' },
+    spt: { buat: spt, ukuran: 55, lantai: -44.5, kamera: [104, 66, 138], sasaran: [0, 9, 0], judul: 'Model 3D uji SPT: kaki tiga, katrol, palu, batang bor, dan tabung belah di tanah terpotong' }
   };
 
   function pasang(fig) {
