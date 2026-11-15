@@ -6,6 +6,21 @@
   var $ = U.$, f = U.f, t = U.t, rumus = U.rumus, salin = U.salin, KN_PER_TON = U.KN_PER_TON;
   var CONTOH = { tanah: 'kohesif', kepala: 'bebas', b: 0.6, L: 8, e: 0.5, cu: 40, gamma: 18, phi: 32, My: 450, FS: 2.5 };
   var ANGKA = ['b', 'L', 'e', 'cu', 'gamma', 'phi', 'My', 'FS'];
+  // Contoh hitungan Reese, L. C. (1986), Behavior of Piles and Pile Groups Under Lateral Load,
+  // FHWA-RD-85-106, Bab 7.1 (sama dengan tests/verifikasi_broms_lateral.py). Tiang pipa b = 1 ft, e = 2 ft,
+  // My = 317 ft-kip; lempung cu = 1 ksf; pasir φ = 34°, γ' = 55 pcf. Dikonversi: 1 ft = 0,3048 m,
+  // 1 kip = 4,448 kN, 1 ksf = 47,88 kPa, 1 pcf = 0,1571 kN/m³, 1 ft-kip = 1,356 kN·m. FS = 1 seperti buku.
+  var BUKU = [
+    { hlm: 142, ket: 'Lempung, kepala bebas, L = 8 ft', kip: 13.4, moda: 'pendek',
+      m: { tanah: 'kohesif', kepala: 'bebas', b: 0.3048, L: 2.4384, e: 0.6096, cu: 47.88, gamma: 18, phi: 32, My: 429.8, FS: 1 } },
+    { hlm: 147, ket: 'Lempung, kepala terjepit, L = 40 ft', kip: 94.2, moda: 'panjang',
+      m: { tanah: 'kohesif', kepala: 'terjepit', b: 0.3048, L: 12.192, e: 0.6096, cu: 47.88, gamma: 18, phi: 32, My: 429.8, FS: 1 } },
+    { hlm: 151, ket: 'Pasir, kepala bebas, L = 8 ft', kip: 4.98, moda: 'pendek',
+      m: { tanah: 'nonkohesif', kepala: 'bebas', b: 0.3048, L: 2.4384, e: 0.6096, cu: 40, gamma: 8.64, phi: 34, My: 429.8, FS: 1 } },
+    { hlm: 155, ket: 'Pasir, kepala terjepit, L = 40 ft', kip: 56.4, moda: 'panjang',
+      m: { tanah: 'nonkohesif', kepala: 'terjepit', b: 0.3048, L: 12.192, e: 0.6096, cu: 40, gamma: 8.64, phi: 34, My: 429.8, FS: 1 } }
+  ];
+  var KN_PER_KIP = 4.4482216;
   var NAMA_MODA = { pendek: 'tiang pendek (tanah runtuh)', menengah: 'tiang menengah (sendi plastis di kepala)', panjang: 'tiang panjang (sendi plastis)' };
   var keadaan;
 
@@ -252,7 +267,19 @@
     $('kepala').addEventListener('change', function () { keadaan.kepala = $('kepala').value; perbarui(); });
     U.pasangGeser('L', 1, 20, 0.5, 'm');
     U.pasangGeser('e', 0, 3, 0.1, 'm');
-    $('muatContoh').addEventListener('click', function () { keadaan = salin(CONTOH); isiFormulir(); perbarui(); });
+    $('muatContoh').addEventListener('click', function () { keadaan = salin(CONTOH); isiFormulir(); perbarui(); $('pesanContoh').textContent = ''; });
+    $('contohBuku').innerHTML = BUKU.map(function (c, i) {
+      return '<button type="button" class="kartu-contoh" data-i="' + i + '"><span class="hlm">hlm. ' + c.hlm + '</span><span>' + c.ket + '</span></button>';
+    }).join('');
+    $('contohBuku').addEventListener('click', function (e) {
+      var tb = e.target.closest('[data-i]');
+      if (!tb) return;
+      var c = BUKU[+tb.getAttribute('data-i')];
+      keadaan = salin(c.m); isiFormulir(); perbarui();
+      var r = BromsLateral.hitung(salin(keadaan)), P = r.menentukan ? r.menentukan.P : NaN, acuan = c.kip * KN_PER_KIP;
+      $('pesanContoh').innerHTML = 'Buku hlm. ' + c.hlm + ': P<sub>ult</sub> = ' + f(c.kip, 2) + ' kip ≈ ' + f(acuan, 1) + ' kN, moda ' + c.moda +
+        '. Kalkulator: ' + f(P, 1) + ' kN, moda ' + (r.menentukan ? r.menentukan.moda : '–') + ' (selisih ' + f(Math.abs(P / acuan - 1) * 100, 1) + '%, dari pembulatan buku dan konversi satuan).';
+    });
     $('bagikan').addEventListener('click', function () { U.simpanKeHash(keadaan); U.salinTautan($('pesanBagikan')); });
     perbarui();
   }
