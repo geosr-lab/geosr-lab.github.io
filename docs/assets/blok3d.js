@@ -215,20 +215,38 @@
           kotak.push({ el: p.label, x: (v.x + 1) / 2 * w, y: (1 - v.y) / 2 * h, lb: p.label.offsetWidth, tg: p.label.offsetHeight });
         });
       });
+      // x dijepit ke dalam panggung lebih dulu, supaya tabrakan diperiksa pada posisi akhir label
+      kotak.forEach(function (k) { k.x = Math.min(Math.max(k.x, k.lb / 2 + 4), w - k.lb / 2 - 4); });
       // label yang bertabrakan didorong ke atas satu per satu (dari yang paling bawah di layar)
       kotak.sort(function (a, b) { return b.y - a.y; });
+      var puncak = Infinity;
       kotak.forEach(function (k, i) {
         for (var j = 0; j < i; j++) {
           var o = kotak[j];
           if (Math.abs(k.x - o.x) < (k.lb + o.lb) / 2 + 4 && k.y > o.y - o.tg - 3 && k.y - k.tg < o.y) { k.y = o.y - o.tg - 3; j = -1; }
         }
-        var x = Math.min(Math.max(k.x, k.lb / 2 + 4), w - k.lb / 2 - 4), y = Math.max(k.y, k.tg + 4);
-        k.el.style.transform = 'translate(-50%, -100%) translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
+        puncak = Math.min(puncak, k.y - k.tg);
       });
+      // tumpukan yang menembus tepi atas diturunkan bersama-sama, jadi jarak antarlabel tetap
+      var geser = puncak < 4 ? 4 - puncak : 0;
+      kotak.forEach(function (k) {
+        k.y += geser;
+        k.el.style.transform = 'translate(-50%, -100%) translate(' + k.x.toFixed(1) + 'px,' + k.y.toFixed(1) + 'px)';
+      });
+      var nomorLalu = null, bilah = panggung.querySelector('.jelajah-alat'), bilahKiri = bilah ? bilah.offsetLeft : w, bilahAtas = bilah ? bilah.offsetTop : h;
       lapisan.forEach(function (L, n) {
         // nomor lapisan di sudut depan kiri lempeng (sudut yang paling dekat ke kamera di sisi kiri layar)
         v.set(L.mesh.position.x - LEBAR / 2, L.mesh.position.y, L.mesh.position.z + DALAM / 2).project(adegan.camera);
-        labelLapis[n].style.transform = 'translate(-115%, -50%) translate(' + ((v.x + 1) / 2 * w).toFixed(1) + 'px,' + ((1 - v.y) / 2 * h).toFixed(1) + 'px)';
+        var lb = labelLapis[n], nx = (v.x + 1) / 2 * w, ny = (1 - v.y) / 2 * h, nl = lb.offsetWidth, nt = lb.offsetHeight;
+        // lempeng tipis: nomor yang berimpit dengan nomor di atasnya digeser turun secukupnya
+        if (nomorLalu && Math.abs(nx - nomorLalu.x) < nl && ny < nomorLalu.y + nt + 1) ny = nomorLalu.y + nt + 1;
+        nomorLalu = { x: nx, y: ny };
+        lb.style.transform = 'translate(-115%, -50%) translate(' + nx.toFixed(1) + 'px,' + ny.toFixed(1) + 'px)';
+        // nomor lapisan hanya hiasan: disembunyikan bila tertimpa label alat atau keluar dari panggung
+        var kiri = nx - nl * 1.15, tertutup = kiri < 2 || ny - nt / 2 < 2 || ny + nt / 2 > h - 2 || (kiri + nl > bilahKiri - 2 && ny + nt / 2 > bilahAtas - 2) || kotak.some(function (k) {
+          return kiri < k.x + k.lb / 2 + 2 && kiri + nl > k.x - k.lb / 2 - 2 && ny - nt / 2 < k.y + 2 && ny + nt / 2 > k.y - k.tg - 2;
+        });
+        lb.style.visibility = tertutup ? 'hidden' : '';
       });
     }
     gerakLaci.aktif = function () {
