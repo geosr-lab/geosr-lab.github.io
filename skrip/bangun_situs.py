@@ -538,7 +538,7 @@ def halaman_induk_praktikum(data, status="", relasi=None):
              f'<div><dt><a href="../latihan/">jenis soal latihan</a></dt><dd>{jumlah_soal()}</dd></div></dl>\n')
     saring = ('    <div class="saring-katalog" id="saring-katalog" hidden>\n'
               '      <label class="sr-only" for="cari-alat">Cari alat praktikum</label>\n'
-              '      <input id="cari-alat" type="search" autocomplete="off" placeholder="Cari alat, misalnya CBR, saringan, atau SNI 1744">\n'
+              '      <input id="cari-alat" type="search" autocomplete="off" placeholder="Cari alat, misalnya CBR">\n'
               f'      <button type="button" class="chip chip-semua" data-saring="" aria-pressed="true">Semua <span class="jumlah">{tersedia}</span></button>\n'
               '      <p class="kecil redup hasil-saring" id="hasil-saring" role="status" aria-live="polite"></p>\n'
               '    </div>\n')
@@ -600,7 +600,7 @@ def kartu_beranda(data, praktikum=None):
     petak = []
     if praktikum:
         baris = "".join(
-            f'<li><a href="{praktik["halaman"]}#{slug(k["judul"])}" data-lapis="{i % 6 + 1}">{ikon_kelompok(i % 6 + 1)}<span class="nama">{html.escape(k["judul"])}</span>'
+            f'<li><a href="{praktik["halaman"]}#{slug(k["judul"])}" data-lapis="{i % 6 + 1}"><figure class="sketsa sketsa-mini" data-sketsa="{k["alat"][0]["id"]}" aria-hidden="true"></figure><span class="nama">{html.escape(k["judul"])}</span>'
             f'<span class="jumlah">{len(k["alat"])} alat</span></a></li>' for i, k in enumerate(praktikum["kelompok"]))
         nama = {a["id"]: a["judul"] for k in praktikum["kelompok"] for a in k["alat"]}
         sering = "".join(f'<li><a class="chip" href="{praktik["halaman"]}{i}/">{html.escape(nama[i])}</a></li>'

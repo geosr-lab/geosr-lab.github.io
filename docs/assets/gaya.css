@@ -680,11 +680,9 @@ footer::before {
 .dasbor .petak-kalkulator { grid-column: 1 / -1; grid-row: 2; }
 .kisi-kalk { align-self: stretch; display: grid; gap: 0 var(--j-6); grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
 .kisi-kalk h4 { margin-top: 6px; }
-@media (min-width: 721px) {
-  .petak-praktikum .kolom-inti { display: grid; grid-template-columns: 1fr 1fr; }
-  .petak-praktikum .kolom-inti li:nth-child(2) { border-top: 0; }
-  .petak-praktikum .kolom-inti li:nth-child(even) { border-left: 1px solid color-mix(in srgb, var(--teks) 25%, transparent); }
-}
+/* Kisi kelompok: jumlah kolom mengikuti lebar petak (bukan lebar layar), garis antarsel dari celah 1 px */
+.petak-praktikum .kolom-inti { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 1px; background: color-mix(in srgb, var(--teks) 25%, var(--permukaan)); }
+.petak-praktikum .kolom-inti li { border: 0; background: var(--permukaan); }
 @media (max-width: 1080px) {
   .dasbor .petak-praktikum, .dasbor .petak-belajar { grid-column: 1 / -1; grid-row: auto; }
   .dasbor .petak-kalkulator { grid-row: auto; }
@@ -843,6 +841,14 @@ footer::before {
 .kolom-inti a:hover::before { width: 60px; }
 .kolom-inti a:hover::after { transform: scaleX(1); }
 .kolom-inti .nama { flex: 1; }
+.kolom-inti li { display: flex; }
+.kolom-inti a { flex: 1; min-width: 0; }
+/* Beranda: tiap kelompok memakai sampul 3D alat pertamanya (sampul3d.js); pita warna kelompok menyempit jadi 6 px */
+.petak-praktikum .kolom-inti a { min-height: 64px; padding: 0 14px 0 0; }
+.petak-praktikum .kolom-inti a::before { width: 6px; margin: 0; }
+.petak-praktikum .kolom-inti a:hover::before { width: 10px; }
+.petak-praktikum .kolom-inti .sketsa-mini { flex: none; width: 80px; height: 48px; margin: 8px 0; border-radius: 6px; overflow: hidden; }
+.kolom-inti .jumlah { white-space: nowrap; }
 .kolom-inti .jumlah { font-family: var(--huruf-judul); font-stretch: 112%; font-weight: 700; font-size: 13.5px; color: var(--teks-2); font-variant-numeric: tabular-nums; }
 
 /* Tiga alasan hasil bisa diperiksa: kolom bergaris, bukan kartu */
@@ -1434,6 +1440,7 @@ dialog.palet::backdrop { background: color-mix(in srgb, var(--teks) 30%, transpa
   .inti-bor a[aria-pressed="true"]::before { width: 100%; height: auto; }
   .rekap { gap: var(--j-3) var(--j-5); }
 }
+@media (max-width: 560px) { .rekap { display: grid; grid-template-columns: 1fr 1fr; } }
 
 /* Kartu alat bersketsa */
 .kelompok-uji[hidden], .daftar-uji li[hidden] { display: none; }
@@ -1708,6 +1715,11 @@ input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, te
   background-image: linear-gradient(180deg, var(--cekung), transparent 9px);
   box-shadow: inset 0 1px 2px var(--cekung);
 }
+/* Kotak cari katalog: ikon kaca pembesar digambar di atas cekungan (aturan di atas mengganti background-image) */
+.saring-katalog input[type="search"]:not([type="checkbox"]):not([type="radio"]):not([type="range"]) {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23808a86' stroke-width='1.8' stroke-linecap='round'%3E%3Ccircle cx='8.5' cy='8.5' r='5.5'/%3E%3Cpath d='M13 13l4.5 4.5'/%3E%3C/svg%3E"), linear-gradient(180deg, var(--cekung), transparent 9px);
+  background-repeat: no-repeat; background-position: 13px 50%, 0 0; background-size: 18px, auto;
+}
 input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus, select:focus, textarea:focus {
   box-shadow: inset 0 1px 2px var(--cekung), 0 0 0 4px color-mix(in srgb, var(--aksen) 18%, transparent);
 }
@@ -1804,7 +1816,7 @@ a.kartu::before, .kolom-inti a::before, .inti-bor a::before, .daftar-uji a::befo
 .blok3d figcaption { margin-top: 10px; font-size: 13.5px; color: var(--teks-2); }
 .blok3d figcaption a { font-weight: 700; white-space: nowrap; }
 @media (max-width: 820px) { .blok-panggung { height: 340px; } }
-@media (max-width: 560px) { .b3-no { flex: 1 1 0; min-width: 0; padding: 0; height: 30px; font-size: 12px; } .b3-lapis { gap: 4px; flex-wrap: nowrap; } }
+@media (max-width: 560px) { .b3-no { flex: 1 1 0; min-width: 0; padding: 0; font-size: 12px; } .b3-lapis { gap: 4px; flex-wrap: nowrap; } }
 
 /* ---------------------------------------------------------------- Adegan 3D three.js (adegan3d.js, blok3d.js, alat3d.js) */
 .kanvas-3d { display: block; width: 100%; height: 100%; cursor: grab; }
@@ -1852,3 +1864,12 @@ a.kartu::before, .kolom-inti a::before, .inti-bor a::before, .daftar-uji a::befo
 .sketsa-mini.ada-sampul > :not(canvas) { visibility: hidden; }
 .sketsa-mini.ada-sampul { background: transparent !important; }
 @media print { .sketsa-mini > canvas.sampul-3d { display: none; } .sketsa-mini.ada-sampul > :not(canvas) { visibility: visible; } }
+
+/* ---------------------------------------------------------------- Layar sentuh: target sentuh minimal 44 px */
+@media (pointer: coarse), (max-width: 560px) {
+  .tombol, a.chip, button.chip, .tautan-lanjut { min-height: 44px; }
+  .b3-no { height: 44px; }
+  footer a, .rekap dt a, .status-bawah a, .arus .ke { display: inline-flex; align-items: center; min-height: 44px; }
+  .merek { min-height: 44px; }
+}
+@media (pointer: coarse), (max-width: 560px) { .alur-tahap input { min-height: 44px; } }

@@ -948,7 +948,8 @@
     });
     var k = { t: 0, jeda: false };
     function atur() {
-      var aktif = Math.floor(k.t / 2.4) % tabung.length;
+      // dt bingkai pertama bisa negatif atau bukan angka; indeks dijaga tetap 0..n-1
+      var aktif = ((Math.floor(k.t / 2.4) % tabung.length) + tabung.length) % tabung.length || 0;
       tabung.forEach(function (g, i) { var s2 = i === aktif ? 1.08 : 1; g.scale.set(s2, s2, s2); g.position.y = 2 + (i === aktif ? 1 : 0); });
       hud.textContent = 'USCS memakai huruf kelompok butir: ' + JENIS[aktif][0] + '. Simbol akhir dari gradasi dan batas Atterberg.';
     }
