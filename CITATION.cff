@@ -6,8 +6,8 @@ authors:
   - family-names: Yurinda
     given-names: Defsa
     affiliation: "Program Studi Teknik Sipil, Universitas Jambi"
-version: 0.40.2
-date-released: 2026-09-26
+version: 0.40.3
+date-released: 2026-11-17
 url: "https://defsayurinda.github.io/"
 repository-code: "https://github.com/defsayurinda/defsayurinda.github.io"
 license:

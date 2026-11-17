@@ -46,11 +46,11 @@ def main():
 
     versi = re.search(r"^version:\s*(\S+)", (AKAR / "CITATION.cff").read_text(encoding="utf-8"), re.M).group(1)
     sw = (DOCS / "sw.js").read_text(encoding="utf-8")
-    if f'const VERSI = "defsa-{versi}";' not in sw:
+    if f'const VERSI = "geosr-{versi}";' not in sw:
         gagal.append(f"docs/sw.js: versi cache tidak sama dengan CITATION.cff ({versi})")
     inti = json.loads("[" + re.search(r"const INTI = \[(.*?)\];", sw, re.S).group(1) + "]")
     for u in inti:
-        if not berkas_url(u.lstrip("/")).exists():
+        if not berkas_url(u.removeprefix("./").lstrip("/")).exists():
             gagal.append(f"docs/sw.js: aset inti {u} tidak ada")
     manifest = json.loads((DOCS / "manifest.webmanifest").read_text(encoding="utf-8"))
     for k in ("name", "short_name", "start_url", "icons"):

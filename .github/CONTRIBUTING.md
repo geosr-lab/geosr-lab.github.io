@@ -14,11 +14,11 @@ Laporan tanpa sumber tetap diterima, tapi perbaikan rumus hanya dilakukan setela
 
 ## Usul alat baru
 
-Pakai templat **Usul alat**. Alat baru hanya dibuat bila rumusnya punya sumber yang memenuhi Aturan Sumber di [`.claude/rencana.md`](.claude/rencana.md): SNI atau pedoman kementerian, buku teks standar dengan bab dan halaman, atau jurnal bereputasi. Situs pekerjaan rumah, blog tanpa penulis, dan salinan standar yang diunggah pihak lain tidak dipakai.
+Pakai templat **Usul alat**. Alat baru hanya dibuat bila rumusnya punya sumber yang memenuhi Aturan Sumber di [`.claude/rencana.md`](../.claude/rencana.md): SNI atau pedoman kementerian, buku teks standar dengan bab dan halaman, atau jurnal bereputasi. Situs pekerjaan rumah, blog tanpa penulis, dan salinan standar yang diunggah pihak lain tidak dipakai.
 
 ## Pull Request
 
-1. Baca [PANDUAN.md](PANDUAN.md) untuk struktur repo.
+1. Baca [PANDUAN.md](../PANDUAN.md) untuk struktur repo.
 2. Buat branch dari `main`. Pesan commit dalam bahasa Indonesia, kalimat perintah singkat.
 3. Jalankan sebelum membuka PR:
    ```
@@ -35,4 +35,4 @@ Pakai templat **Usul alat**. Alat baru hanya dibuat bila rumusnya punya sumber y
 - Data pribadi siapa pun, termasuk nama dosen, asisten, atau mahasiswa dari form lab.
 - Rumus atau nilai tabel tanpa sumber.
 
-Dengan berkontribusi, kamu setuju kodenya dirilis dengan lisensi [MIT](LICENSE) dan tulisannya dengan [CC BY 4.0](LICENSE-TULISAN), dan mengikuti [Kode Etik](CODE_OF_CONDUCT.md).
+Dengan berkontribusi, kamu setuju kodenya dirilis dengan lisensi [MIT](../LICENSE) dan tulisannya dengan [CC BY 4.0](../LICENSE-TULISAN), dan mengikuti [Kode Etik](CODE_OF_CONDUCT.md).

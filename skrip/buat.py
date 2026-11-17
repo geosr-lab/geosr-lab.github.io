@@ -26,6 +26,7 @@ from pathlib import Path
 
 AKAR = Path(__file__).resolve().parent.parent
 REGISTRI = AKAR / "konten/alat.json"
+SITUS = json.loads((AKAR / "konten/situs.json").read_text(encoding="utf-8"))["situs"]
 BULAN = "Januari Februari Maret April Mei Juni Juli Agustus September Oktober November Desember".split()
 
 
@@ -100,8 +101,8 @@ HALAMAN = """<!doctype html>
   <meta property="og:type" content="website">
   <meta property="og:title" content="{judul} · GeoSR">
   <meta property="og:description" content="{deskripsi}">
-  <meta property="og:url" content="https://defsayurinda.github.io/kalkulator/{id}.html">
-  <meta property="og:image" content="https://defsayurinda.github.io/assets/pratinjau.png">
+  <meta property="og:url" content="{situs}kalkulator/{id}.html">
+  <meta property="og:image" content="{situs}assets/pratinjau.png">
   <meta property="og:locale" content="id_ID">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#f1f2ec">
@@ -217,7 +218,7 @@ def buat_alat(a):
                HITUNG.format(judul=a.judul, global_=global_, sumber="\n".join(f" *   - {s}" for s in a.sumber)))
     tulis_baru(AKAR / f"docs/assets/{id_}-tampilan.js", TAMPILAN.format(judul=a.judul, global_=global_))
     tulis_baru(AKAR / f"docs/kalkulator/{id_}.html",
-               HALAMAN.format(id=id_, judul=esc(a.judul), deskripsi=esc(deskripsi), kategori=esc(kategori[a.kategori]),
+               HALAMAN.format(situs=SITUS, id=id_, judul=esc(a.judul), deskripsi=esc(deskripsi), kategori=esc(kategori[a.kategori]),
                               sumber_li="\n".join(f"        <li>{esc(s)}</li>" for s in a.sumber)))
     tulis_baru(AKAR / f"tests/verifikasi_{id_.replace('-', '_')}.py",
                UJI.format(judul=a.judul, id=id_, id_py=id_.replace("-", "_")))

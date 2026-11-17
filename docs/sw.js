@@ -2,23 +2,23 @@
  * Versi cache mengikuti versi di CITATION.cff. Aset inti disimpan saat pemasangan; halaman dan
  * aset lain disimpan saat pertama dibuka. Halaman: jaringan dulu, cadangan dari cache. Aset: cache dulu.
  */
-const VERSI = "defsa-0.40.2";
+const VERSI = "geosr-0.40.3";
 const INTI = [
-  "/",
-  "/assets/gaya.css",
-  "/assets/tema.js",
-  "/assets/umum.js",
-  "/assets/daftar-sw.js",
-  "/assets/gerak.js",
-  "/assets/ikon.svg",
-  "/manifest.webmanifest",
-  "/assets/katex/katex.min.css",
-  "/assets/katex/katex.min.js",
-  "/assets/font/plus-jakarta-sans-latin-400-normal.woff2",
-  "/assets/font/plus-jakarta-sans-latin-600-normal.woff2",
-  "/assets/font/plus-jakarta-sans-latin-700-normal.woff2",
-  "/assets/font/plus-jakarta-sans-latin-800-normal.woff2",
-  "/assets/font/archivo-latin-wdth-normal.woff2"
+  "./",
+  "./assets/gaya.css",
+  "./assets/tema.js",
+  "./assets/umum.js",
+  "./assets/daftar-sw.js",
+  "./assets/gerak.js",
+  "./assets/ikon.svg",
+  "./manifest.webmanifest",
+  "./assets/katex/katex.min.css",
+  "./assets/katex/katex.min.js",
+  "./assets/font/plus-jakarta-sans-latin-400-normal.woff2",
+  "./assets/font/plus-jakarta-sans-latin-600-normal.woff2",
+  "./assets/font/plus-jakarta-sans-latin-700-normal.woff2",
+  "./assets/font/plus-jakarta-sans-latin-800-normal.woff2",
+  "./assets/font/archivo-latin-wdth-normal.woff2"
 ];
 
 self.addEventListener("install", (e) => {

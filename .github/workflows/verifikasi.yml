@@ -26,6 +26,11 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           python3 skrip/bangun_situs.py --periksa
+      # Uji tata letak membuka situs di Chromium; tanpa langkah ini uji itu dilewati.
+      - name: Pasang Playwright dan Chromium
+        run: |
+          pip install playwright
+          python3 -m playwright install --with-deps chromium
       - name: Jalankan semua verifikasi
         run: |
           for f in tests/verifikasi_*.py; do

@@ -28,8 +28,22 @@ import markdown
 
 AKAR = Path(__file__).resolve().parent.parent
 KONTEN, DOCS = AKAR / "konten", AKAR / "docs"
-SITUS = "https://defsayurinda.github.io/"
-REPO = "https://github.com/defsayurinda/defsayurinda.github.io"
+# Alamat situs dan repo hanya ditulis di konten/situs.json. "alamat_lama" berisi pasangan alamat sebelumnya;
+# setiap berkas yang dibangun atau diseragamkan diganti ke alamat sekarang (lihat alamat_sekarang()).
+ALAMAT = json.loads((KONTEN / "situs.json").read_text(encoding="utf-8"))
+SITUS, REPO = ALAMAT["situs"], ALAMAT["repo"]
+# Berkas tulis tangan di luar docs/*.html yang memuat alamat situs atau repo
+BERALAMAT = ["README.en.md", "CITATION.cff", "PANDUAN.md", "docs/assets/umum.js", ".github/ISSUE_TEMPLATE/config.yml",
+             ".github/CONTRIBUTING.md", ".github/SECURITY.md", ".github/CODE_OF_CONDUCT.md",
+             *sorted(p.relative_to(AKAR).as_posix() for p in KONTEN.rglob("*.md"))]
+
+
+def alamat_sekarang(teks):
+    """Ganti alamat lama (situs dan repo) dengan alamat di konten/situs.json. Repo diganti lebih dulu karena memuat nama situs."""
+    for lama in ALAMAT.get("alamat_lama", []):
+        teks = teks.replace(lama["repo"], REPO).replace(lama["situs"], SITUS)
+        teks = teks.replace(lama["situs"].split("//", 1)[1].rstrip("/"), SITUS.split("//", 1)[1].rstrip("/"))
+    return teks
 DASAR_404 = "/"
 
 NAMA = "GeoSR"
@@ -983,12 +997,12 @@ def versi_rilis():
 
 
 def service_worker():
-    inti = ",\n  ".join(json.dumps("/" + x) for x in ["", *INTI])
+    inti = ",\n  ".join(json.dumps("./" + x) for x in ["", *INTI])
     return f"""/* Dibangun oleh skrip/bangun_situs.py; jangan diedit langsung.
  * Versi cache mengikuti versi di CITATION.cff. Aset inti disimpan saat pemasangan; halaman dan
  * aset lain disimpan saat pertama dibuka. Halaman: jaringan dulu, cadangan dari cache. Aset: cache dulu.
  */
-const VERSI = "defsa-{versi_rilis()}";
+const VERSI = "geosr-{versi_rilis()}";
 const INTI = [
   {inti}
 ];
@@ -1076,7 +1090,11 @@ def bangun():
     keluaran[DOCS / "sitemap.xml"] = sitemap(semua_html)
     keluaran[DOCS / "sw.js"] = service_worker()
     keluaran[DOCS / "robots.txt"] = f"User-agent: *\nAllow: /\nSitemap: {SITUS}sitemap.xml\n"
-    return keluaran
+    for nama in BERALAMAT:
+        if (AKAR / nama).exists():
+            with open(AKAR / nama, encoding="utf-8", newline="") as berkas:
+                keluaran[AKAR / nama] = berkas.read()
+    return {jalur: alamat_sekarang(isi) for jalur, isi in keluaran.items()}
 
 
 def main():
