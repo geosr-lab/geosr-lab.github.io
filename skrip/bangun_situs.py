@@ -32,6 +32,8 @@ KONTEN, DOCS = AKAR / "konten", AKAR / "docs"
 # setiap berkas yang dibangun atau diseragamkan diganti ke alamat sekarang (lihat alamat_sekarang()).
 ALAMAT = json.loads((KONTEN / "situs.json").read_text(encoding="utf-8"))
 SITUS, REPO = ALAMAT["situs"], ALAMAT["repo"]
+# Kode akun GoatCounter; kosong berarti situs tidak menghitung kunjungan (lihat docs/assets/kunjungan.js).
+GOATCOUNTER = ALAMAT.get("goatcounter", "").strip()
 # Berkas tulis tangan di luar docs/*.html yang memuat alamat situs atau repo
 BERALAMAT = ["README.en.md", "CITATION.cff", "PANDUAN.md", "docs/assets/umum.js", ".github/ISSUE_TEMPLATE/config.yml",
              ".github/CONTRIBUTING.md", ".github/SECURITY.md", ".github/CODE_OF_CONDUCT.md",
@@ -171,7 +173,25 @@ def tombol_tema(en=False):
 def skrip_sw(awalan):
     return (f'\n  <script src="{awalan}assets/daftar-sw.js" defer></script>'
             f'\n  <script src="{awalan}assets/gerak.js" defer></script>'
-            f'\n  <script src="{awalan}assets/palet.js" defer></script>')
+            f'\n  <script src="{awalan}assets/palet.js" defer></script>' + skrip_kunjungan(awalan))
+
+
+def skrip_kunjungan(awalan):
+    if not GOATCOUNTER:
+        return ""
+    host = SITUS.split("//", 1)[1].rstrip("/")
+    return (f'\n  <script src="{awalan}assets/kunjungan.js" data-goatcounter="{html.escape(GOATCOUNTER)}" '
+            f'data-situs="{html.escape(host)}" async></script>')
+
+
+def paragraf_kunjungan():
+    if not GOATCOUNTER:
+        return ""
+    return ("    <h2>Data kunjungan</h2>\n"
+            f"    <p>{NAMA} menghitung jumlah kunjungan dengan <a href=\"https://www.goatcounter.com/\">GoatCounter</a>, layanan analitik sumber terbuka. "
+            "Yang dikirim hanya alamat halaman (tanpa isi formulir dan tanpa tautan berbagi data), judul halaman, halaman asal, dan ukuran layar. "
+            "Tidak ada cookie, dan menurut dokumentasi GoatCounter alamat IP tidak disimpan. "
+            "Browser yang menyalakan <i>Do Not Track</i> tidak dihitung. Angka yang kamu isi di alat dan kalkulator tetap hanya ada di browsermu.</p>\n")
 
 
 def footer(awalan, sumber=None, en=False):
@@ -803,7 +823,7 @@ def halaman_kredit():
             "    </header>\n    <div class=\"tabel-gulir\"><table>\n"
             "      <thead><tr><th>Aset</th><th>Pembuat</th><th>Lisensi</th></tr></thead>\n      <tbody>\n" + baris +
             "\n      </tbody>\n    </table></div>\n"
-            f"    <h2>Gambar buatan sendiri</h2>\n    <p>{html.escape(data['buatan_sendiri'])}</p>\n  </main>\n\n"
+            f"    <h2>Gambar buatan sendiri</h2>\n    <p>{html.escape(data['buatan_sendiri'])}</p>\n" + paragraf_kunjungan() + "  </main>\n\n"
             "  <!-- FOOTER:MULAI -->\n  " + footer(awalan) + "\n  <!-- FOOTER:SELESAI -->\n</body>\n</html>\n")
 
 
