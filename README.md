@@ -28,6 +28,7 @@ Kolom status menunjukkan sumber rumus: asli (dicocokkan dengan sumber aslinya da
 | [Latihan Soal Geoteknik](https://geosr-lab.github.io/latihan/) | Latihan soal geoteknik dengan angka acak dan pembahasan langkah demi langkah: sifat fisik tanah, batas Atterberg, pondasi dangkal, konsolidasi, tiang bor, tiang lateral, dan penyelidikan tanah. | Belum terverifikasi |
 | [Kalkulator Korelasi N-SPT](https://geosr-lab.github.io/kalkulator/korelasi-spt.html) | Koreksi N-SPT ke N60 dan (N1)60, lalu perkiraan kepadatan relatif, sudut geser, modulus elastisitas pasir, kuat geser undrained lempung, dan kecepatan gelombang geser, dengan rujukan halaman. | Sumber sekunder |
 | [Kalkulator Korelasi Sondir](https://geosr-lab.github.io/kalkulator/korelasi-cpt.html) | Dari qc dan fs sondir, perkiraan kepadatan relatif dan sudut geser pasir, serta kuat geser undrained, sensitivitas, OCR, rasio kompresi, dan kecepatan gelombang geser lempung, dengan rujukan halaman. | Sumber sekunder |
+| [GeoFEM 3D](https://geosr-lab.github.io/geofem3d/) | Analisis elemen hingga 3D untuk pondasi telapak di tanah berlapis, langsung di browser: penurunan, tegangan, titik plastis, dan angka keamanan reduksi φ-c. | Belum terverifikasi |
 <!-- ALAT:SELESAI -->
 
 ## Cara memakai

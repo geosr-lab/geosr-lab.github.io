@@ -32,6 +32,38 @@
       "distribusi": "paket npm three 0.147.0",
       "lisensi": "MIT",
       "berkas_lisensi": "assets/vendor/three/LICENSE"
+    },
+    {
+      "nama": "Pyodide 0.27.7 (Python 3.12 di browser, untuk GeoFEM 3D)",
+      "pembuat": "Pyodide contributors",
+      "sumber": "https://github.com/pyodide/pyodide",
+      "distribusi": "rilis resmi Pyodide 0.27.7",
+      "lisensi": "Mozilla Public License 2.0",
+      "berkas_lisensi": "assets/vendor/pyodide/LICENSE"
+    },
+    {
+      "nama": "NumPy 2.0.2 (paket Pyodide, untuk GeoFEM 3D)",
+      "pembuat": "NumPy Developers",
+      "sumber": "https://github.com/numpy/numpy",
+      "distribusi": "rilis resmi Pyodide 0.27.7",
+      "lisensi": "BSD 3-Clause",
+      "berkas_lisensi": "assets/vendor/pyodide/LICENSE-numpy.txt"
+    },
+    {
+      "nama": "SciPy 1.14.1 (paket Pyodide, untuk GeoFEM 3D)",
+      "pembuat": "SciPy Developers",
+      "sumber": "https://github.com/scipy/scipy",
+      "distribusi": "rilis resmi Pyodide 0.27.7",
+      "lisensi": "BSD 3-Clause",
+      "berkas_lisensi": "assets/vendor/pyodide/LICENSE-scipy.txt"
+    },
+    {
+      "nama": "OpenBLAS 0.3.26 (dipakai SciPy di Pyodide)",
+      "pembuat": "OpenBLAS contributors",
+      "sumber": "https://github.com/OpenMathLib/OpenBLAS",
+      "distribusi": "rilis resmi Pyodide 0.27.7",
+      "lisensi": "BSD 3-Clause",
+      "berkas_lisensi": "assets/vendor/pyodide/LICENSE-openblas.txt"
     }
   ],
   "buatan_sendiri": "Sketsa alat uji, ikon kelompok pengujian, logo lapisan tanah, ilustrasi penampang, blok tanah 3D beranda, model 3D alat praktikum (dibangun dari bentuk dasar three.js di kode, bukan model unduhan), dan grafik digambar sendiri sebagai SVG di kode situs ini. Gambarnya ikut lisensi tulisan dan gambar situs (CC BY 4.0); kodenya ikut lisensi kode (MIT)."

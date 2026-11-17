@@ -56,6 +56,13 @@
 "k": "Alat"
 },
 {
+"j": "GeoFEM 3D: elemen hingga 3D untuk pondasi telapak",
+"d": "Analisis elemen hingga 3D untuk pondasi telapak di tanah berlapis, langsung di browser: penurunan, tegangan, titik plastis, dan angka keamanan reduksi φ-c.",
+"h": "Elemen hingga 3D, tetrahedron 10 titik nodal Bor log, parameter Mohr-Coulomb atau Hardening Soil, pondasi B × L, beban q, muka air tanah Penurunan, tegangan, titik plastis, kurva beban-penurunan, angka keamanan SF",
+"u": "geofem3d/",
+"k": "Alat"
+},
+{
 "j": "Kadar air",
 "d": "Kadar air tiap cawan dan rata-ratanya dari penimbangan basah dan kering.",
 "h": "Sifat fisik SNI 1965:2008",

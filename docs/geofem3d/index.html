@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GeoFEM 3D · GeoSR</title>
+  <meta name="description" content="Aplikasi desktop analisis elemen hingga 3D untuk pondasi telapak di tanah berlapis: Mohr-Coulomb, Hardening Soil, prosedur K0, beban plastis, dan angka keamanan reduksi phi-c.">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="GeoSR · Geotechnical Soil Report">
+  <meta property="og:title" content="GeoFEM 3D · GeoSR">
+  <meta property="og:description" content="Aplikasi desktop analisis elemen hingga 3D untuk pondasi telapak di tanah berlapis.">
+  <meta property="og:url" content="https://geosr-lab.github.io/geofem3d/">
+  <meta property="og:image" content="https://geosr-lab.github.io/assets/geofem3d/tampilan.png">
+  <meta property="og:locale" content="id_ID">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#f1f2ec" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#10181a" media="(prefers-color-scheme: dark)">
+  <link rel="stylesheet" href="../assets/gaya.css">
+  <script src="../assets/tema.js"></script>
+  <link rel="icon" href="../assets/ikon.svg" type="image/svg+xml">
+  <link rel="manifest" href="../manifest.webmanifest">
+</head>
+<body>
+  <!-- NAV:MULAI -->
+  <nav class="nav">
+    <div class="wadah">
+      <a class="merek" href="../" aria-label="GeoSR, beranda"><svg class="merek-tanda" viewBox="0 0 22 26" aria-hidden="true"><rect x="0" y="0" width="22" height="26" rx="2" style="fill:none"/><rect x="0" y="0" width="22" height="6" rx="1" style="fill:var(--lapis-3)"/><rect x="0" y="7.5" width="22" height="7" rx="1" style="fill:var(--lapis-2)"/><rect x="0" y="16" width="22" height="4" rx="1" style="fill:var(--lapis-4)"/><rect x="0" y="21.5" width="22" height="4.5" rx="1" style="fill:var(--lapis-5)"/></svg><span>GeoSR<span class="merek-lengkap">Geotechnical Soil Report</span></span></a>
+      <button class="tema-tombol" type="button" aria-label="Tema: ikut sistem" title="Ganti tema"><svg viewBox="0 0 20 20" aria-hidden="true"><g class="ikon-otomatis"><circle cx="10" cy="10" r="6.5"/><path d="M10 3.5a6.5 6.5 0 0 0 0 13z" class="isi"/></g><g class="ikon-terang"><circle cx="10" cy="10" r="3.4"/><path d="M10 2v2.2M10 15.8V18M2 10h2.2M15.8 10H18M4.3 4.3l1.6 1.6M14.1 14.1l1.6 1.6M4.3 15.7l1.6-1.6M14.1 5.9l1.6-1.6"/></g><g class="ikon-gelap"><path d="M16 12.6A6.6 6.6 0 0 1 7.4 4a6.6 6.6 0 1 0 8.6 8.6z"/></g></svg></button>
+      <button class="nav-tombol" type="button" aria-expanded="false" aria-controls="menu-utama"><span class="nav-garis" aria-hidden="true"></span><span class="sr-only">Menu</span></button>
+      <ul id="menu-utama"><li><a href="../praktikum/">Praktikum</a></li><li><a href="../alat/">Kalkulator</a></li><li><a href="../latihan/">Latihan</a></li><li><a href="../cari/">Cari</a></li></ul>
+    </div>
+  </nav>
+  <!-- NAV:SELESAI -->
+
+  <main class="wadah">
+    <header class="pahlawan" style="padding-bottom:16px">
+      <p class="remah"><a href="../alat/">Kalkulator</a></p>
+      <h1>GeoFEM 3D</h1>
+      <p class="lead">Analisis elemen hingga 3D untuk pondasi telapak di tanah berlapis: penurunan, tegangan, titik plastis, dan angka keamanan. Hitungan berjalan langsung di browser ini memakai solver Python yang sama dengan aplikasi desktopnya; data tidak dikirim ke mana pun.</p>
+      <dl class="etiket"><div><dt>Jenis</dt><dd>Kalkulator elemen hingga</dd></div><div><dt>Topik</dt><dd>Fondasi</dd></div><div><dt>Metode</dt><dd>FEM 3D, Mohr-Coulomb dan Hardening Soil</dd></div></dl>
+    </header>
+
+    <form id="formulir" class="kartu" autocomplete="off" onsubmit="return false">
+      <h3 style="margin-top:0">Tanah (bor log)</h3>
+      <p class="kecil redup" style="margin-top:0">Lapisan dari atas ke bawah, elevasi dalam meter (permukaan tanah = puncak lapisan pertama). E dan ν dipakai model Mohr-Coulomb; E<sub>50</sub><sup>ref</sup>, E<sub>ur</sub><sup>ref</sup>, dan m dipakai Hardening Soil (p<sup>ref</sup> = 100 kPa, ν<sub>ur</sub> = 0,2, R<sub>f</sub> = 0,9). Berat isi dalam kN/m³.</p>
+      <div class="tabel-gulir"><table>
+        <thead><tr><th>Nama</th><th>Model</th><th>Puncak (m)</th><th>Dasar (m)</th><th>γ<sub>unsat</sub></th><th>γ<sub>sat</sub></th><th>E (kPa)</th><th>ν</th><th>c (kPa)</th><th>φ (°)</th><th>ψ (°)</th><th>E<sub>50</sub><sup>ref</sup></th><th>E<sub>ur</sub><sup>ref</sup></th><th>m</th></tr></thead>
+        <tbody id="lapisan"></tbody>
+      </table></div>
+      <div class="baris-tombol" style="margin:10px 0 0">
+        <button type="button" class="tombol kecil" id="tambah">Tambah lapisan</button>
+        <button type="button" class="tombol kecil" id="hapus">Hapus lapisan terakhir</button>
+      </div>
+
+      <h3>Pondasi, air tanah, dan domain</h3>
+      <div class="isian-kisi">
+        <div><label for="B">Lebar pondasi, B (m)</label><input id="B" type="number" step="0.1" min="0.1" inputmode="decimal"></div>
+        <div><label for="L">Panjang pondasi, L (m)</label><input id="L" type="number" step="0.1" min="0.1" inputmode="decimal"></div>
+        <div><label for="q">Tekanan pondasi, q (kPa)</label><input id="q" type="number" step="10" min="0" inputmode="decimal"></div>
+        <div><label for="jenis">Jenis pondasi</label><select id="jenis"><option value="flexible">Fleksibel (tekanan merata)</option><option value="rigid">Kaku (penurunan seragam)</option></select></div>
+        <div><label for="mat">Elevasi muka air tanah (m)</label><input id="mat" type="number" step="0.5" inputmode="decimal"></div>
+        <div><label for="Lx">Lebar domain x (m)</label><input id="Lx" type="number" step="1" min="1" inputmode="decimal"></div>
+        <div><label for="Ly">Lebar domain y (m)</label><input id="Ly" type="number" step="1" min="1" inputmode="decimal"></div>
+      </div>
+
+      <h3>Jaring dan tahapan</h3>
+      <div class="isian-kisi">
+        <div><label for="kerapatan">Kerapatan jaring</label><select id="kerapatan"><option value="kasar">Kasar (±1.500 elemen, ±40 detik)</option><option value="sedang">Sedang (±3.500 elemen, beberapa menit)</option><option value="halus">Halus (lambat di ponsel)</option></select></div>
+        <div style="align-self:end"><label><input id="hitungSF" type="checkbox"> Hitung angka keamanan (reduksi φ-c)</label></div>
+      </div>
+      <p class="kecil redup">Fase 0: tegangan awal dengan K<sub>0</sub> = 1 − sin φ. Fase 1: beban pondasi plastis. Fase 2: reduksi φ-c. Seperempat model dihitung (dua bidang simetri) lalu dicerminkan untuk tampilan.</p>
+      <div class="baris-tombol">
+        <button type="button" class="tombol utama" id="hitung">Hitung</button>
+        <button type="button" class="tombol kecil" id="muatContoh">Muat data contoh</button>
+      </div>
+      <progress id="bilah" max="1000" value="0" style="width:100%"></progress>
+      <p id="status" class="kecil redup" role="status" aria-live="polite">Pertama kali menghitung, browser memuat Python, numpy, dan scipy (±35 MB, sekali per kunjungan).</p>
+      <p id="galat" class="catatan galat" hidden></p>
+    </form>
+
+    <figure class="alat3d" style="margin-top:22px">
+      <div class="alat3d-panggung" id="panggung" style="height:clamp(320px, 52vh, 520px)"></div>
+      <figcaption><span id="ketPanggung">Geometri model.</span><span class="alat3d-tombol"><button type="button" class="tombol kecil" id="awal">Tampak awal</button></span></figcaption>
+    </figure>
+
+    <section id="hasil" aria-live="polite" hidden>
+      <h2>Hasil</h2>
+      <div class="ringkasan" id="ringkasan"></div>
+      <div class="tata-kalk">
+        <div class="kartu">
+          <div class="isian-kisi">
+            <div><label for="fase">Fase</label><select id="fase"></select></div>
+            <div><label for="besaran">Besaran di model 3D</label><select id="besaran"></select></div>
+            <div><label for="tampilan">Tampilan</label><select id="tampilan"><option value="potong">Potongan melalui pusat pondasi</option><option value="utuh">Model utuh</option></select></div>
+          </div>
+          <p class="kecil redup" id="legenda" style="display:flex;align-items:center;gap:8px;margin:12px 0 0"></p>
+          <details style="margin-top:12px"><summary>Log hitungan</summary><pre id="log" class="kecil" style="white-space:pre-wrap;max-height:260px;overflow:auto"></pre></details>
+        </div>
+        <aside class="kartu"><h3 style="margin-top:0" id="kurvaJudul">Kurva beban-penurunan</h3><div id="kurva"></div></aside>
+      </div>
+    </section>
+
+    <h2>Aplikasi desktop</h2>
+    <p>Versi desktop Windows punya jaring gmsh yang lebih rapat, potongan penampang, ekspor CSV, dan skrip pembanding dengan PLAXIS 3D. Tidak perlu memasang Python.</p>
+    <p>
+      <a class="tombol" href="https://github.com/geosr-lab/geofem3d/releases/latest/download/GeoFEM3D-windows.zip">Unduh untuk Windows (.zip)</a>
+      <a class="tombol" href="https://github.com/geosr-lab/geofem3d">Lihat kode di GitHub</a>
+    </p>
+    <figure style="margin:0 0 24px">
+      <img src="../assets/geofem3d/tampilan.png" width="1800" height="1055" loading="lazy" style="max-width:100%;height:auto;border:1px solid var(--garis);border-radius:8px" alt="Jendela aplikasi desktop GeoFEM 3D: tab tahapan di atas, Model Explorer dan Selection Explorer di kiri, potongan tegangan deviator pada fase reduksi phi-c di tengah, kurva SigmaMsf dan ringkasan hasil di kanan.">
+      <figcaption class="kecil redup">Aplikasi desktop dengan contoh bawaan: pondasi 2 × 2 m, q = 150 kPa, pasir di atas lempung, muka air tanah −2 m.</figcaption>
+    </figure>
+
+    <h2>Yang dihitung</h2>
+    <div class="tabel-gulir"><table>
+      <thead><tr><th>Bagian</th><th>Isi</th></tr></thead>
+      <tbody>
+        <tr><td>Tanah</td><td>Lapisan horizontal dari bor log, terdrainase. Model Mohr-Coulomb atau Hardening Soil (pengerasan geser), muka air tanah hidrostatis.</td></tr>
+        <tr><td>Struktur</td><td>Pondasi persegi panjang di permukaan, fleksibel (tekanan merata) atau kaku (penurunan seragam).</td></tr>
+        <tr><td>Jaring</td><td>Tetrahedron 10 titik nodal, halus di bawah pondasi; seperempat model dengan dua bidang simetri. Di browser jaringnya terstruktur (garis grid jatuh di tepi pondasi, batas lapisan, dan muka air); versi desktop memakai gmsh.</td></tr>
+        <tr><td>Tahapan</td><td>Fase 0 tegangan awal (K<sub>0</sub> = 1 − sin φ), fase 1 beban plastis inkremental-iteratif, fase 2 angka keamanan dengan reduksi φ-c.</td></tr>
+        <tr><td>Hasil</td><td>Perpindahan, tegangan efektif, p', q, titik plastis, potongan penampang, kurva beban-penurunan dan ΣM<sub>sf</sub>; di desktop juga potongan penampang serta ekspor PNG dan CSV.</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>Cara memakai</h2>
+    <ol>
+      <li>Isi lapisan tanah, pondasi, muka air tanah, dan kerapatan jaring di formulir di atas, atau tekan Muat data contoh.</li>
+      <li>Tekan Hitung. Kunjungan pertama memuat Python ±35 MB; hitungan berikutnya langsung jalan.</li>
+      <li>Pilih fase dan besaran untuk mewarnai model 3D. Seret untuk memutar, gulir untuk memperbesar.</li>
+      <li>Hasil jaring kasar adalah perkiraan. Ulangi dengan jaring sedang; bila angkanya berubah banyak, pakai jaring yang lebih rapat atau aplikasi desktop.</li>
+    </ol>
+
+    <h2>Pemeriksaan</h2>
+    <p>Sembilan uji otomatis ikut di repo: patch test elastis, penurunan lapisan elastis dibanding rumus tertutup, titik leleh satu elemen Mohr-Coulomb, uji triaksial Hardening Soil (modulus sekan pada 50 % q<sub>f</sub> sama dengan E<sub>50</sub>, kekuatan puncak sama dengan q<sub>f</sub>, kekakuan sebanding akar tegangan sel), dan pemetaan material ke PLAXIS.</p>
+    <p>Di browser, contoh bawaan dengan jaring kasar memberi penurunan 13,90 mm dan SF 1,29; jaring sedang 14,49 mm dan SF 1,16; aplikasi desktop dengan jaring gmsh 14,21 mm dan SF 1,19. Angka di browser dan di desktop berasal dari kode solver yang sama.</p>
+    <p>Repo juga berisi skrip pembanding dengan PLAXIS 3D yang memakai Python Remote Scripting resmi PLAXIS. Perbandingan itu belum dijalankan, jadi belum ada angka selisih yang bisa dilaporkan di sini.</p>
+
+    <h2>Batasan</h2>
+    <ul>
+      <li>Hanya analisis terdrainase; belum ada konsolidasi, aliran, atau tekanan pori ekses.</li>
+      <li>Hardening Soil belum punya cap (pengerasan volumetrik), jadi E<sub>oed</sub><sup>ref</sup> belum dipakai dan kompresi satu dimensi primer terlalu kaku.</li>
+      <li>Satu pondasi persegi panjang di tengah domain, lapisan horizontal, tanpa elemen struktur.</li>
+      <li>Hasil tergantung kerapatan jaring; periksa dengan memperhalus jaring sampai hasil stabil.</li>
+    </ul>
+
+    <h2>Sumber</h2>
+    <ul>
+      <li>Schanz, T., Vermeer, P. A., &amp; Bonnier, P. G. (1999). The hardening soil model: formulation and verification. <em>Beyond 2000 in Computational Geotechnics</em>. Balkema. Belum dibaca langsung.</li>
+      <li>de Souza Neto, E. A., Perić, D., &amp; Owen, D. R. J. (2008). <em>Computational Methods for Plasticity</em>. Wiley, bab 8 (return mapping Mohr-Coulomb).</li>
+      <li>Griffiths, D. V., &amp; Lane, P. A. (1999). Slope stability analysis by finite elements. <em>Géotechnique</em>, 49(3), 387–403 (reduksi kekuatan).</li>
+      <li>Jâky, J. (1944). The coefficient of earth pressure at rest. <em>Journal of the Society of Hungarian Architects and Engineers</em>, 355–358.</li>
+    </ul>
+    <p class="status-sumber" data-status="belum"><span>Status sumber: <strong>Belum terverifikasi</strong></span><span class="status-tgl">dicek 17 November 2026</span><a href="https://github.com/geosr-lab/geosr-lab.github.io#alat">arti status</a></p>
+    <p class="kecil redup">Rumus belum dicocokkan langsung dengan sumber asli dan belum ada uji contoh soal buku.</p>
+  </main>
+
+  <!-- FOOTER:MULAI -->
+  <footer>
+    <div class="wadah kaki-isi">
+      <div class="kaki-merek"><a href="../">GeoSR</a><span>Geotechnical Soil Report · dibuat oleh <a href="../pembuat/">Defsa Yurinda</a></span></div>
+      <dl class="kaki-etiket"><div><dt>Pembuat</dt><dd><a href="../pembuat/">Profil</a> · <a href="https://geosr-lab.github.io/portofolio/">Portofolio</a></dd></div><div><dt>Kode</dt><dd><a href="https://github.com/geosr-lab/geosr-lab.github.io">GitHub</a> · <a class="bintang" href="https://github.com/geosr-lab/geosr-lab.github.io"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-2.9-5.4 2.9 1.1-6-4.5-4.2 6.1-.8z"/></svg>Beri bintang</a></dd></div><div><dt>Lisensi</dt><dd>Kode <a href="https://github.com/geosr-lab/geosr-lab.github.io/blob/main/LICENSE">MIT</a>, tulisan <a href="https://github.com/geosr-lab/geosr-lab.github.io/blob/main/LICENSE-TULISAN">CC BY 4.0</a> · <a href="../kredit/">Kredit aset</a></dd></div><div><dt>Rujukan</dt><dd><a href="../notasi/">Kamus notasi</a></dd></div></dl>
+    </div>
+  </footer>
+  <script src="../assets/daftar-sw.js" defer></script>
+  <script src="../assets/gerak.js" defer></script>
+  <script src="../assets/palet.js" defer></script>
+  <script src="../assets/kunjungan.js" data-goatcounter="geosr-lab" data-situs="geosr-lab.github.io" async></script>
+  <!-- FOOTER:SELESAI -->
+
+  <script src="../assets/vendor/three/three.min.js" defer></script>
+  <script src="../assets/vendor/three/OrbitControls.js" defer></script>
+  <script src="../assets/adegan3d.js" defer></script>
+  <script src="../assets/geofem3d/aplikasi.js" defer></script>
+</body>
+</html>

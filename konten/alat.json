@@ -329,6 +329,47 @@
       ],
       "judul_en": "Soil parameters from CPT (sondir)",
       "ringkas_en": "From q<sub>c</sub> and f<sub>s</sub>: D<sub>r</sub> and φ for sand; c<sub>u</sub>, S<sub>t</sub>, OCR, CR, v<sub>s</sub> for clay."
+    },
+    {
+      "id": "geofem3d",
+      "judul": "GeoFEM 3D: elemen hingga 3D untuk pondasi telapak",
+      "judul_pendek": "GeoFEM 3D",
+      "deskripsi": "Analisis elemen hingga 3D untuk pondasi telapak di tanah berlapis, langsung di browser: penurunan, tegangan, titik plastis, dan angka keamanan reduksi φ-c.",
+      "kategori": "fondasi",
+      "lencana": "FEM 3D",
+      "halaman": "geofem3d/",
+      "ringkas": "Elemen hingga 3D: Mohr-Coulomb dan Hardening Soil, prosedur K<sub>0</sub>, beban plastis, dan reduksi φ-c.",
+      "rincian": [
+        [
+          "Metode",
+          "Elemen hingga 3D, tetrahedron 10 titik nodal"
+        ],
+        [
+          "Masukan",
+          "Bor log, parameter Mohr-Coulomb atau Hardening Soil, pondasi B × L, beban q, muka air tanah"
+        ],
+        [
+          "Keluaran",
+          "Penurunan, tegangan, titik plastis, kurva beban-penurunan, angka keamanan SF"
+        ]
+      ],
+      "skrip": [
+        "docs/assets/geofem3d/aplikasi.js",
+        "docs/assets/geofem3d/pekerja.js"
+      ],
+      "sumber": [
+        "Schanz, T., Vermeer, P. A., & Bonnier, P. G. (1999). The hardening soil model: formulation and verification. Beyond 2000 in Computational Geotechnics. Belum dibaca langsung.",
+        "de Souza Neto, E. A., Perić, D., & Owen, D. R. J. (2008). Computational Methods for Plasticity. Wiley, bab 8.",
+        "Griffiths, D. V., & Lane, P. A. (1999). Géotechnique, 49(3), 387–403.",
+        "Jâky, J. (1944). The coefficient of earth pressure at rest."
+      ],
+      "status": "belum",
+      "tanggal_cek": "2026-11-17",
+      "uji": [
+        "tests/verifikasi_geofem3d.py"
+      ],
+      "judul_en": "GeoFEM 3D: 3D finite elements for spread footings",
+      "ringkas_en": "3D finite elements: Mohr-Coulomb and Hardening Soil, K<sub>0</sub> procedure, plastic loading, and φ-c reduction."
     }
   ]
 }
