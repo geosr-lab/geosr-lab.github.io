@@ -50,7 +50,7 @@
   }
 
   // Tombol "Laporkan salah hitung": membuka Issue baru dengan templat dan tautan hasil terisi.
-  var REPO_ISSUE = 'https://github.com/defsayurinda/defsayurinda.github.io/issues/new';
+  var REPO_ISSUE = 'https://github.com/geosr-lab/geosr-lab.github.io/issues/new';
   function namaAlat(jalur) {
     if (/kalkulator\/tiang-bor/.test(jalur)) return 'Tiang bor N-SPT';
     if (/kalkulator\/pondasi-dangkal/.test(jalur)) return 'Pondasi dangkal';

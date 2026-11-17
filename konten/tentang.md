@@ -16,7 +16,7 @@
 
 *Semester ganjil 2026/2027 · Laboratorium Teknik, Fakultas Sains dan Teknologi, Universitas Jambi*
 
-Mendampingi dan mengawasi jalannya praktikum, lalu memeriksa laporan praktikum mahasiswa. Alat [praktikum di GeoSR](https://defsayurinda.github.io/praktikum/) mengikuti form lab yang sama.
+Mendampingi dan mengawasi jalannya praktikum, lalu memeriksa laporan praktikum mahasiswa. Alat [praktikum di GeoSR](https://geosr-lab.github.io/praktikum/) mengikuti form lab yang sama.
 
 ### Kerja Praktik, bagian Quality Control
 

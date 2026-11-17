@@ -18,4 +18,4 @@ Laporan akan dijawab sesempatnya; repo ini dikelola satu orang.
 
 ## Versi yang didukung
 
-Hanya versi yang sedang terbit di https://defsayurinda.github.io/ (cabang `main`).
+Hanya versi yang sedang terbit di https://geosr-lab.github.io/ (cabang `main`).
