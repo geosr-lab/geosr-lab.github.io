@@ -1,0 +1,2 @@
+Disalin dari https://github.com/geosr-lab/geofem3d commit 156359b0c2b5c97cb503a868acd90c4be90c569f
+Berkas: __init__.py, fem.py, material.py, hardening_soil.py, mesher.py, project.py, solver.py, mesh_terstruktur.py, web.py

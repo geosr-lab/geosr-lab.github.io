@@ -6,11 +6,7 @@
 (function () {
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
-  var KOLOM = [
-    ['gamma_unsat', 'γ<sub>unsat</sub>', 17], ['gamma_sat', 'γ<sub>sat</sub>', 20], ['E', 'E (kPa)', 20000],
-    ['nu', 'ν', 0.3], ['c', 'c (kPa)', 5], ['phi', 'φ (°)', 28], ['psi', 'ψ (°)', 0],
-    ['E50ref', 'E<sub>50</sub><sup>ref</sup>', 20000], ['Eurref', 'E<sub>ur</sub><sup>ref</sup>', 60000], ['m', 'm', 0.5]
-  ];
+  var KOLOM = ['gamma_unsat', 'gamma_sat', 'E', 'nu', 'c', 'phi', 'psi', 'E50ref', 'Eurref', 'm'];
   var CONTOH = {
     lapisan: [
       { name: 'Pasir', model: 'Mohr-Coulomb', top: 0, bottom: -4, gamma_unsat: 17, gamma_sat: 20, E: 30000, nu: 0.3, c: 1, phi: 32, psi: 2, E50ref: 30000, Eurref: 90000, m: 0.5 },
@@ -25,7 +21,7 @@
     ['plastis', 'Titik plastis (fraksi per elemen)', 'muka'], ['du', 'Perpindahan inkremental fase |Δu| (mm)', 'titik']
   ];
 
-  var hasil = null, adegan = null, objek = null, pekerja = null;
+  var hasil = null, adegan = null, objek = null, pekerja = null, diminta = null;
 
   function angka(x, d) {
     if (x === null || x === undefined || !isFinite(x)) return '–';
@@ -40,7 +36,7 @@
     tr.innerHTML = '<td><input aria-label="Nama lapisan" value="' + l.name + '" style="width:8em"></td><td>' + sel + '</td>' +
       '<td><input type="number" step="0.5" aria-label="Puncak (m)" value="' + l.top + '"></td>' +
       '<td><input type="number" step="0.5" aria-label="Dasar (m)" value="' + l.bottom + '"></td>' +
-      KOLOM.map(function (k) { return '<td><input type="number" step="any" aria-label="' + k[0] + '" data-k="' + k[0] + '" value="' + l[k[0]] + '"></td>'; }).join('');
+      KOLOM.map(function (k) { return '<td><input type="number" step="any" aria-label="' + k + '" data-k="' + k + '" value="' + l[k] + '"></td>'; }).join('');
     tr.querySelector('select').value = l.model;
     tr.querySelector('select').style.minWidth = '10.5em';
     tr.querySelectorAll('input').forEach(function (i) { i.style.minWidth = '5.5em'; });
@@ -118,11 +114,11 @@
     var T = A.THREE, ph = hasil.fase[+$('fase').value], kode = $('besaran').value, jenis = BESARAN.filter(function (b) { return b[0] === kode; })[0];
     var potong = $('tampilan').value === 'potong';
     var P = hasil.titik, S = potong ? hasil.segitiga_potong : hasil.segitiga, U = ph.u, n = P.length / 3, nilaiT, nilaiM, i;
-    var p = proyek(), s = skala(p), z0 = p.borehole.layers[0].top;
+    var p = hasil.p, s = skala(p), z0 = p.borehole.layers[0].top;   // proyek saat dihitung, bukan isi formulir kini
     if (jenis[2] === 'titik') {
       nilaiT = new Float32Array(n);
+      var ux = (kode === 'du' ? ph.du : U);
       for (i = 0; i < n; i++) {
-        var ux = (kode === 'du' ? ph.du : U);
         nilaiT[i] = kode === 'uz' ? U[3 * i + 2] : Math.hypot(ux[3 * i], ux[3 * i + 1], ux[3 * i + 2]);
       }
     } else nilaiM = ph[potong ? kode + '_p' : kode];
@@ -203,13 +199,14 @@
         if (d.jenis === 'galat') { tampilGalat('Hitungan berhenti: ' + d.teks); return; }
         var out = JSON.parse(d.data);
         if (out.galat) { tampilGalat(out.galat.join(' ')); return; }
-        hasil = out; $('hasil').hidden = false; ringkas(); gambarHasil(); kurva();
+        hasil = out; hasil.p = diminta; $('hasil').hidden = false; ringkas(); gambarHasil(); kurva();
         $('status').textContent = 'Selesai. ' + hasil.fase[hasil.fase.length - 1].pesan;
         $('bilah').value = 1000;
       };
       pekerja.onerror = function (e) { $('hitung').disabled = false; tampilGalat('Pekerja hitungan gagal dimuat: ' + (e.message || 'galat tidak diketahui')); };
     }
     $('hitung').disabled = true; $('bilah').value = 0; $('status').textContent = 'Menyiapkan ...';
+    diminta = p;
     pekerja.postMessage({ proyek: JSON.stringify(p), kerapatan: $('kerapatan').value });
   }
   function tampilGalat(t) { $('galat').hidden = false; $('galat').textContent = t; $('status').textContent = ''; }
@@ -224,7 +221,10 @@
       gambarGeometri();
     });
     $('hapus').addEventListener('click', function () { var t = $('lapisan'); if (t.rows.length > 1) { t.deleteRow(-1); gambarGeometri(); } });
-    $('formulir').addEventListener('change', function () { if (!hasil) gambarGeometri(); });
+    $('formulir').addEventListener('change', function () {
+      if (!hasil) { gambarGeometri(); return; }
+      $('status').textContent = 'Masukan berubah. Hasil di bawah masih dari masukan sebelumnya; tekan Hitung untuk memperbarui.';
+    });
     $('hitung').addEventListener('click', hitung);
     $('fase').addEventListener('change', function () { gambarHasil(); kurva(); });
     $('besaran').addEventListener('change', gambarHasil);
