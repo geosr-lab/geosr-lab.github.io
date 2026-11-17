@@ -33,6 +33,9 @@ def main():
     for nama in re.findall(r"'([a-z_]+)'", berkas):
         if not (AKAR / f"docs/assets/geofem3d/py/geofem/{nama}.py").is_file():
             gagal.append(f"berkas solver {nama}.py tidak ada")
+    sumber = AKAR / "docs/assets/geofem3d/py/SUMBER.txt"
+    if not (sumber.is_file() and re.search(r"commit [0-9a-f]{40}", sumber.read_text(encoding="utf-8"))):
+        gagal.append("py/SUMBER.txt tidak mencatat commit sumber; jalankan skrip/salin_geofem.py")
     vendor = AKAR / "docs/assets/vendor/pyodide"
     kunci = json.loads((vendor / "pyodide-lock.json").read_text(encoding="utf-8"))
     for f in ["pyodide.js", "pyodide.asm.js", "pyodide.asm.wasm", "python_stdlib.zip", "LICENSE"] + \
