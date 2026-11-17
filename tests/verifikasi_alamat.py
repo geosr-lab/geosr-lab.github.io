@@ -7,6 +7,7 @@ Alamat situs dan repo hanya ditulis di konten/situs.json. Uji ini gagal bila:
 3. Service worker didaftarkan atau menyimpan aset dengan jalur akar ("/..."), yang rusak bila situs
    pindah ke subfolder.
 4. Angka di README.en.md tidak sama dengan registri.
+5. Versi dan tanggal rilis di CITATION.cff tidak sama dengan rilis teratas di CHANGELOG.md.
 
 Jalankan dari akar repo:  python3 tests/verifikasi_alamat.py
 """
@@ -60,6 +61,16 @@ def main():
     for teks in (f"{n_praktikum} lab data tools", f"{n_kalkulator} calculators"):
         if teks not in en:
             gagal.append(f'README.en.md: tidak memuat "{teks}" (angka registri berubah?)')
+
+    # Versi dan tanggal rilis di CITATION.cff sama dengan versi rilis teratas di CHANGELOG.md.
+    rilis = re.search(r"^## \[(\d+\.\d+\.\d+)\] - (\d{4}-\d{2}-\d{2})", (AKAR / "CHANGELOG.md").read_text(encoding="utf-8"), re.M)
+    sitasi = (AKAR / "CITATION.cff").read_text(encoding="utf-8")
+    if not rilis:
+        gagal.append("CHANGELOG.md: belum ada judul versi rilis (## [x.y.z] - YYYY-MM-DD)")
+    else:
+        for kunci, nilai in (("version", rilis.group(1)), ("date-released", rilis.group(2))):
+            if not re.search(rf"^{kunci}: {re.escape(nilai)}$", sitasi, re.M):
+                gagal.append(f"CITATION.cff: {kunci} tidak sama dengan rilis teratas di CHANGELOG.md ({nilai})")
 
     print(f"Alamat: {jumlah} alamat situs atau repo diperiksa.")
     if gagal:

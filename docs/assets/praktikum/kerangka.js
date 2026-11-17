@@ -738,13 +738,14 @@
         var csv = '﻿' + tabelEkspor().map(function (b) { return b.map(function (v) { return sel(v, ';'); }).join(';'); }).join('\r\n');
         root.Ekspor.unduh(new Blob([csv], { type: 'text/csv;charset=utf-8' }), def.id + '.csv');
         pesan('Berkas ' + def.id + '.csv diunduh. Pemisah kolom titik koma dan desimal koma, sesuai Excel berbahasa Indonesia.');
+        if (root.Umum && root.Umum.ajakBintang) root.Umum.ajakBintang();
       }
       if (nama === 'word') {
         if (!gambarHasil()) { pesan('Belum ada hasil untuk diekspor. Lengkapi data atau perbaiki galat dulu.'); return; }
         pesan('Menyiapkan berkas Word…');
         root.Ekspor.word({ judul: esc(judulEkspor()), identitas: identitasCetak().map(function (p) { return [p[0], esc(p[1])]; }),
           blok: blokWord(), nama: def.id + '.docx' })
-          .then(function () { pesan('Berkas ' + def.id + '.docx diunduh: Times New Roman 11, tabel tanpa garis vertikal, nomor tabel dan gambar berurutan. Sesuaikan nomornya dengan bab laporan.'); },
+          .then(function () { pesan('Berkas ' + def.id + '.docx diunduh: Times New Roman 11, tabel tanpa garis vertikal, nomor tabel dan gambar berurutan. Sesuaikan nomornya dengan bab laporan.'); if (root.Umum && root.Umum.ajakBintang) root.Umum.ajakBintang(); },
             function (e) { pesan('Berkas Word gagal dibuat: ' + e.message); });
       }
     }

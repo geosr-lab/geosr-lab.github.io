@@ -4,7 +4,11 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 
 ## [Belum dirilis]
 
+## [1.0.0] - 2026-11-17
+
 ### Ditambahkan
+- Ajakan memberi bintang di GitHub: tautan "Beri bintang" di kaki semua halaman, dan kotak ajakan yang muncul setelah laporan Word atau CSV berhasil diunduh (paling sering sekali per 60 hari, bisa dimatikan). Situs tetap bisa dipakai penuh tanpa memberi bintang.
+- `skrip/buat_pratinjau.py` membuat gambar pratinjau tautan (`docs/assets/pratinjau.png`, 1280 × 640 px) dari registri dan alamat di `konten/situs.json`. Gambar lama masih menulis alamat lama, 3 kalkulator, dan 9 jenis soal.
 - `konten/situs.json` menjadi satu-satunya tempat alamat situs dan repo ditulis. `bangun_situs.py`, `buat.py`, dan uji tautan membacanya; alamat lama yang didaftarkan di `alamat_lama` diganti otomatis di semua halaman, README, CITATION, dan templat Issue saat situs dibangun. Uji baru `tests/verifikasi_alamat.py` menjaga tidak ada alamat lain yang tertulis tetap.
 - `.gitattributes`: batang bahasa GitHub menghitung HTML, CSS, dan JavaScript di `docs/`; pustaka pihak ketiga dan huruf tidak dihitung.
 - Uji tata letak (`verifikasi_tata_letak.py`) kini dijalankan di CI dengan Playwright.
@@ -76,6 +80,11 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 - Klaim sumber dan pengujian di beranda dan README disesuaikan dengan status tiap alat.
 
 ### Diperbaiki
+- Label alat di blok tanah 3D beranda tidak lagi saling menimpa di panggung yang sempit (terlihat di lebar 1024 px): posisi mendatar dijepit sebelum tabrakan dihitung, dan tumpukan label yang menembus tepi atas diturunkan bersama. Nomor lapisan yang berimpit digeser, dan disembunyikan bila tertimpa label alat atau tombol.
+- Kisi kelompok uji di petak Praktikum beranda: tinggi sel kiri dan kanan sama, jumlah kolom mengikuti lebar petak, dan tiap kelompok memakai sampul 3D alat pertamanya sebagai pengganti kotak warna dan ikon garis.
+- Ikon kaca pembesar di kotak cari katalog praktikum tampil lagi (sebelumnya tertimpa gradasi cekung isian). Teks contoh kotak cari beranda dan katalog dipendekkan supaya tidak terpotong di ponsel.
+- Angka ringkasan halaman praktikum tersusun 2 × 2 di ponsel. Tombol, chip, nomor lapisan, dan tautan kaki halaman minimal 44 px di layar sentuh.
+- Bagian "Dari lembar lab ke laporan" di beranda: isian kadar air dan batas plastis tidak lagi keluar dari kartu "1. Data lab" (tabel memakai lebar kolom tetap), dan keempat kartu lebih seimbang.
 - Alat praktikum di ponsel: tombol utama bilah bawah memakai label pendek "Data contoh" (sebelumnya "data contoh" berhuruf kecil, terlihat seperti terpotong); di layar ≤ 420 px nomor tab disembunyikan sehingga lima tab muat tanpa digeser (360–390 px: luap 0 px), dan bila tab tetap tidak muat tepi kanannya dipudarkan sebagai tanda bisa digeser.
 - `skrip/buat.py` menulis berkas dengan akhir baris LF di Windows, mengisi `judul_en` dan `ringkas_en`, dan memakai judul tab "· GeoSR".
 - Teks dari tautan berbagi dan isian formulir praktikum di-escape sebelum masuk HTML (XSS).
@@ -86,9 +95,3 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 - Kode ilustrasi penampang SVG lama di beranda (`gerak.js`, bagian "penampang beranda", 220 baris) dan CSS yang tak terpakai lagi (`.penampang`, `.pilih-keadaan`, `.penampang-info`, `.penampang-mini`, `.mini-panggung`, animasi `endap`, `turun`, `ajak-lapis`); beranda sudah memakai blok tanah 3D. Ekspor Word dan PNG diuji ulang di alat Atterberg: `.docx` tetap berkas zip dengan `word/document.xml` dan gambar grafik, PNG grafik valid, tanpa efek khusus layar. Versi cache 0.40.1.
 - Hasil Meyerhof (1976) dan soal `meyerhof-selimut` disembunyikan sampai rumusnya dicocokkan dengan PUPR (2019).
 - Opsi tiang pancang di kalkulator tiang bor.
-### Diperbaiki
-- Label alat di blok tanah 3D beranda tidak lagi saling menimpa di panggung yang sempit (terlihat di lebar 1024 px): posisi mendatar dijepit sebelum tabrakan dihitung, dan tumpukan label yang menembus tepi atas diturunkan bersama. Nomor lapisan yang berimpit digeser, dan disembunyikan bila tertimpa label alat atau tombol.
-- Kisi kelompok uji di petak Praktikum beranda: tinggi sel kiri dan kanan sama, jumlah kolom mengikuti lebar petak, dan tiap kelompok memakai sampul 3D alat pertamanya sebagai pengganti kotak warna dan ikon garis.
-- Ikon kaca pembesar di kotak cari katalog praktikum tampil lagi (sebelumnya tertimpa gradasi cekung isian). Teks contoh kotak cari beranda dan katalog dipendekkan supaya tidak terpotong di ponsel.
-- Angka ringkasan halaman praktikum tersusun 2 × 2 di ponsel. Tombol, chip, nomor lapisan, dan tautan kaki halaman minimal 44 px di layar sentuh.
-
