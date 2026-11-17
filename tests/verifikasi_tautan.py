@@ -7,6 +7,7 @@
 
 Jalankan dari akar repo:  python3 tests/verifikasi_tautan.py
 """
+import json
 import re
 import sys
 from pathlib import Path
@@ -14,8 +15,9 @@ from urllib.parse import unquote
 
 AKAR = Path(__file__).resolve().parent.parent
 DOCS = AKAR / "docs"
-BLOB = "https://github.com/defsayurinda/defsayurinda.github.io/blob/main/"
-TREE = "https://github.com/defsayurinda/defsayurinda.github.io/tree/main/"
+REPO = json.loads((AKAR / "konten/situs.json").read_text(encoding="utf-8"))["repo"]
+BLOB = REPO + "/blob/main/"
+TREE = REPO + "/tree/main/"
 JALUR_LAMA = ("tentang-saya.md", "cara-saya-memakai-claude/", "/blob/main/catatan/", "/blob/main/skill/")
 
 

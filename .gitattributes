@@ -1,0 +1,6 @@
+# Batang bahasa GitHub: situs ini HTML, CSS, dan JavaScript di docs/, bukan dokumentasi.
+docs/** linguist-documentation=false
+# Pustaka pihak ketiga dan huruf tidak dihitung.
+docs/assets/vendor/** linguist-vendored
+docs/assets/katex/** linguist-vendored
+docs/assets/font/** linguist-vendored

@@ -2,18 +2,20 @@
 
 **Bahasa Indonesia** · [English](README.en.md)
 
-Pengolah data praktikum Mekanika Tanah, kalkulator geoteknik, dan latihan soal yang menampilkan langkah hitungan dan sumber rumusnya, terbit di **[defsayurinda.github.io](https://defsayurinda.github.io/)**. Dibuat oleh Defsa Yurinda ([profil](https://defsayurinda.github.io/pembuat/)).
+Pengolah data praktikum Mekanika Tanah, kalkulator geoteknik, dan latihan soal yang menampilkan langkah hitungan dan sumber rumusnya, terbit di **[defsayurinda.github.io](https://defsayurinda.github.io/)**. Dibuat oleh Defsa Yurinda ([profil](https://defsayurinda.github.io/pembuat/)), Teknik Sipil Universitas Jambi.
 
 [![Verifikasi](https://github.com/defsayurinda/defsayurinda.github.io/actions/workflows/verifikasi.yml/badge.svg)](https://github.com/defsayurinda/defsayurinda.github.io/actions/workflows/verifikasi.yml)
-[![Situs](https://img.shields.io/badge/situs-defsayurinda.github.io-1a1a1a)](https://defsayurinda.github.io/)
 [![Lisensi kode: MIT](https://img.shields.io/badge/kode-MIT-blue)](LICENSE)
 [![Lisensi tulisan: CC BY 4.0](https://img.shields.io/badge/tulisan-CC%20BY%204.0-lightgrey)](LICENSE-TULISAN)
 
-![Beranda situs](docs/assets/tangkapan-beranda.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/tangkapan-beranda-gelap.png">
+  <img alt="Beranda GeoSR: blok tanah 3D sepuluh lapisan, kotak cari, dan tombol menuju praktikum, kalkulator, dan latihan" src="docs/assets/tangkapan-beranda.png">
+</picture>
 
 ## Alat
 
-Tabel ini dibangun otomatis dari [`konten/alat.json`](konten/alat.json). Kolom status menunjukkan sumber rumus: asli (dicocokkan dengan sumber aslinya dan diuji dengan contoh soal buku), sekunder (dari sumber yang mengutip sumber asli), atau belum terverifikasi.
+Kolom status menunjukkan sumber rumus: asli (dicocokkan dengan sumber aslinya dan diuji dengan contoh soal buku), sekunder (dari sumber yang mengutip sumber asli), atau belum terverifikasi.
 
 <!-- ALAT:MULAI -->
 | Alat | Isi | Status sumber |
@@ -37,49 +39,33 @@ Tabel ini dibangun otomatis dari [`konten/alat.json`](konten/alat.json). Kolom s
 
 Semua alat berjalan di browser; data tidak dikirim ke server mana pun.
 
-## Menambah isi
-
-Catatan, soal, dan alat baru: lihat [PANDUAN.md](PANDUAN.md). Singkatnya:
+## Mengembangkan
 
 ```
 pip install -r skrip/kebutuhan.txt
-python3 skrip/buat.py catatan "Judul catatan"
-python3 skrip/buat.py alat nama-alat --judul "Judul" --kategori fondasi --sumber "Penulis (tahun), judul, halaman"
 python3 skrip/bangun_situs.py
 for f in tests/verifikasi_*.py; do python3 "$f"; done
 ```
 
-Struktur repo:
+| Folder | Isi |
+|---|---|
+| `konten/` | Tulisan sumber, registri alat (`alat.json`), daftar alat praktikum (`praktikum.json`), alamat situs (`situs.json`) |
+| `docs/` | Situs yang diterbitkan GitHub Pages |
+| `skrip/` | `bangun_situs.py` membangun halaman dari `konten/`; `buat.py` membuat kerangka alat atau catatan baru |
+| `tests/` | Verifikasi hitungan, bank soal, tautan, tata letak, keamanan, dan registri |
 
-```
-konten/     tulisan sumber (Markdown), registri alat (alat.json), daftar alat praktikum (praktikum.json)
-docs/       situs yang diterbitkan GitHub Pages
-  kalkulator/, latihan/, alat/     halaman alat (ditulis tangan)
-  assets/*-hitung.js               rumus, dipisah dari tampilan supaya bisa diuji
-  assets/praktikum/                kerangka, grafik, rumus, dan definisi alat praktikum
-  praktikum/, pembuat/             halaman hasil bangun dari konten/ (jangan diedit langsung)
-  tentang/, catatan/, …            halaman pengalih ke alamat baru di pembuat/
-skrip/      bangun_situs.py: ubah konten/ jadi halaman; buat.py: kerangka alat atau catatan baru
-tests/      verifikasi hitungan, bank soal, tautan, keamanan, dan registri
-```
-
-Aturan lengkap untuk Claude Code ada di [CLAUDE.md](CLAUDE.md).
+Cara menambah catatan, soal, dan alat ada di [PANDUAN.md](PANDUAN.md); aturan tampilan di [DESIGN.md](DESIGN.md).
 
 ## Cara mengutip
 
 Tombol **Cite this repository** di halaman repo membaca [CITATION.cff](CITATION.cff). Contoh APA:
 
-> Yurinda, D. (2026). *Kalkulator geoteknik* [Situs web]. https://defsayurinda.github.io/alat/
+> Yurinda, D. (2026). *GeoSR (Geotechnical Soil Report)* [Situs web]. https://defsayurinda.github.io/
 
 Untuk tugas atau laporan, kutip juga sumber rumus aslinya yang tercantum di setiap alat.
 
-## Kontribusi
+## Kontribusi dan lisensi
 
-Laporan salah hitung dan usul alat sangat membantu; pakai templat Issue yang tersedia. Lihat [CONTRIBUTING.md](CONTRIBUTING.md), [Kode Etik](CODE_OF_CONDUCT.md), dan [SECURITY.md](SECURITY.md) untuk celah keamanan.
+Laporan salah hitung dan usul alat sangat membantu; pakai templat Issue yang tersedia. Lihat [CONTRIBUTING.md](.github/CONTRIBUTING.md), [Kode Etik](.github/CODE_OF_CONDUCT.md), dan [SECURITY.md](.github/SECURITY.md) untuk celah keamanan.
 
-## Lisensi
-
-- **Kode** (JavaScript, Python, CSS, kerangka HTML, workflow): [MIT](LICENSE).
-- **Tulisan dan gambar** (isi `konten/`, teks halaman situs, tangkapan layar): [CC BY 4.0](LICENSE-TULISAN).
-
-Keduanya boleh dipakai, disalin, dan diubah, termasuk untuk keperluan komersial, asal mencantumkan nama Defsa Yurinda dan tautan ke repo ini.
+Kode berlisensi [MIT](LICENSE); tulisan dan gambar [CC BY 4.0](LICENSE-TULISAN). Keduanya boleh dipakai, disalin, dan diubah asal mencantumkan nama Defsa Yurinda dan tautan ke repo ini.
