@@ -5,6 +5,7 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 ## [Belum dirilis]
 
 ### Ditambahkan
+- Tautan ke portofolio pembuat (`https://geosr-lab.github.io/portofolio/`) di kaki semua halaman dan di halaman pembuat.
 - Penghitung kunjungan dengan GoatCounter (`docs/assets/kunjungan.js`), dinyalakan dengan mengisi `goatcounter` di `konten/situs.json`. Tanpa cookie dan tanpa skrip pihak luar: hanya alamat halaman (tanpa kueri dan `#`), judul, halaman asal, dan ukuran layar yang dikirim; browser dengan Do Not Track tidak dihitung. Halaman kredit menjelaskan data yang dikirim.
 
 ## [1.0.0] - 2026-11-17
