@@ -5,6 +5,7 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 ## [Belum dirilis]
 
 ### Ditambahkan
+- GeoFEM 3D (`docs/geofem3d/`): analisis elemen hingga 3D untuk pondasi telapak (Mohr-Coulomb dan Hardening Soil, prosedur K0, beban plastis, reduksi φ-c) yang berjalan langsung di browser. Solver Python dari repo [geosr-lab/geofem3d](https://github.com/geosr-lab/geofem3d) (`docs/assets/geofem3d/py/`) dijalankan Pyodide 0.27.7 dengan numpy dan scipy di Web Worker (`pekerja.js`), semuanya disimpan lokal di `docs/assets/vendor/pyodide/` (±35 MB, dimuat hanya saat menekan Hitung) dan dicatat di kredit. Model 3D berwarna (utuh atau potongan di pusat pondasi) memakai Adegan3D, kurva beban-penurunan dan ΣMsf, ringkasan, serta tautan unduhan aplikasi desktop Windows. Terdaftar di `konten/alat.json` (kategori Fondasi, status belum terverifikasi); uji `tests/verifikasi_geofem3d.py`. Versi cache 1.1.0.
 - Tautan ke portofolio pembuat (`https://geosr-lab.github.io/portofolio/`) di kaki semua halaman dan di halaman pembuat.
 - Penghitung kunjungan dengan GoatCounter (`docs/assets/kunjungan.js`), dinyalakan dengan mengisi `goatcounter` di `konten/situs.json`. Tanpa cookie dan tanpa skrip pihak luar: hanya alamat halaman (tanpa kueri dan `#`), judul, halaman asal, dan ukuran layar yang dikirim; browser dengan Do Not Track tidak dihitung. Halaman kredit menjelaskan data yang dikirim.
 
