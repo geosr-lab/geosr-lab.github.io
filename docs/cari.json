@@ -184,72 +184,9 @@
 {
 "j": "Tentang saya",
 "d": "Mendampingi dan mengawasi jalannya praktikum, lalu memeriksa laporan praktikum mahasiswa. Alat praktikum di GeoSR mengikuti form lab yang sama.",
-"h": "Prestasi Pengalaman Asisten Laboratorium Praktikum Mekanika Tanah Kerja Praktik, bagian Quality Control Asisten Dosen Menggambar Struktur Bangunan Tugas akhir (sedang berjalan) Proyek Minat Perangkat lunak Peran AI dalam kuliah saya Kontak",
+"h": "Prestasi Pengalaman Asisten Laboratorium Praktikum Mekanika Tanah Kerja Praktik, bagian Quality Control Asisten Dosen Menggambar Struktur Bangunan Tugas akhir (sedang berjalan) Proyek Minat Perangkat lunak Kontak",
 "u": "pembuat/",
 "k": "Pembuat"
-},
-{
-"j": "Cara saya memakai AI",
-"d": "Saya memakai Claude untuk kuliah teknik sipil dengan aturan yang saya tulis sendiri. Tiga halaman di bawah menjelaskan aturan itu, contoh perintahnya, dan batas yang saya pegang.",
-"h": "",
-"u": "pembuat/cara-memakai-ai/",
-"k": "Pembuat"
-},
-{
-"j": "Batasan dan etika",
-"d": "AI mempercepat pekerjaan, tapi nama yang tertulis di laporan tetap nama saya. Aturan di bawah saya pakai supaya semua yang saya kumpulkan bisa saya pertanggungjawabkan.",
-"h": "1. Tidak ada yang dikarang 2. Sumber setiap angka jelas 3. Referensi dicek satu per satu 4. Hitungan diverifikasi dengan cara kedua 5. Keputusan dan pemahaman tetap di saya 6. Data proyek dan data pribadi dijaga 7. Aturan kampus diikuti",
-"u": "pembuat/cara-memakai-ai/batasan-dan-etika/",
-"k": "Pembuat"
-},
-{
-"j": "Contoh prompt",
-"d": "Perintah yang saya pakai untuk tugas kuliah teknik sipil. Bagian dalam kurung siku diganti dengan data sendiri.",
-"h": "Pola umum Belajar Menghitung Menulis Referensi Diskusi skripsi Claude Code",
-"u": "pembuat/cara-memakai-ai/contoh-prompt/",
-"k": "Pembuat"
-},
-{
-"j": "Preferensi Claude saya",
-"d": "Preferensi adalah aturan yang saya pasang di pengaturan profil claude.ai. Aturan ini berlaku di semua percakapan, jadi saya tidak perlu mengulanginya setiap kali.",
-"h": "Kenapa saya membuatnya Isi preferensi Pendekatan Kalau permintaan tidak bisa dikerjakan Konteks tentang saya Pekerjaan yang paling sering saya minta Komunikasi Tujuan beberapa aturan",
-"u": "pembuat/cara-memakai-ai/preferensi/",
-"k": "Pembuat"
-},
-{
-"j": "Skill Claude",
-"d": "Skill adalah paket instruksi untuk Claude, berupa folder berisi file SKILL.md. Bagian atas file memuat nama dan deskripsi singkat. Claude membaca deskripsi itu, lalu memuat isi…",
-"h": "Apa itu skill Skill yang saya pakai Cara saya menyusun skill",
-"u": "pembuat/skill/",
-"k": "Pembuat"
-},
-{
-"j": "Skill: Asisten Teknik Sipil",
-"d": "Skill utama saya untuk semua tugas teknik sipil. Halaman ini meringkas isinya. Data pribadi dan data proyek yang ada di versi asli tidak ditampilkan.",
-"h": "Urutan prioritas Tujuh aturan inti Peran dan perintah singkat Format jawaban hitungan Verifikasi sebelum hasil ditampilkan Jebakan yang pernah terjadi Isi lain dalam skill",
-"u": "pembuat/skill/asisten-teknik-sipil/",
-"k": "Pembuat"
-},
-{
-"j": "01 — Mengenal Claude dan Claude Code",
-"d": "Claude adalah asisten AI buatan Anthropic. Saya memakainya lewat claude.ai, di browser atau aplikasi ponsel. Di sana Claude bisa diajak diskusi, membaca file yang dilampirkan…",
-"h": "Claude Claude Code Empat hal yang mengatur perilaku Claude Contoh Latihan",
-"u": "pembuat/catatan/01-mengenal-claude-dan-claude-code/",
-"k": "Catatan pembuat"
-},
-{
-"j": "02 — Git dan Pull Request pertama",
-"d": "Buat PR tanpa Claude, langsung dari web GitHub:",
-"h": "Istilah dasar Alurnya Yang terjadi di sesi pertama Yang saya pelajari Latihan",
-"u": "pembuat/catatan/02-git-dan-pull-request-pertama/",
-"k": "Catatan pembuat"
-},
-{
-"j": "03 — Membangun situs dan kalkulator bersama Claude Code",
-"d": "Catatan ini merangkum cara situs defsayurinda.github.io dibuat: tiga kalkulator geoteknik dan satu bank soal, dikerjakan Claude Code dalam empat tahap, masing-masing lewat Pull…",
-"h": "Konsep Cara kerja yang dipakai Contoh: kesalahan yang tertangkap pengujian Pembagian kerja Latihan",
-"u": "pembuat/catatan/03-membangun-situs-dan-kalkulator/",
-"k": "Catatan pembuat"
 },
 {
 "j": "Kamus notasi: Sifat fisik dan hubungan fase",

@@ -3,7 +3,7 @@
 Yang dilakukan:
 1. Setiap berkas Markdown di konten/ diubah menjadi halaman HTML di docs/ dengan
    templat yang sama (menu, gaya, footer, tag pratinjau).
-2. Daftar catatan dibuat otomatis (docs/catatan/) dan disisipkan ke beranda.
+2. Bila ada catatan di konten/catatan/, daftarnya dibuat otomatis di area pembuat.
    Kartu alat di beranda, daftar di halaman Alat, dan tabel alat di README.md dibangun
    dari registri konten/alat.json (penanda ALAT dan DAFTAR-ALAT).
 3. Menu dan footer di semua halaman docs/ (termasuk yang ditulis tangan) ditulis ulang
@@ -55,9 +55,11 @@ MENU = [("praktikum/", "Praktikum", ("praktikum",)),
         ("latihan/", "Latihan", ("latihan",)),
         ("cari/", "Cari", ("cari",))]
 
-# Isi pribadi (profil, catatan belajar, cara memakai AI, skill) dikumpulkan di area pembuat,
-# hanya ditautkan dari kaki halaman. Alamat lama diarahkan ke alamat baru.
+# Isi pribadi (profil, dan catatan bila ada) dikumpulkan di area pembuat, hanya ditautkan dari kaki halaman.
 PRIBADI = "pembuat/"
+# Bagian tambahan di area pembuat: folder di konten/ → judul. Kosong berarti hanya profil.
+BAGIAN_PRIBADI = {}
+ADA_CATATAN = any((KONTEN / "catatan").glob("*.md"))
 # Versi bahasa Inggris sederhana (keputusan Defsa: beranda dan profil juga dalam bahasa Inggris).
 # Alatnya sendiri tetap berbahasa Indonesia; menu Inggris menautkan ke halaman yang sama.
 EN = "en/"
@@ -76,7 +78,7 @@ KELOMPOK_EN = {"Sifat fisik": "Physical properties", "Konsistensi dan gradasi": 
 def peta_halaman():
     """Kembalikan daftar (berkas sumber, folder keluaran relatif terhadap docs/)."""
     peta = [(KONTEN / "tentang.md", PRIBADI)]
-    for bagian in ("cara-memakai-ai", "skill"):
+    for bagian in BAGIAN_PRIBADI:
         # Urutkan menurut nama (peka huruf besar) supaya urutan sama di Windows dan Linux/CI.
         for f in sorted((KONTEN / bagian).glob("*.md"), key=lambda p: p.name):
             peta.append((f, f"{PRIBADI}{bagian}/" if f.name == "README.md" else f"{PRIBADI}{bagian}/{f.stem}/"))
@@ -87,7 +89,9 @@ def peta_halaman():
 
 def peta_pengalih(peta):
     """Alamat lama → alamat baru untuk halaman pribadi yang dipindah ke area pembuat."""
-    pengalih = {"tentang/": PRIBADI, "catatan/": f"{PRIBADI}catatan/"}
+    pengalih = {"tentang/": PRIBADI}
+    if ADA_CATATAN:
+        pengalih["catatan/"] = f"{PRIBADI}catatan/"
     for _, folder in peta:
         if folder.startswith(PRIBADI) and folder != PRIBADI:
             pengalih[folder[len(PRIBADI):]] = folder
@@ -183,13 +187,14 @@ def footer(awalan, sumber=None, en=False):
                 f'<a href="{REPO}/blob/main/LICENSE-TULISAN">CC BY 4.0</a> · <a href="{awalan}kredit/">Asset credits</a></dd></div>'
                 f'<div><dt>Reference</dt><dd><a href="{awalan}notasi/" hreflang="id">Notation glossary (Indonesian)</a></dd></div></dl>\n'
                 '    </div>\n  </footer>' + skrip_sw(awalan))
+    tautan_catatan = f' · <a href="{awalan}{PRIBADI}catatan/">Catatan</a>' if ADA_CATATAN else ""
     sel_sumber = (f'<div><dt>Halaman ini</dt><dd><a href="{REPO}/blob/main/{sumber}">Sumber tulisan</a></dd></div>'
                   if sumber else "")
     return ('<footer>\n    <div class="wadah kaki-isi">\n'
             f'      <div class="kaki-merek"><a href="{awalan or "./"}">{NAMA}</a><span>{KEPANJANGAN} · dibuat oleh '
             f'<a href="{awalan}{PRIBADI}">{PEMBUAT}</a></span></div>\n'
             '      <dl class="kaki-etiket">'
-            f'<div><dt>Pembuat</dt><dd><a href="{awalan}{PRIBADI}">Profil</a> · <a href="{awalan}{PRIBADI}catatan/">Catatan</a></dd></div>'
+            f'<div><dt>Pembuat</dt><dd><a href="{awalan}{PRIBADI}">Profil</a>{tautan_catatan}</dd></div>'
             f'<div><dt>Kode</dt><dd><a href="{REPO}">GitHub</a></dd></div>{sel_sumber}'
             f'<div><dt>Lisensi</dt><dd>Kode <a href="{REPO}/blob/main/LICENSE">MIT</a>, tulisan '
             f'<a href="{REPO}/blob/main/LICENSE-TULISAN">CC BY 4.0</a> · <a href="{awalan}kredit/">Kredit aset</a></dd></div>'
@@ -286,11 +291,11 @@ def halaman_konten(sumber, folder, peta, sebelum=None, sesudah=None, en=False):
         atas = ("", "Beranda")
     elif sub.startswith("catatan/"):
         atas = (f"{PRIBADI}catatan/", "Semua catatan")
-    elif sub in ("cara-memakai-ai/", "skill/"):
+    elif sub.rstrip("/") in BAGIAN_PRIBADI:
         atas = (PRIBADI, "Pembuat")
     else:
         bagian = sub.split("/")[0]
-        atas = (f"{PRIBADI}{bagian}/", {"cara-memakai-ai": "Cara saya memakai AI", "skill": "Skill Claude"}[bagian])
+        atas = (f"{PRIBADI}{bagian}/", BAGIAN_PRIBADI[bagian])
     remah = f'<p class="remah"><a href="{awalan}{atas[0]}">{atas[1]}</a></p>'
     navigasi = ""
     if sebelum or sesudah:
@@ -329,12 +334,12 @@ def halaman_daftar_catatan(catatan):
     butir = "\n".join(
         f'        <li><a href="{relatif(folder, f)}"><span class="nomor">{html.escape(n)}</span><span class="judul">{html.escape(j)}</span>'
         f'<span class="ringkas">{html.escape(r)}</span></a></li>' for n, j, r, f in reversed(catatan))
-    return (kepala("Catatan belajar", "Catatan saya selama belajar Git, GitHub, dan Claude Code untuk kuliah teknik sipil.", awalan, folder) +
+    return (kepala("Catatan belajar", "Catatan belajar teknik sipil.", awalan, folder) +
             "\n<body>\n  <!-- NAV:MULAI -->\n  " + menu(awalan, "pembuat") + "\n  <!-- NAV:SELESAI -->\n\n"
             "  <main class=\"wadah\">\n    <header class=\"pahlawan\">\n"
             f"      <p class=\"remah\"><a href=\"{awalan}{PRIBADI}\">Pembuat</a></p>\n"
             "      <h1>Catatan belajar</h1>\n"
-            "      <p class=\"lead\">Catatan saya selama belajar Git, GitHub, dan Claude Code. Setiap catatan berisi konsep, contoh dari pengalaman sendiri, dan latihan.</p>\n"
+            "      <p class=\"lead\">Setiap catatan berisi konsep, contoh dari pengalaman sendiri, dan latihan.</p>\n"
             "    </header>\n    <ol class=\"daftar-nomor\">\n" + butir +
             "\n    </ol>\n  </main>\n\n  <!-- FOOTER:MULAI -->\n  " + footer(awalan) +
             "\n  <!-- FOOTER:SELESAI -->\n</body>\n</html>\n")
@@ -1048,7 +1053,8 @@ def bangun():
             sebelum = urutan_catatan[i - 1] if i > 0 else None
             sesudah = urutan_catatan[i + 1] if i + 1 < len(urutan_catatan) else None
         keluaran[DOCS / folder / "index.html"] = halaman_konten(sumber, folder, peta, sebelum, sesudah)
-    keluaran[DOCS / f"{PRIBADI}catatan/index.html"] = halaman_daftar_catatan(catatan)
+    if catatan:
+        keluaran[DOCS / f"{PRIBADI}catatan/index.html"] = halaman_daftar_catatan(catatan)
     pengalih = set()
     for lama, baru in peta_pengalih(peta).items():
         keluaran[DOCS / lama / "index.html"] = halaman_pengalih(lama, baru)

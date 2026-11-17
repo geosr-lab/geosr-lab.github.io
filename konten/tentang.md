@@ -36,7 +36,7 @@ Topik yang saya ajukan: perbandingan daya dukung aksial fondasi tiang bor (*bore
 
 ## Proyek
 
-**GeoSR (situs ini).** Delapan belas alat pengolah data Praktikum Mekanika Tanah, tiga kalkulator geoteknik, dan bank soal latihan. Setiap rumus menyebut sumbernya, dan hasil alat praktikum diuji otomatis terhadap angka di contoh laporan. Saya membangunnya bersama Claude Code; ceritanya ada di [catatan membangun situs](catatan/03-membangun-situs-dan-kalkulator.md).
+**GeoSR (situs ini).** Delapan belas alat pengolah data Praktikum Mekanika Tanah, enam kalkulator geoteknik, dan bank soal latihan. Setiap rumus menyebut sumbernya, dan hasil alat praktikum diuji otomatis terhadap angka di contoh laporan.
 
 ## Minat
 
@@ -51,19 +51,7 @@ Topik yang saya ajukan: perbandingan daya dukung aksial fondasi tiang bor (*bore
 |---|---|
 | Menengah | Microsoft Word, Excel, PowerPoint, AutoCAD, Revit |
 | Dasar | ETABS, SAP2000, PLAXIS (2D dan 3D), AllPile |
-| Sedang dipelajari | Git, GitHub, Claude Code |
-
-## Peran AI dalam kuliah saya
-
-Saya memakai Claude dengan tiga peran, tergantung pekerjaannya:
-
-| Peran | Dipakai untuk | Yang saya minta |
-|---|---|---|
-| Mentor | Mempelajari materi baru | Teori dulu, lalu contoh, lalu latihan yang saya kerjakan sendiri |
-| Rekan diskusi | Menyusun judul, argumen, metode | Beberapa alternatif lengkap dengan kelebihan dan kekurangannya; keputusan tetap saya ambil |
-| Eksekutor teknis | Menghitung, memeriksa file, membuat dokumen | Hitungan sungguhan yang dicek ulang, dengan asumsi dan sumber yang ditulis |
-
-Yang tidak saya serahkan ke AI: keputusan akhir, data lapangan, dan pemeriksaan terakhir sebelum sesuatu dikumpulkan. Penjelasannya ada di [Batasan dan etika](cara-memakai-ai/batasan-dan-etika.md).
+| Sedang dipelajari | Git, GitHub |
 
 ## Kontak
 

@@ -20,7 +20,7 @@ AKAR = Path(__file__).resolve().parent.parent
 ALAMAT = json.loads((AKAR / "konten/situs.json").read_text(encoding="utf-8"))
 SITUS, REPO = ALAMAT["situs"], ALAMAT["repo"]
 # Riwayat perubahan boleh menyebut alamat lama; pustaka pihak ketiga punya tautannya sendiri.
-LEWATI = ("CHANGELOG.md", "konten/situs.json", "docs/assets/vendor/", "docs/assets/katex/", "docs/assets/font/", ".claude/", "tests/verifikasi_alamat.py")
+LEWATI = ("CHANGELOG.md", "konten/situs.json", "docs/assets/vendor/", "docs/assets/katex/", "docs/assets/font/", "tests/verifikasi_alamat.py")
 POLA = re.compile(r"https?://(?:[\w-]+\.github\.io|github\.com/[\w-]+/[\w.-]+\.github\.io)[^\s\"'<>)\]]*")
 
 

@@ -1,6 +1,6 @@
 # DESIGN.md: sistem tampilan GeoSR
 
-Dibaca sebelum mengubah tampilan situs (manusia maupun AI). Berkas ini merangkum aturan yang sudah berlaku di [`docs/assets/gaya.css`](docs/assets/gaya.css) dan "Aturan tulisan dan tampilan" di [`.claude/rencana.md`](.claude/rencana.md). Kalau ada perbedaan, `gaya.css` yang berlaku, lalu berkas ini diperbarui. Ditulis November 2026.
+Dibaca sebelum mengubah tampilan situs. Berkas ini merangkum aturan yang sudah berlaku di [`docs/assets/gaya.css`](docs/assets/gaya.css). Kalau ada perbedaan, `gaya.css` yang berlaku, lalu berkas ini diperbarui. Ditulis November 2026.
 
 ## Karakter
 
@@ -68,7 +68,7 @@ Panjang baris teks bacaan paling banyak 42em (±80 karakter); lead 64ch.
 
 ## Cahaya dan kedalaman
 
-Keputusan Defsa, 15 November 2026: tampilan datar terasa seperti buatan AI, jadi gradasi, bayangan, cahaya, dan color grading dipakai **bila memodelkan cahaya atau materi**, bukan sebagai hiasan acak.
+Keputusan Defsa, 15 November 2026: tampilan datar terasa generik, jadi gradasi, bayangan, cahaya, dan color grading dipakai **bila memodelkan cahaya atau materi**, bukan sebagai hiasan acak.
 - Satu sumber cahaya: kiri atas, hangat. Bayangan jatuh ke kanan bawah, dingin. Color grading di kanvas penampang: lapisan `soft-light` hangat (kiri atas) ke teal gelap (kanan bawah), lalu vinyet.
 - Tanah: makin dalam makin gelap dan dingin; tiap lapisan bergradasi terang di atas ke gelap di bawah; lapisan atas menaungi lapisan bawah (bayangan di bawah batas); tanah di bawah muka air tanah sedikit kebiruan (jenuh). Butir dan kerikil punya bayangan jatuh, sisi terang, dan kilap.
 - Tema gelap adalah malam: bulan dan bintang, butir berpendar tipis dengan warna lapisannya.
@@ -94,16 +94,16 @@ Keputusan Defsa, 15 November 2026: beberapa elemen dibuat 3D, bukan hanya 2D, as
 - Bahasa Indonesia santai tapi rapi. Nama tombol menyebut aksinya ("Muat data contoh", "Buka di alat Atterberg").
 - Desimal koma dan ribuan titik; aturan angka panduan laporan (berat dan volume 3 desimal, persen 2 desimal, Gs dan berat isi 3 desimal).
 - Galat menjelaskan apa yang salah dan cara memperbaikinya, tanpa minta maaf.
-- Setiap rumus menyebut sumbernya (Aturan Sumber di rencana).
+- Setiap rumus menyebut sumbernya (Aturan Sumber di [CONTRIBUTING](.github/CONTRIBUTING.md)).
 
 ## Larangan
 
-Ciri template dan tulisan AI yang tidak dipakai:
+Ciri template yang tidak dipakai:
 - Label kecil berhuruf kapital berspasi di atas judul (eyebrow), titik tengah sebagai hiasan di antara label, panah "→" di teks tautan.
 - Latar krem dengan aksen oranye bata; kartu bundar seragam dengan bayangan sama; gradasi atau cahaya (glow) yang tidak memodelkan cahaya atau materi (lihat "Cahaya dan kedalaman"); pil status acak.
 - Animasi muncul di setiap bagian; latar video; 3D sebagai hiasan yang tidak bisa dipakai (lihat "3D").
 - Pembuka kosong, kata penekanan tanpa angka (sangat, krusial, signifikan), daftar tiga hal yang dipaksakan, nada iklan.
-- Gambar atau video buatan AI. Aset luar hanya berlisensi jelas (CC0, CC BY, MIT, OFL, dsb.), disimpan lokal, dicatat di `docs/assets/kredit.json`.
+- Gambar atau video tanpa lisensi yang jelas. Aset luar hanya berlisensi jelas (CC0, CC BY, MIT, OFL, dsb.), disimpan lokal, dicatat di `docs/assets/kredit.json`.
 - Memuat aset dari CDN.
 
 ## Pemeriksaan setiap perubahan tampilan

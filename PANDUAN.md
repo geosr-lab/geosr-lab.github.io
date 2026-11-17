@@ -1,6 +1,6 @@
 # Panduan menambah isi
 
-Cara menambah catatan, soal, atau alat ke situs, dengan atau tanpa Claude. Ditulis September 2026.
+Cara menambah catatan, soal, atau alat ke situs. Ditulis September 2026, diperbarui November 2026.
 
 ## Yang perlu diketahui dulu
 
@@ -10,14 +10,14 @@ Cara menambah catatan, soal, atau alat ke situs, dengan atau tanpa Claude. Ditul
 
 ## Menambah catatan
 
-**Tanpa Claude, lewat web GitHub**
+**Lewat web GitHub**
 
 1. Buka folder `konten/catatan/` di GitHub, klik **Add file → Create new file**.
 2. Beri nama dengan nomor berikutnya, misalnya `04-judul-catatan.md` (huruf kecil, dipisah tanda hubung).
 3. Baris pertama: `# 04 — Judul catatan`. Isi dengan urutan konsep, contoh dari pengalaman sendiri, lalu latihan.
 4. Klik **Commit changes**. Beberapa menit kemudian workflow **Bangun situs** membuat halamannya dan menambahkannya ke beranda.
 
-**Tanpa Claude, di laptop**
+**Di laptop**
 
 ```
 python3 skrip/buat.py catatan "Judul catatan"
@@ -25,17 +25,14 @@ python3 skrip/buat.py catatan "Judul catatan"
 
 Berkas bernomor dibuat di `konten/catatan/`. Isi, lalu jalankan `python3 skrip/bangun_situs.py`.
 
-**Dengan Claude Code:** ketik `/tambah-catatan`.
-
 ## Menambah soal latihan
 
-Soal dibuat dari templat di `docs/assets/latihan-soal.js`, dan kuncinya dihitung oleh kalkulator yang sama. Karena itu soal baru butuh sedikit kode dan uji. Cara termudah: ketik `/tambah-soal` di Claude Code dan sebutkan rumus serta sumbernya.
+Soal dibuat dari templat di `docs/assets/latihan-soal.js`, dan kuncinya dihitung oleh kalkulator yang sama. Karena itu soal baru butuh sedikit kode dan uji. Tambahkan templatnya di `latihan-soal.js`, lalu daftarkan di `tests/verifikasi_latihan.py`.
 
 ## Menambah alat atau kalkulator
 
 1. Siapkan sumber rumusnya dulu: buku atau standar, beserta halamannya. Tanpa sumber, alat tidak dibuat.
-2. Dengan Claude Code: ketik `/tambah-alat` dan kirim halaman sumbernya.
-3. Tanpa Claude:
+2. Buat kerangkanya:
    ```
    python3 skrip/buat.py alat nama-alat --judul "Judul alat" --kategori fondasi --sumber "Penulis (tahun), judul, halaman"
    ```

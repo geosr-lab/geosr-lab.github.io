@@ -36,7 +36,7 @@ My proposed topic: comparing the axial capacity of bored piles calculated from S
 
 ## Project
 
-**GeoSR (this site).** Eighteen tools for Soil Mechanics lab data, three geotechnical calculators, and a bank of practice problems. Every formula names its source, and the lab tools are tested automatically against the numbers in sample lab reports. I built it together with Claude Code; the story is in my [note on building the site](../catatan/03-membangun-situs-dan-kalkulator.md) (in Indonesian).
+**GeoSR (this site).** Eighteen tools for Soil Mechanics lab data, six geotechnical calculators, and a bank of practice problems. Every formula names its source, and the lab tools are tested automatically against the numbers in sample lab reports.
 
 ## Interests
 
@@ -51,19 +51,7 @@ My proposed topic: comparing the axial capacity of bored piles calculated from S
 |---|---|
 | Intermediate | Microsoft Word, Excel, PowerPoint, AutoCAD, Revit |
 | Basic | ETABS, SAP2000, PLAXIS (2D and 3D), AllPile |
-| Learning | Git, GitHub, Claude Code |
-
-## How I use AI in my studies
-
-I use Claude in three roles, depending on the work:
-
-| Role | Used for | What I ask for |
-|---|---|---|
-| Mentor | Learning new material | Theory first, then an example, then exercises I solve myself |
-| Discussion partner | Shaping titles, arguments, methods | Several alternatives with their pros and cons; I make the decision |
-| Technical executor | Calculating, checking files, producing documents | Real calculations that are double-checked, with assumptions and sources written down |
-
-What I do not hand over to AI: final decisions, field data, and the last check before anything is submitted. The details are in [Limits and ethics](../cara-memakai-ai/batasan-dan-etika.md) (in Indonesian).
+| Learning | Git, GitHub |
 
 ## Contact
 
