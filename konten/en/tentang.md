@@ -16,7 +16,7 @@
 
 *Odd semester 2026/2027 · Engineering Laboratory, Faculty of Science and Technology, Universitas Jambi*
 
-Supervising the practical sessions and reviewing students' lab reports. The [lab tools on GeoSR](https://defsayurinda.github.io/praktikum/) follow the same lab forms.
+Supervising the practical sessions and reviewing students' lab reports. The [lab tools on GeoSR](https://geosr-lab.github.io/praktikum/) follow the same lab forms.
 
 ### Internship, Quality Control
 

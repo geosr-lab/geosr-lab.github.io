@@ -2,7 +2,7 @@
 
 [Bahasa Indonesia](README.md) · **English**
 
-Tools for Soil Mechanics lab data, geotechnical calculators, and practice problems that show every calculation step and the source of each formula, published at **[defsayurinda.github.io](https://defsayurinda.github.io/en/)**. Made by Defsa Yurinda ([about](https://defsayurinda.github.io/en/pembuat/)), Civil Engineering, Universitas Jambi.
+Tools for Soil Mechanics lab data, geotechnical calculators, and practice problems that show every calculation step and the source of each formula, published at **[geosr-lab.github.io](https://geosr-lab.github.io/en/)**. Made by Defsa Yurinda ([about](https://geosr-lab.github.io/en/pembuat/)), Civil Engineering, Universitas Jambi.
 
 The tools are written in Indonesian and follow the Soil Mechanics lab forms at Universitas Jambi. Numbers use a decimal comma.
 
@@ -24,4 +24,4 @@ The tools are written in Indonesian and follow the Soil Mechanics lab forms at U
 
 ## License
 
-Code: [MIT](LICENSE). Writing and images: [CC BY 4.0](LICENSE-TULISAN). Fonts and KaTeX: see [asset credits](https://defsayurinda.github.io/kredit/).
+Code: [MIT](LICENSE). Writing and images: [CC BY 4.0](LICENSE-TULISAN). Fonts and KaTeX: see [asset credits](https://geosr-lab.github.io/kredit/).

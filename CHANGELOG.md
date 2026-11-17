@@ -47,6 +47,7 @@ Semua perubahan penting dicatat di sini. Format mengikuti [Keep a Changelog](htt
 - `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md` (Contributor Covenant 2.1, terjemahan resmi), templat Issue dan PR, `CITATION.cff`, Dependabot untuk GitHub Actions.
 
 ### Diubah
+- Situs dan repo pindah ke organisasi GeoSR Lab: situs di `https://geosr-lab.github.io/`, repo di `https://github.com/geosr-lab/geosr-lab.github.io`. Alamat lama mengalihkan ke halaman yang sama di alamat baru.
 - Service worker didaftarkan dan menyimpan aset inti dengan jalur relatif, jadi mode offline tetap jalan bila situs berada di subfolder. Nama cache berganti awalan menjadi `geosr-`.
 - README dipendekkan dan disamakan dengan keadaan situs: tangkapan layar baru (terang dan gelap), contoh kutipan GeoSR, versi Inggris menyebut 6 kalkulator. `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, dan `SECURITY.md` pindah ke `.github/`.
 - Beranda, bagian "Mulai dari sini": kisi bento 12 kolom. Baris pertama Praktikum (7/12, enam kelompok uji dalam dua kolom) dan Belajar (5/12); baris kedua Kalkulator selebar penuh dengan topik Pondasi, Penurunan, dan Penyelidikan tanah berdampingan. Ruang kosong di petak Belajar pada 1280 px turun dari 337 px ke 98 px. Urutan di ponsel tetap Praktikum, Kalkulator, Belajar. Versi cache 0.29.0.

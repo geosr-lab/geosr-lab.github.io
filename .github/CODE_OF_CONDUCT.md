@@ -39,7 +39,7 @@ melalui akun media sosial resmi, atau sebagai perwakilan yang ditunjuk pada kegi
 
 ## Penegakan
 
-Tindakan kasar, pelecehan, atau perilaku tidak dapat diterima lainnya yang terjadi dapat dilaporkan kepada pengelola komunitas di Issue repo ini (https://github.com/defsayurinda/defsayurinda.github.io/issues), atau lewat fitur *Report content* GitHub untuk laporan yang tidak pantas dibuka secara publik untuk diselesaikan. Semua keluhan akan ditinjau dan diselidiki secara tepat dan adil.
+Tindakan kasar, pelecehan, atau perilaku tidak dapat diterima lainnya yang terjadi dapat dilaporkan kepada pengelola komunitas di Issue repo ini (https://github.com/geosr-lab/geosr-lab.github.io/issues), atau lewat fitur *Report content* GitHub untuk laporan yang tidak pantas dibuka secara publik untuk diselesaikan. Semua keluhan akan ditinjau dan diselidiki secara tepat dan adil.
 
 Semua pengelola komunitas berkewajiban untuk menjaga kerahasiaan dan keamanan pelapor suatu insiden.
 
