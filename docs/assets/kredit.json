@@ -34,5 +34,5 @@
       "berkas_lisensi": "assets/vendor/three/LICENSE"
     }
   ],
-  "buatan_sendiri": "Sketsa alat uji, ikon kelompok pengujian, logo lapisan tanah, ilustrasi penampang, blok tanah 3D beranda, model 3D alat praktikum (dibangun dari bentuk dasar three.js di kode, bukan model unduhan), dan grafik digambar sendiri sebagai SVG di kode situs ini, bukan gambar buatan AI. Gambarnya ikut lisensi tulisan dan gambar situs (CC BY 4.0); kodenya ikut lisensi kode (MIT)."
+  "buatan_sendiri": "Sketsa alat uji, ikon kelompok pengujian, logo lapisan tanah, ilustrasi penampang, blok tanah 3D beranda, model 3D alat praktikum (dibangun dari bentuk dasar three.js di kode, bukan model unduhan), dan grafik digambar sendiri sebagai SVG di kode situs ini. Gambarnya ikut lisensi tulisan dan gambar situs (CC BY 4.0); kodenya ikut lisensi kode (MIT)."
 }

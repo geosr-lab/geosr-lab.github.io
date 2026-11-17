@@ -18,7 +18,7 @@ DOCS = AKAR / "docs"
 REPO = json.loads((AKAR / "konten/situs.json").read_text(encoding="utf-8"))["repo"]
 BLOB = REPO + "/blob/main/"
 TREE = REPO + "/tree/main/"
-JALUR_LAMA = ("tentang-saya.md", "cara-saya-memakai-claude/", "/blob/main/catatan/", "/blob/main/skill/")
+JALUR_LAMA = ("tentang-saya.md", "/blob/main/catatan/", "/blob/main/skill/")
 
 
 def cek_berkas_repo(url):

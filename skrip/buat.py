@@ -11,7 +11,7 @@ Alat baru mendapat:
   tests/verifikasi_<id>.py        kerangka uji: contoh soal buku dan uji sifat (dilewati sampai diisi)
   entri di konten/alat.json       status "belum"
 
-Rumus tidak pernah dibuat otomatis. Sumber wajib diisi (Aturan Sumber di .claude/rencana.md),
+Rumus tidak pernah dibuat otomatis. Sumber wajib diisi (Aturan Sumber di .github/CONTRIBUTING.md),
 dan rumus ditulis tangan setelah halaman sumbernya ada.
 
 Catatan baru mendapat nomor berikutnya di konten/catatan/ dengan urutan isi konsep, contoh, latihan.

@@ -14,7 +14,7 @@ Laporan tanpa sumber tetap diterima, tapi perbaikan rumus hanya dilakukan setela
 
 ## Usul alat baru
 
-Pakai templat **Usul alat**. Alat baru hanya dibuat bila rumusnya punya sumber yang memenuhi Aturan Sumber di [`.claude/rencana.md`](../.claude/rencana.md): SNI atau pedoman kementerian, buku teks standar dengan bab dan halaman, atau jurnal bereputasi. Situs pekerjaan rumah, blog tanpa penulis, dan salinan standar yang diunggah pihak lain tidak dipakai.
+Pakai templat **Usul alat**. Alat baru hanya dibuat bila rumusnya punya sumber yang memenuhi [Aturan Sumber](#aturan-sumber) di bawah: SNI atau pedoman kementerian, buku teks standar dengan bab dan halaman, atau jurnal bereputasi. Situs pekerjaan rumah, blog tanpa penulis, dan salinan standar yang diunggah pihak lain tidak dipakai.
 
 ## Pull Request
 
@@ -36,3 +36,15 @@ Pakai templat **Usul alat**. Alat baru hanya dibuat bila rumusnya punya sumber y
 - Rumus atau nilai tabel tanpa sumber.
 
 Dengan berkontribusi, kamu setuju kodenya dirilis dengan lisensi [MIT](../LICENSE) dan tulisannya dengan [CC BY 4.0](../LICENSE-TULISAN), dan mengikuti [Kode Etik](CODE_OF_CONDUCT.md).
+
+## Aturan Sumber
+
+Sumber yang boleh dipakai untuk rumus, koefisien, dan nilai tabel, berurutan:
+
+1. Buku, modul, dan form laboratorium yang dipakai di perkuliahan.
+2. SNI dan pedoman kementerian (PUPR, Bina Marga), dikutip dengan nomor dan pasal.
+3. Buku teks standar (Das, Hardiyatmo, Bowles, Craig), dengan bab dan halaman.
+4. Jurnal terakreditasi atau bereputasi.
+5. Halaman resmi BSN, ASTM, atau AASHTO, hanya untuk judul dan status standar.
+
+Tidak dipakai: salinan dokumen standar yang diunggah pihak lain, situs pekerjaan rumah, blog atau kalkulator online tanpa penulis, dan forum. Standar yang sudah ditarik tidak menjadi acuan utama (ASTM D422 ditarik 2016; penggantinya D6913 dan D7928). Nilai yang belum bisa diverifikasi ditandai `[BELUM TERVERIFIKASI]`.

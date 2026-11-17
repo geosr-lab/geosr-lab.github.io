@@ -15,7 +15,7 @@
  *    N ditulis sumber sebagai "nilai NSPT tanah", tanpa koreksi.
  *    [BELUM TERVERIFIKASI] α = 0,55 (sumber tidak memberi nilai α) dan pemotongan N ≥ 53 menjadi 53
  *    (pers. (6) di sumber memberi fs = 0 pada N = 53, jadi tampaknya salah cetak).
- * 2. Meyerhof (1976) [DISEMBUNYIKAN dari halaman dan bank soal, temuan B1–B3 di .claude/rencana.md]
+ * 2. Meyerhof (1976) [DISEMBUNYIKAN dari halaman dan bank soal, temuan B1–B3, Issue #12]
  *    - Ujung: qp = 38 N̄ (Lb/d) ≤ 380 N̄ (kPa) adalah rumus tiang pancang dan Lb hanya dihitung dari
  *      baris lapisan tempat ujung. Menunggu halaman PUPR (2019) dari Defsa.
  *    - Selimut: pembagi 50/100 menurut perpindahan tiang belum bersumber.
