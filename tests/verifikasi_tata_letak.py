@@ -50,6 +50,18 @@ JS_TIMPA = r"""
       if (x > 2 && y > 2) hasil.push(nama(anak[i]) + ' menimpa ' + nama(anak[j]) + ' (' + Math.round(x) + ' x ' + Math.round(y) + ' px)');
     }
   });
+  // Isi yang keluar dari kartu atau panelnya (misalnya isian tabel yang lebih lebar dari kartu).
+  const wadah = '.kartu, .petak, .alur-tahap, .b3-info, .kartu-praktikum, .panel, figure.sketsa';
+  document.querySelectorAll('input, select, textarea, button, table, svg, img, canvas, .tombol, .chip').forEach((e) => {
+    const k = e.parentElement && e.parentElement.closest(wadah);
+    if (!k || e.closest('[hidden], [aria-hidden="true"], .sr-only, .tabel-gulir') || !tampak(e) && e.tagName !== 'svg') return;
+    const s = getComputedStyle(k);
+    if (s.overflowX !== 'visible') return;   // kartu yang memotong atau menggulir isinya sendiri
+    const r = e.getBoundingClientRect(), b = k.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2) return;
+    const lewat = Math.max(r.right - b.right, b.left - r.left);
+    if (lewat > 2) hasil.push(nama(e) + ' keluar ' + Math.round(lewat) + ' px dari ' + k.className.toString().trim().split(/\s+/)[0]);
+  });
   return hasil.slice(0, 6);
 }
 """

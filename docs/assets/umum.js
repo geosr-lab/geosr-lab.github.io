@@ -182,6 +182,36 @@
   // Dipanggil kalkulator setelah formulir diisi ulang tanpa event (muat contoh, tautan berbagi).
   function segarkanGeser() { daftarGeser.forEach(function (fn) { fn(); }); }
 
+  // Ajakan memberi bintang di GitHub. Hanya muncul setelah pengunjung berhasil mengunduh laporan,
+  // paling sering sekali per 60 hari, dan tidak muncul lagi bila dipilih "Jangan tampilkan lagi".
+  // Situs tetap bisa dipakai penuh tanpa memberi bintang.
+  var KUNCI_BINTANG = 'geosr-ajak-bintang', JEDA_BINTANG = 60 * 24 * 3600 * 1000;
+  function ajakBintang() {
+    var catat;
+    try { catat = localStorage.getItem(KUNCI_BINTANG); } catch (e) { return; }
+    if (catat === 'tidak' || (catat && Date.now() - Number(catat) < JEDA_BINTANG)) return;
+    if (document.getElementById('ajak-bintang')) return;
+    var repo = REPO_ISSUE.replace(/\/issues\/new$/, '');
+    var kotak = document.createElement('aside');
+    kotak.id = 'ajak-bintang'; kotak.className = 'ajak-bintang tidak-cetak';
+    kotak.setAttribute('role', 'status'); kotak.setAttribute('aria-live', 'polite');
+    kotak.innerHTML = '<p><strong>Laporannya sudah diunduh.</strong> Kalau GeoSR membantu, beri bintang di GitHub supaya teman lain juga menemukannya.</p>' +
+      '<div class="baris-tombol"><a class="tombol utama kecil" target="_blank" rel="noopener" href="' + esc(repo) + '" data-bintang="buka">' +
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-2.9-5.4 2.9 1.1-6-4.5-4.2 6.1-.8z"/></svg>Beri bintang di GitHub</a>' +
+      '<button type="button" class="tombol kecil" data-bintang="nanti">Nanti saja</button>' +
+      '<button type="button" class="tautan-kecil" data-bintang="tidak">Jangan tampilkan lagi</button></div>';
+    function tutup(nilai) {
+      try { localStorage.setItem(KUNCI_BINTANG, nilai); } catch (e) { /* penyimpanan diblokir: cukup ditutup */ }
+      kotak.remove();
+    }
+    kotak.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-bintang]');
+      if (!b) return;
+      tutup(b.dataset.bintang === 'tidak' ? 'tidak' : String(Date.now()));
+    });
+    document.body.appendChild(kotak);
+  }
+
   function pasangSemua() { pasangLaporan(); pasangLompat(); }
   if (typeof document !== 'undefined' && document.addEventListener) {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', pasangSemua);
@@ -192,7 +222,7 @@
     $: function (id) { return document.getElementById(id); },
     salin: function (o) { return JSON.parse(JSON.stringify(o)); },
     f: f, t: t, tex: tex, rumus: rumus, esc: esc, tanpaHTML: tanpaHTML,
-    simpanKeHash: simpanKeHash, bacaHash: bacaHash, salinTautan: salinTautan, tautanLaporan: tautanLaporan,
+    simpanKeHash: simpanKeHash, bacaHash: bacaHash, salinTautan: salinTautan, tautanLaporan: tautanLaporan, ajakBintang: ajakBintang,
     pasangGeser: pasangGeser, segarkanGeser: segarkanGeser,
     KN_PER_TON: 9.80665
   };
