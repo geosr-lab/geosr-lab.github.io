@@ -1,7 +1,8 @@
 {
-  "_catatan": "Satu-satunya tempat alamat situs dan repo ditulis. Saat pindah alamat: ganti situs dan repo, pindahkan nilai lama ke alamat_lama, lalu jalankan python3 skrip/bangun_situs.py.",
+  "_catatan": "Satu-satunya tempat alamat situs dan repo ditulis. Saat pindah alamat: ganti situs dan repo, pindahkan nilai lama ke alamat_lama, lalu jalankan python3 skrip/bangun_situs.py. goatcounter: kode akun GoatCounter untuk menghitung kunjungan (kosong = tidak menghitung).",
   "situs": "https://geosr-lab.github.io/",
   "repo": "https://github.com/geosr-lab/geosr-lab.github.io",
+  "goatcounter": "geosr-lab",
   "alamat_lama": [
     {
       "situs": "https://defsayurinda.github.io/",
