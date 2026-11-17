@@ -4,6 +4,7 @@
 
 - **Sekarang:** Asisten Laboratorium Praktikum Mekanika Tanah, semester ganjil 2026/2027.
 - **Prestasi:** Juara 2 Lomba Inovasi Geoteknik Mahasiswa HATTI 2026.
+- **Portofolio:** karya lomba, perhitungan, pemodelan, dan pengalaman lapangan di [geosr-lab.github.io/portofolio](https://geosr-lab.github.io/portofolio/).
 - **Tugas akhir:** daya dukung tiang bor dari N-SPT dibandingkan dengan uji pembebanan statik.
 
 ## Prestasi
@@ -55,4 +56,4 @@ Topik yang saya ajukan: perbandingan daya dukung aksial fondasi tiang bor (*bore
 
 ## Kontak
 
-Lewat GitHub: [@defsayurinda](https://github.com/defsayurinda). Surat referensi untuk pengalaman di atas tersedia atas permintaan.
+Portofolio lengkap: [geosr-lab.github.io/portofolio](https://geosr-lab.github.io/portofolio/). Lewat GitHub: [@defsayurinda](https://github.com/defsayurinda). Surat referensi untuk pengalaman di atas tersedia atas permintaan.

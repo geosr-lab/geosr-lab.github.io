@@ -55,4 +55,4 @@ My proposed topic: comparing the axial capacity of bored piles calculated from S
 
 ## Contact
 
-Through GitHub: [@defsayurinda](https://github.com/defsayurinda). Reference letters for the experience above are available on request.
+Full portfolio (in Indonesian): [geosr-lab.github.io/portofolio](https://geosr-lab.github.io/portofolio/). Through GitHub: [@defsayurinda](https://github.com/defsayurinda). Reference letters for the experience above are available on request.
